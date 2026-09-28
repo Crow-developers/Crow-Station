@@ -1,0 +1,20 @@
+# Local previews and document QA output
+/tmp/
+node_modules/
+.DS_Store
+Thumbs.db
+
+# Local secrets and environment overrides
+.env
+.env.*
+!.env.example
+*.user
+*.suo
+.vs/
+.idea/
+
+# Generated application outputs (future development)
+**/bin/
+**/obj/
+**/.dart_tool/
+**/build/
