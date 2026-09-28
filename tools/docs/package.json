@@ -1,0 +1,11 @@
+{
+  "name": "crow-station-docs",
+  "private": true,
+  "type": "module",
+  "description": "Local rendering of Crow Station planning documents; not product code",
+  "engines": { "node": ">=22.16.0" },
+  "scripts": {
+    "build": "node build-brief.mjs && node build-brief.mjs data"
+  },
+  "dependencies": { "marked": "17.0.5" }
+}
