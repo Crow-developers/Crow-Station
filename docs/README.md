@@ -17,3 +17,5 @@
 
 
 توجد هذه المسودات على فرع **plan** الدائم. تُنقل الأجزاء المعتمدة فقط إلى فرع **docs** وفق [سياسة الفروع](../BRANCHING.md). تابع [حالة الرفع والحماية](../REPOSITORY-STATUS.md).
+
+نسخة عربية مطابقة: [plan-ar](https://github.com/Crow-developers/Crow-Station/tree/plan-ar/docs). الترجمة الإنجليزية الكاملة: [plan-en](https://github.com/Crow-developers/Crow-Station/tree/plan-en/docs). معرّفات الأقسام والأسئلة واحدة بين النسختين.
