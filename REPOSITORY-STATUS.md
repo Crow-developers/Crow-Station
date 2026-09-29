@@ -1,6 +1,6 @@
 # Repository Organization Status
 
-Last update: 28 September 2026.
+Last update: 29 September 2026.
 
 ## Completed locally
 
@@ -33,3 +33,14 @@ Here, reset means replacing active history and branch contents; it does not clai
 ## Next session
 
 Resume question D-01 in the data document. There is no need to reopen it tonight, and this work includes no product implementation or production deployment.
+
+## Arabic and English planning versions — 29 September 2026
+
+- Uploaded plan-ar as an Arabic copy of plan at the same commit.
+- Uploaded plan-en with complete translations of the product document, data planning, and repository guides, preserving the structure and providing HTML pages with English reading direction.
+- The planning-content translation source is Arabic commit 3b383ef; this repository-status update does not change product decisions.
+- Verified parity of section numbers, tables, lists, numeric values, question identifiers, and acceptance criteria, plus working document links and desktop and mobile rendering.
+- Original source images remain unchanged in both branches.
+- Ruleset 24138328 now includes plan-ar and plan-en; all seven branches are protected against deletion and force pushes without bypass exceptions.
+- Plans were not merged into main; docs, develop, staging, and main remain unchanged.
+- Future language updates require review and translation under BRANCHING.md; synchronization is not automatic.
