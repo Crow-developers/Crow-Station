@@ -1,35 +1,35 @@
-# حالة تنظيم المستودع
+# Repository Organization Status
 
-آخر تحديث: 28 سبتمبر 2026.
+Last update: 28 September 2026.
 
-## مكتمل محلياً
+## Completed locally
 
-- تهيئة Git في مجلد المشروع.
-- إنشاء الفروع الدائمة `main` و`docs` و`develop` و`staging` و`plan` من أساس مشترك.
-- الأساس المشترك يحتوي على تعريف المشروع وسياسة الفروع وإعدادات تتبّع الملفات فقط.
-- فرع `plan` مخصص للوثائق الحالية وأدوات تنسيقها ومواد المصدر المتاحة.
-- فروع المنتج ليست تطبيقاً جاهزاً أو نشراً فعلياً، وفرع `docs` لا يحتوي بعد مواصفات رسمية معتمدة.
+- Initialized Git in the project directory.
+- Created permanent branches `main`, `docs`, `develop`, `staging`, and `plan` from a shared foundation.
+- The shared foundation contains only the project introduction, branch policy, and file-tracking settings.
+- The `plan` branch holds current documents, their formatting tools, and available source material.
+- Product branches are not a finished application or actual deployment, and `docs` does not yet contain approved official specifications.
 
-## مكتمل على GitHub
+## Completed on GitHub
 
-- المستودع: [Crow-developers/Crow-Station](https://github.com/Crow-developers/Crow-Station)، مرتبط بـ`origin`.
-- رُفعت الفروع `main` و`docs` و`develop` و`staging` و`plan`؛ `main` هو الفرع الافتراضي.
-- تم استبدال مرجع main القديم بتاريخ نظيف باستخدام تحقق من الـSHA السابق قبل الاستبدال؛ لا توجد فروع قديمة أخرى أو وسوم في نتيجة فحص المراجع قبل التصفير.
-- لا تحتوي فروع المنتج على التنفيذ القديم. الخطط في [plan](https://github.com/Crow-developers/Crow-Station/tree/plan)، ومرجع التنظيم المشترك هو `271bd08`.
-- إعداد الحذف التلقائي بعد الدمج معطّل.
-- قواعد فعّالة دون استثناءات تجاوز: منع حذف الفروع الدائمة ومنع force push. معرّف القاعدة `24138328`.
-- قواعد فعّالة تفرض Pull Request على `docs` و`develop` و`staging` و`main`، وحل مناقشات المراجعة قبل الدمج. معرّف القاعدة `24138330`.
-- عدد الموافقات الإلزامية حالياً صفر، ولا توجد فحوص CI إلزامية بعد. يحدَّد المراجعون والفحوص عند إعداد الفريق؛ لا نخلط فرض PR بفرض موافقة مراجع مستقل.
-- `plan` يقبل التحديثات العادية المباشرة، لكن حذفه أو إعادة كتابة تاريخه ممنوعان بالقواعد المفعّلة.
+- Repository: [Crow-developers/Crow-Station](https://github.com/Crow-developers/Crow-Station), connected as `origin`.
+- Uploaded `main`, `docs`, `develop`, `staging`, and `plan`; `main` is the default branch.
+- Replaced the old main reference with clean history after checking the previous SHA; the reference inspection before the reset found no other old branches or tags.
+- Product branches contain none of the old implementation. Plans are in [plan](https://github.com/Crow-developers/Crow-Station/tree/plan), and the shared organization foundation is `271bd08`.
+- Automatic deletion after merging is disabled.
+- Active rules without bypass exceptions prevent permanent-branch deletion and force pushes. Ruleset ID: `24138328`.
+- Active rules require Pull Requests into `docs`, `develop`, `staging`, and `main`, with review conversations resolved before merging. Ruleset ID: `24138330`.
+- The required approval count is currently zero, and no CI checks are mandatory yet. Reviewers and checks will be selected when the team is configured; requiring a PR is distinct from requiring independent reviewer approval.
+- `plan` accepts ordinary direct updates, but active rules prevent deletion or history rewriting.
 
-هذه الإعدادات قُرئت من GitHub بعد تطبيقها للتحقق. يستطيع مسؤول المستودع تعديل القواعد نفسها لاحقاً؛ بقاء الفرع سياسة دائمة يجب الحفاظ عليها عند تغيير الإعدادات.
+These settings were read back from GitHub after application to verify them. A repository administrator can later change the rules themselves; permanent branch retention is a continuing policy to preserve when settings change.
 
-## استبدال العمل القديم
+## Replacing the old work
 
-طلب صاحب المشروع تصفير العمل القديم تماماً. المرجع القديم لفرع main هو `e39b1b145ee4a6ade3784209baad5c771ccc6596`، وحُفظت نسخة mirror محلية داخل `tmp/repository-backup/Crow-Station-before-reset.git` قبل الاستبدال. هذا المجلد متجاهل ولا يُرفع إلى GitHub. يحتفظ المستودع بعنوانه وإعداد رؤيته العامة الحالي.
+The project owner requested a complete reset of the old work. The previous main reference was `e39b1b145ee4a6ade3784209baad5c771ccc6596`. A local mirror was saved in `tmp/repository-backup/Crow-Station-before-reset.git` before replacement. This directory is ignored and is not uploaded to GitHub. The repository retains its URL and existing public visibility.
 
-المقصود بالتصفير هنا استبدال التاريخ النشط ومحتوى الفروع؛ لا يُدّعى محو نسخ سبق أن استنسخها أشخاص أو جميع كائنات Git غير المشار إليها التي قد تحتفظ بها GitHub. لم يُحذف كيان المستودع أو إعداد أعضائه.
+Here, reset means replacing active history and branch contents; it does not claim to erase copies already cloned by others or all unreferenced Git objects GitHub may retain. The repository itself and its membership settings were not deleted.
 
-## الجلسة القادمة
+## Next session
 
-نستأنف السؤال D-01 في وثيقة البيانات. لا حاجة إلى فتحه مجدداً الليلة، ولا توجد برمجة للمنتج أو عملية نشر إلى بيئة إنتاج ضمن هذا العمل.
+Resume question D-01 in the data document. There is no need to reopen it tonight, and this work includes no product implementation or production deployment.

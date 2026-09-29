@@ -1,0 +1,646 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Crow Station | Data Planning and Design Decisions</title>
+<style>
+:root{--ink:#172d3b;--muted:#5e6e79;--paper:#fff;--bg:#f1f4f4;--line:#dce5e6;--accent:#087d7e;--light:#eef8f6}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:28px}body{margin:0;background:var(--bg);color:var(--ink);font-family:'Segoe UI',Tahoma,Arial,sans-serif;font-size:16px;line-height:1.95}
+.layout{display:grid;grid-template-columns:275px minmax(0,1fr);max-width:1550px;margin:auto;min-height:100vh}
+aside{position:sticky;top:0;height:100vh;overflow:auto;padding:28px 20px;border-right:1px solid var(--line);background:#f8faf9}
+.brand{font-size:24px;font-weight:750;letter-spacing:-.6px;line-height:1.4;direction:ltr;text-align:left}.brand small{display:block;font-size:12px;color:var(--accent);letter-spacing:2px;margin-bottom:8px;text-transform:uppercase}
+.nav-label{font-size:13px;color:var(--muted);margin:25px 0 8px}nav a{display:block;color:#405663;text-decoration:none;padding:7px 11px;margin:2px 0;border-radius:7px;font-size:13px;line-height:1.7;border-left:3px solid transparent}nav a:hover,nav a.active{background:#e4f1ee;color:#075c5b;border-left-color:var(--accent)}
+main{min-width:0;padding:44px clamp(24px,4vw,68px) 75px}.hero{padding:32px 36px;background:#102f3a;color:white;border-radius:15px;margin-bottom:26px;position:relative;overflow:hidden;border-top:5px solid #39bca6}.eyebrow{color:#9ddfd3;font-size:13px;letter-spacing:.3px}.hero h1{font-size:clamp(27px,3vw,37px);line-height:1.6;margin:12px 0}.hero p{color:#cfdee2;margin:0;max-width:720px}.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}.tags span{font-size:12px;border:1px solid #42606a;border-radius:20px;padding:3px 12px;color:#e1efed}.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:30px}.summary div{background:white;border:1px solid var(--line);border-radius:10px;padding:15px 20px}.summary strong{display:block;color:var(--accent);font-size:21px;line-height:1.7}.summary span{font-size:12px;color:var(--muted)}
+article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1px solid var(--line);border-radius:12px}article>h2{font-size:24px;line-height:1.7;border-top:1px solid var(--line);padding-top:32px;margin:42px 0 19px;color:#075f64}article>h2:first-of-type{margin-top:24px;border-top:0;padding-top:0}h3{font-size:19px;margin:28px 0 12px;color:#254657}p{margin:12px 0}ul,ol{padding-left:25px;padding-right:0;margin:14px 0}li{padding-left:4px;margin:7px 0}li::marker{color:var(--accent)}strong{font-weight:650}blockquote{margin:23px 0;background:var(--light);padding:11px 18px;border-left:4px solid var(--accent);border-radius:6px;color:#315c59;font-size:14px}blockquote p{margin:0}code{font-family:Consolas,monospace;font-size:.86em;direction:ltr;unicode-bidi:isolate;display:inline-block;background:#edf1f3;border-radius:4px;padding:0 5px;overflow-wrap:anywhere}.table-wrap{overflow-x:auto;margin:20px 0;border:1px solid var(--line);border-radius:8px}table{width:100%;border-collapse:collapse;font-size:14px;line-height:1.9;text-align:left}th{background:#edf5f4;color:#18595a;font-weight:650}td,th{padding:12px 15px;border-bottom:1px solid var(--line);vertical-align:top}td:first-child{font-weight:600;min-width:110px}tr:last-child td{border-bottom:0}tbody tr:nth-child(even){background:#fafcfc}a{color:#076f78}footer{font-size:12px;color:var(--muted);margin-top:22px;text-align:center}.tools{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:18px;font-size:12px;color:var(--muted)}button{font-family:inherit;background:white;border:1px solid var(--line);border-radius:6px;padding:7px 16px;cursor:pointer;color:var(--ink)}button:hover{border-color:var(--accent)}
+@media(max-width:1000px){.layout{grid-template-columns:230px minmax(0,1fr)}aside{padding:22px 13px}main{padding:24px 20px}article{padding:10px 23px 25px}.hero{padding:25px}}
+@media(max-width:720px){.layout{display:block}aside{position:relative;height:auto;max-height:270px;border-right:0;border-bottom:1px solid var(--line);padding:17px 20px}.brand{font-size:20px}.brand small{display:none}.nav-label{margin-top:10px}nav{display:grid;grid-template-columns:1fr 1fr}nav a{font-size:12px}main{padding:18px 12px}.hero{padding:23px}.hero h1{font-size:27px}.summary{gap:7px}.summary div{padding:11px}.summary strong{font-size:17px}article{padding:5px 17px 25px}article>h2{font-size:21px}body{font-size:15px}table{min-width:510px}}
+@media print{@page{size:A4;margin:18mm}body{background:white;font-size:10.5pt;line-height:1.7}.layout{display:block}aside,.tools,.summary{display:none}main{padding:0;max-width:none}.hero{background:white;color:#102f3a;border:1px solid #c4d6d7;border-top:4px solid var(--accent);padding:18px}.hero p,.eyebrow,.tags span{color:#365661}.hero h1{font-size:25pt}.tags{margin-top:10px}.tags span{border-color:#aac2c6}article{padding:0;border:0}article>h2{font-size:17pt;break-after:avoid}h3{font-size:13pt;break-after:avoid}table{font-size:9pt;min-width:0}tr{break-inside:avoid}.table-wrap{overflow:visible;border-radius:0}thead{display:table-header-group}td,th{padding:6px 8px}blockquote{break-inside:avoid}footer{font-size:9pt}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside aria-label="Document contents"><div class="brand"><small>Data planning / 02</small>Crow Station</div><div class="nav-label">Document contents · 14 sections</div><nav><a href="#section-1">1. Is the product document enough to design the databases?</a>
+<a href="#section-2">2. The database is not a copy of the application screens</a>
+<a href="#section-3">3. Data domain map</a>
+<a href="#section-4">4. Identity and instructor dashboard boundaries</a>
+<a href="#section-5">5. Content, entitlements, and partial sales</a>
+<a href="#section-6">6. Orders, payments, and refunds</a>
+<a href="#section-7">7. Earnings, holds, and withdrawals</a>
+<a href="#section-8">8. Packages and policies managed from the dashboard</a>
+<a href="#section-9">9. Learning paths and mentoring: permanent access and a temporary service</a>
+<a href="#section-10">10. Viewing, tests, and private content</a>
+<a href="#section-11">11. Core relationships before a detailed ERD</a>
+<a href="#section-12">12. Data planning questions — discussion order</a>
+<a href="#section-13">13. Checking design sufficiency before writing tables</a>
+<a href="#section-14">14. Version history</a></nav></aside>
+<main>
+<div class="tools"><span>Planning reference · 28 September 2026</span><button onclick="window.print()">Print document</button></div>
+<header class="hero"><div class="eyebrow">CROW STATION · Version 0.1</div><h1>Data planning<br>before table design</h1><p>From product requirements to entities, relationships, and lifecycles. A conceptual proposal showing what we know and what still needs a decision, without assuming the database design is complete.</p><div class="tags"><span>Proposed design for review</span><span>PostgreSQL · Isolation undecided</span><span>No tables or migrations yet</span></div></header>
+<div class="summary"><div><strong>18 domains</strong><span>Proposed entity map</span></div><div><strong>12 decisions</strong><span>Data discussion sequence</span></div><div><strong>Conceptual model</strong><span>Not a final schema</span></div></div>
+<article>
+<blockquote>
+<p>Version 0.1 · 28 September 2026 · Proposed conceptual analysis · Not a final database schema</p>
+</blockquote>
+<h2 id="section-1">1. Is the product document enough to design the databases?</h2>
+<p><strong>It is enough to begin analysis and draw a conceptual model, but not to approve all final tables, relationships, and constraints.</strong> We have a broad picture of the product&#39;s behavior, but some rules that change the meaning of ownership, entitlements, balances, and permissions remain undecided.</p>
+<p>This file complements the <a href="PROJECT-BRIEF.en.html">product document</a>; it does not replace it. Its purpose is to translate known decisions into data requirements and identify what can be designed now and what must wait for an answer. It does not create a database, SQL, or migrations, or choose a final number of databases.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Question it answers</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Product requirements</td>
+<td>What can the user do, and under which conditions?</td>
+<td>A broad draft exists; some decisions remain open.</td>
+</tr>
+<tr>
+<td>Conceptual model</td>
+<td>What do we need to store, and how are these things related?</td>
+<td>Started in this file as a proposal.</td>
+</tr>
+<tr>
+<td>Logical model</td>
+<td>What are the precise relationships, cardinalities, constraints, and lifecycles?</td>
+<td>To be completed gradually as consequential decisions are resolved.</td>
+</tr>
+<tr>
+<td>Physical design</td>
+<td>Tables, columns, types, indexes, policies, and partitioning</td>
+<td>Approval has not started.</td>
+</tr>
+<tr>
+<td>Operations</td>
+<td>Backup, recovery, load, and monitoring</td>
+<td>Requirements and decisions for later.</td>
+</tr>
+</tbody></table></div>
+<p><strong>Status rule:</strong> All entity names, relationships, and storage approaches here are analytical proposals, not decisions approved by the project owner. Rules carried over from the product document are marked “Agreed.” Some topics are intentionally open; we will not ask for all answers at once.</p>
+<h2 id="section-2">2. The database is not a copy of the application screens</h2>
+<p>A student dashboard, instructor dashboard, and administration dashboard do not imply three databases. Multiple rooms or instructors do not require a database for each. PostgreSQL is the agreed engine; the number of databases and isolation boundaries remain undecided.</p>
+<p>We need to distinguish:</p>
+<ul>
+<li><strong>Identity:</strong> Who performed the action?</li>
+<li><strong>Responsibility:</strong> Which course or dashboard are they working on, and with what permission?</li>
+<li><strong>Ownership:</strong> Who owns the content or financial entitlement?</li>
+<li><strong>Entitlement:</strong> What has the student purchased and is entitled to access?</li>
+<li><strong>Storage:</strong> Where are records, files, and indexes physically stored?</li>
+</ul>
+<p>For example, an instructor purchasing another instructor&#39;s course does not change its ownership or add the buyer to the seller&#39;s team; it only grants learning access. A design relying on a single field such as “user type” cannot express these relationships on its own.</p>
+<h3>2.1 Where could each type be stored? — Proposed approach</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Data type</th>
+<th>Candidate approach</th>
+<th>Undecided details</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Accounts, content, orders, entitlements, and agreements</td>
+<td>PostgreSQL as the source of truth</td>
+<td>Module boundaries, isolation, and database count.</td>
+</tr>
+<tr>
+<td>Videos, attachments, and contract copies</td>
+<td>File storage such as MinIO or an alternative, with metadata in PostgreSQL</td>
+<td>Provider, file protection, copies, and versions.</td>
+</tr>
+<tr>
+<td>Temporary data such as caches and rate limits</td>
+<td>Redis if its selection and role are confirmed</td>
+<td>It must not be the sole store of permanent entitlements or money.</td>
+</tr>
+<tr>
+<td>Semantic search</td>
+<td>A derived index that can be rebuilt from approved sources</td>
+<td>PostgreSQL or another engine, and the source of video text.</td>
+</tr>
+<tr>
+<td>Detailed metrics and high-volume logs</td>
+<td>Logical separation from core data</td>
+<td>Volume, retention, and whether a separate service is needed.</td>
+</tr>
+<tr>
+<td>Code execution and labs</td>
+<td>An execution environment separate from the product database</td>
+<td>Isolation, resources, execution lifecycle; rooms are still deferred for discussion.</td>
+</tr>
+</tbody></table></div>
+<p>There is no decision to add other databases or a particular search engine now.</p>
+<h2 id="section-3">3. Data domain map</h2>
+<p>The English names provide a shared team vocabulary only; they are not final table names. The last column links each domain to a section of the product document.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Domain</th>
+<th>Candidate entities</th>
+<th>Purpose</th>
+<th>Product reference</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Identity</td>
+<td>User, ContactMethod, Verification, Session</td>
+<td>A person&#39;s account, contact methods, verification, and sessions</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Instructor team</td>
+<td>InstructorProfile, Workspace, Membership, PermissionGrant</td>
+<td>Separate the person from the dashboard they manage and their permissions within it</td>
+<td>4–5</td>
+</tr>
+<tr>
+<td>Admission and contracts</td>
+<td>Application, Invitation, ContractVersion, Signature, ReviewDecision</td>
+<td>Evidence of admission, contracting, review, and restrictions</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Content</td>
+<td>Course, Section, Lesson, ContentRevision, MediaAsset</td>
+<td>Course structure, content revisions, and files</td>
+<td>6–7</td>
+</tr>
+<tr>
+<td>Publishing and delivery</td>
+<td>ReleaseRule, DeliveryCommitment, ScheduleChange, CompletionApproval</td>
+<td>Scheduling, incomplete-course commitments, and approval of completion</td>
+<td>6</td>
+</tr>
+<tr>
+<td>Products and offers</td>
+<td>Offer, OfferScope, PriceVersion, CommercialAgreement</td>
+<td>Exactly what is sold, at what price, share, and terms</td>
+<td>6, 9–11</td>
+</tr>
+<tr>
+<td>Purchases and payments</td>
+<td>Order, OrderItem, PaymentAttempt, PaymentConfirmation, ManualPaymentReview</td>
+<td>Orders, attempts, and manual or electronic confirmation</td>
+<td>9</td>
+</tr>
+<tr>
+<td>Access</td>
+<td>Entitlement, EntitlementCoverage, AccessRevocation</td>
+<td>A student&#39;s right to content or a service, its origin, and revocation</td>
+<td>6–11</td>
+</tr>
+<tr>
+<td>Settlements</td>
+<td>Settlement, Allocation, Hold, LedgerEntry, Withdrawal, RefundCase</td>
+<td>Calculation of earnings, holds, refunds, and withdrawals</td>
+<td>9–11</td>
+</tr>
+<tr>
+<td>Subscriptions</td>
+<td>Plan, PlanVersion, Subscription, RenewalConsent, ChangeRequest</td>
+<td>Package duration, version, renewal, switching, and grace periods</td>
+<td>10</td>
+</tr>
+<tr>
+<td>Promotions</td>
+<td>Promotion, AudienceRule, CombinationRule, Redemption</td>
+<td>Discount eligibility, stacking, and application to purchases</td>
+<td>10</td>
+</tr>
+<tr>
+<td>Learning paths</td>
+<td>LearningPath, PathStep, ResourceReference, PathPurchase</td>
+<td>Independent instructions and links to internal or external resources</td>
+<td>11</td>
+</tr>
+<tr>
+<td>Mentoring</td>
+<td>MentoringAgreement, ServicePeriod, TeamAssignment, Conversation</td>
+<td>Mentoring service period, team, conversation, and renewal</td>
+<td>11</td>
+</tr>
+<tr>
+<td>Student progress</td>
+<td>PlaybackProgress, WatchedCoverage, Playlist, PlaylistItem, PrivateNote</td>
+<td>Resume position, viewing, playlists, and private notes</td>
+<td>7</td>
+</tr>
+<tr>
+<td>Educational assessment</td>
+<td>Assessment, QuestionVersion, Attempt, Answer, GradeRevision, Appeal</td>
+<td>Test attempts, grading, criteria, and appeals</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Certificates</td>
+<td>Certificate, VerificationToken</td>
+<td>Issuance and public verification without exposing the student&#39;s profile</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Community</td>
+<td>CourseConversation, Message, ModerationAction, Review, ReviewRevision, Report</td>
+<td>Conversations, reviews, moderation decisions, and reports</td>
+<td>12</td>
+</tr>
+<tr>
+<td>Shared services</td>
+<td>Notification, DeliveryAttempt, Preference, AdCampaign, AuditEvent, ApprovalRequest</td>
+<td>Notifications, advertising, auditing, and approvals</td>
+<td>10, 13, 15</td>
+</tr>
+</tbody></table></div>
+<p>Detailed tables for Crow Store, Crow Hub, VS, or rooms will not be created now. We retain their expected boundaries and links and design them when their functions are resolved; displaying “Coming soon” alone does not require a complete commerce or repository database.</p>
+<h2 id="section-4">4. Identity and instructor dashboard boundaries</h2>
+<h3>4.1 What we know</h3>
+<p><strong>Agreed:</strong> An account can purchase content regardless of its role. An instructor appoints an instructor or employee within their dashboard, grants permissions, and revokes them. Financial authority cannot be delegated to the instructor&#39;s team. Several instructors may contribute to a course, but it has one financially responsible instructor.</p>
+<h3>4.2 Proposed relationships</h3>
+<ul>
+<li>One account has multiple contact methods and sessions over time; student policy permits one active session, under a definition that needs clarification for accounts with multiple roles.</li>
+<li>An instructor profile is linked to the account, while a workspace represents the management scope for their content.</li>
+<li>A membership links a person&#39;s account to a workspace and carries permission grants and their activation and revocation dates.</li>
+<li>Participation in teaching a course is separate from staff membership and permission to view financial information.</li>
+<li>Course ownership transfers are recorded historically so changing the current owner does not change the beneficiary of an earlier purchase.</li>
+</ul>
+<p><strong>Open before approving cardinality:</strong> Can a person belong to several instructors&#39; teams at the same time? Can an instructor own more than one workspace? Neither is assumed to be a final decision.</p>
+<h3>4.3 Isolation alternatives</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Alternative</th>
+<th>Meaning</th>
+<th>Initial assessment for this project</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Shared database with ownership and permission scope per record</td>
+<td>Accounts, catalog, and purchases are shared; private data is restricted to its scope</td>
+<td>A leading candidate for study because the product is unified, not an approved choice.</td>
+</tr>
+<tr>
+<td>Schema per instructor</td>
+<td>Organizational separation within the same database</td>
+<td>Requires repeated change management and cross-instructor relationships; not chosen merely because of the term Multi-Tenant.</td>
+</tr>
+<tr>
+<td>Separate database per instructor</td>
+<td>Greater separation of data and operations</td>
+<td>Adds coordination for purchases, search, and paths spanning instructors; not requested as a business requirement.</td>
+</tr>
+</tbody></table></div>
+<p><strong>Technical fact:</strong> PostgreSQL schemas do not provide strict security isolation by themselves; access depends on privileges. Row-level security (RLS) can be considered as an additional layer, with attention to exceptions for owners and roles allowed to bypass it. This informs comparison of alternatives and does not approve a particular isolation mechanism. <a href="https://www.postgresql.org/docs/current/ddl-schemas.html">Schemas</a>, <a href="https://www.postgresql.org/docs/current/ddl-rowsecurity.html">row security policies</a>.</p>
+<p>Isolation must cover files, search, background jobs, and reports, not just instructor dashboard queries. The basic test: membership in one instructor&#39;s dashboard must not expose another dashboard&#39;s data or files.</p>
+<h2 id="section-5">5. Content, entitlements, and partial sales</h2>
+<p><strong>Agreed:</strong> Students do not pay twice for the same content and retain purchased content without expiration. Instructors control whether additions and updates are available to previous buyers.</p>
+<p>The proposed model separates three things:</p>
+<ol>
+<li><strong>Content:</strong> A course, then sections, lessons, revisions, and files.</li>
+<li><strong>Commercial offer:</strong> What is sold—a course, section, or lesson—with coverage, price, and terms.</li>
+<li><strong>Buyer entitlement:</strong> What this particular student actually received through a particular purchase.</li>
+</ol>
+<p>An order status of “paid” alone does not identify every lesson the student owns or whether a later paid update is included. A playlist organizes available content; it does not grant a new entitlement.</p>
+<h3>5.1 Questions that prevent early table approval</h3>
+<ul>
+<li>Can a lesson be moved between courses or reused? This changes how entitlements and progress are linked.</li>
+<li>How does a student retain an old version if the new version becomes paid content?</li>
+<li>When selling an incomplete course, which future commitments are included in the purchase, and how are they distinguished from new additions that are not included?</li>
+<li>Does buying a part unlock the entire course conversation and editor, and what happens if that part is refunded?</li>
+<li>Are all lessons videos, or can a text lesson or standalone test appear in the content sequence?</li>
+</ul>
+<h3>5.2 Proposed publishing lifecycle</h3>
+<p>Content draft → ready for publication after checking instructor permissions → published. Availability for new purchases is separate from access for existing buyers, and course completion is separate from publication status. “Complete,” “published,” and “available for sale” are not combined into one status.</p>
+<h2 id="section-6">6. Orders, payments, and refunds</h2>
+<h3>6.1 Proposed relationships</h3>
+<ul>
+<li>A user may create multiple orders, each containing purchase items. Actual support for a cart with multiple products still requires a decision.</li>
+<li>An order item links to an offer, content coverage, price, currency, and discounts as applied to the transaction.</li>
+<li>A payment attempt may fail and another succeed; the payment attempt is therefore distinct from the order.</li>
+<li>Electronic confirmation or manual payment review provides payment evidence linked to an external reference or an authorized person&#39;s decision.</li>
+<li>Qualifying confirmation creates an entitlement and financial settlement; a duplicate provider notification does not create another entitlement or balance credit.</li>
+<li>A refund request is linked to the original content and transaction; recording approval is separate from executing the transfer and revoking access.</li>
+</ul>
+<h3>6.2 Candidate lifecycles</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Process</th>
+<th>Proposed states</th>
+<th>Boundaries to resolve</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Order</td>
+<td>Awaiting payment, confirmed, canceled</td>
+<td>Cancellation, expiry, and mixed carts.</td>
+</tr>
+<tr>
+<td>Payment attempt</td>
+<td>Started, processing, succeeded, failed, indeterminate result</td>
+<td>Reconciling provider statements with notifications.</td>
+</tr>
+<tr>
+<td>Manual payment review</td>
+<td>Submitted, under review, accepted, rejected</td>
+<td>Responsible person, reason, evidence links, and reuse of evidence.</td>
+</tr>
+<tr>
+<td>Refund</td>
+<td>Requested, under review, rejected or approved, executing, completed or execution failed</td>
+<td>Timing of earnings holds and access revocation, and the retry process.</td>
+</tr>
+</tbody></table></div>
+<p>These state names do not establish a new acceptance policy. For example, “transfer failed” does not mean the student&#39;s approved refund entitlement has ended.</p>
+<h3>6.3 Historical facts versus freezing a policy</h3>
+<p><strong>Technical proposal:</strong> Preserve purchase facts as they occurred: amounts paid, currencies, discounts, and the agreement used. This does not resolve the proposal to <strong>freeze lesson weights for refund calculations</strong>, which the project owner wants to review with specialists. Even if a later policy uses adjusted values, we must know the original facts and the policy applied to the calculation.</p>
+<h2 id="section-7">7. Earnings, holds, and withdrawals</h2>
+<h3>7.1 Why is a WalletBalance field insufficient?</h3>
+<p>A single balance does not explain where money came from, the platform share, mentoring fees, or amounts pending because of a recent purchase or incomplete course. A record of movements, settlements, and holds is therefore proposed, with a derived balance and a financial ledger reviewed by specialists before formulas are approved.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Proposed component</th>
+<th>Data it represents</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Settlement</td>
+<td>Sale item, payment, beneficiary, agreement, and currency.</td>
+</tr>
+<tr>
+<td>Value allocation</td>
+<td>Platform share, instructor earnings, mentoring fees, and allocation of discount costs.</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>Reason, amount, start, release condition, and the actor or event that released it.</td>
+</tr>
+<tr>
+<td>Financial movement</td>
+<td>Signed amount or accounting entry and its reference, without silently overwriting history.</td>
+</tr>
+<tr>
+<td>Withdrawal request</td>
+<td>Amount, currency, beneficiary account, approval, transfer, and result.</td>
+</tr>
+</tbody></table></div>
+<p><strong>Data integrity proposal:</strong> Reserve a withdrawal request&#39;s amount within the available balance until the request is resolved, preventing two concurrent requests from spending the same balance. Do not treat it as paid before transfer confirmation. This does not change the agreed 24-hour deadline.</p>
+<h3>7.2 Hold reasons are not a single status</h3>
+<p><strong>Agreed:</strong> A recent purchase amount waits 7 days; all earnings from an incomplete course wait for completion, the instructor&#39;s declaration, and team approval. A path sale makes net earnings available immediately upon payment.</p>
+<p><strong>Proposal:</strong> Multiple hold reasons can apply to the same amount, which is released only when all applicable conditions are satisfied. An open refund request submitted before the seventh day ends is a reason requiring an explicit business decision; it has not been approved.</p>
+<h3>7.3 Currencies and settlements</h3>
+<p>The proposal is to record payment currency, settlement currency, amounts, and the exchange rate, source, and time when currencies differ. Dinar and dollar figures must not be added into a single numeric balance without documented conversion. Rounding, fees, and the equivalent of the 10-dollar minimum remain open; no default figures are invented.</p>
+<h2 id="section-8">8. Packages and policies managed from the dashboard</h2>
+<p><strong>Agreed:</strong> Package prices, benefits, grace periods, switching, and credits are managed from the dashboard; changes by delegates require owner approval. Subscribers retain the terms of their current period until renewal.</p>
+<p>Proposed relationships:</p>
+<ul>
+<li>A package has versions; a subscription links to the version defining its period&#39;s terms.</li>
+<li>A request to change price or benefits is separate from the effective version and records the requester, approver, decision, and effective time.</li>
+<li>Automatic renewal consent is recorded separately from current access validity.</li>
+<li>Canceling renewal does not cancel a paid entitlement and is not equivalent to immediately switching to an alternative.</li>
+<li>Switching records the old and new packages, start time, remaining-period calculation, discount, and policy for any value difference.</li>
+</ul>
+<p><strong>Design proposal:</strong> Configurable financial settings have types, bounds, permissions, and version history; they are not merely free text in a generic settings table. Whether a change applies to existing or future subscribers follows the business decision for each policy.</p>
+<h2 id="section-9">9. Learning paths and mentoring: permanent access and a temporary service</h2>
+<p><strong>Agreed:</strong> A path remains available after mentoring expires; mentoring begins at purchase, lasts a defined period, and can be renewed. Any team member may respond, and the conversation remains readable without sending messages after the service expires.</p>
+<p>The proposal therefore separates:</p>
+<ol>
+<li>Entitlement to read the path and its instructions.</li>
+<li>The mentoring service period, with its start, end, and service-hours terms.</li>
+<li>The platform mentoring agreement when applicable: a fixed fee per student and service scope.</li>
+<li>Team assignment and responding members, without requiring one fixed mentor per student.</li>
+<li>Conversation history and messages, linked to the beneficiary and service and retained after the period ends.</li>
+</ol>
+<p>Renewal adds a service period and its payment under rules not yet detailed; it does not unnecessarily resell the right to read the path. Automatic storage of WhatsApp messages within the platform is not assumed.</p>
+<p><strong>Open:</strong> If a student renews early, is the period added after the current end or started immediately? Can the mentoring provider change during the period, and under what agreement?</p>
+<h2 id="section-10">10. Viewing, tests, and private content</h2>
+<h3>10.1 Progress</h3>
+<p><strong>Proposal:</strong> Separate the last playback position from the amount actually watched. Scrubbing to the end of a video does not prove everything before it was watched. This matters for refunds, reviews, and progress measurement.</p>
+<p>Candidate data includes the student, lesson, video version, stopping position, and watched ranges or an auditable summary, depending on acceptable data volume. The definition of a completed lesson, measurement precision, and retention remain open. The 10% rule concerns the refund proposal and does not automatically become the course completion criterion.</p>
+<h3>10.2 Grading and appeals</h3>
+<p>The proposal links each attempt to the question versions and grading criteria used, preserving the answer, result, regrading history, and reason for changes. For AI, retain model references, criteria version, and the structured result needed for review; storing internal reasoning or provider secrets is not requested.</p>
+<p>Regrading must not silently erase the previous grade. Certificate eligibility depends on an approved result and verification conditions, not merely the model&#39;s response text. These are proposed design controls; grading quality, inability to resolve a case, and escalation remain undefined.</p>
+<h3>10.3 Privacy scope</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Data</th>
+<th>Agreed access or required boundary</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Notes and markers</td>
+<td>Only the student who owns them; the instructor&#39;s teaching role does not grant access.</td>
+</tr>
+<tr>
+<td>Progress and results</td>
+<td>The student and the instructor within their courses; team delegation requires specific permissions.</td>
+</tr>
+<tr>
+<td>Group conversation</td>
+<td>Buyers, the instructor, and their team according to permissions.</td>
+</tr>
+<tr>
+<td>Reporter identity</td>
+<td>Only the responsible reporting team, not the instructor being reported.</td>
+</tr>
+<tr>
+<td>Public certificate</td>
+<td>Only necessary verification information; actual fields are not defined.</td>
+</tr>
+<tr>
+<td>Financial information</td>
+<td>The responsible instructor and authorized platform personnel, not the instructor&#39;s team.</td>
+</tr>
+</tbody></table></div>
+<p>Logging private notes verbatim in an audit log that employees can read would conflict with privacy. The proposal is to record the modification event without copying private content, with exceptions and permissions defined later.</p>
+<h2 id="section-11">11. Core relationships before a detailed ERD</h2>
+<p>This is a list of conceptual relationships, not a final diagram of all entities.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Candidate cardinality</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>User and purchase orders</td>
+<td>One user has multiple orders</td>
+<td>Directly inferred from repeat purchases.</td>
+</tr>
+<tr>
+<td>User and instructor teams</td>
+<td>Through memberships with permissions</td>
+<td>Multiple teams for one person are the subject of D-01.</td>
+</tr>
+<tr>
+<td>Course and participating instructors</td>
+<td>Multiple contributors and one financially responsible instructor at a given time</td>
+<td>Meaning agreed; historical representation of responsibility changes is proposed.</td>
+</tr>
+<tr>
+<td>Course, sections, and lessons</td>
+<td>An initial hierarchy</td>
+<td>Moving and reusing lessons require a decision.</td>
+</tr>
+<tr>
+<td>Offer and content coverage</td>
+<td>An offer covers a course or part of it</td>
+<td>Representation of coverage and versions needs detail.</td>
+</tr>
+<tr>
+<td>Purchase and entitlements</td>
+<td>Confirmed items create access rights</td>
+<td>Partial coverage and updates remain open.</td>
+</tr>
+<tr>
+<td>Settlement and holds</td>
+<td>A settlement can be affected by multiple hold reasons</td>
+<td>Proposed design to protect release conditions.</td>
+</tr>
+<tr>
+<td>Package, versions, and subscription</td>
+<td>A package has versions; a subscription follows a version</td>
+<td>Proposed to preserve current-period terms.</td>
+</tr>
+<tr>
+<td>Path purchase and mentoring periods</td>
+<td>Path entitlement is independent of service and renewal periods</td>
+<td>Expresses the decision that service expires while the path remains.</td>
+</tr>
+<tr>
+<td>Attempt, grades, and appeal</td>
+<td>One attempt has grade and appeal history according to policy</td>
+<td>Appeal and attempt counts are undefined.</td>
+</tr>
+</tbody></table></div>
+<p>We will not approve keys or unique constraints that prevent a relationship before confirming it is unnecessary; nor will we leave relationships unconstrained merely because they might expand later.</p>
+<h2 id="section-12">12. Data planning questions — discussion order</h2>
+<p>We will ask one question at a time and update this table and the product document after each answer. D identifiers concern data design and link to the product document&#39;s O register where topics overlap.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Question or decision</th>
+<th>Impact</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>D-01</td>
+<td>Can a person act as a delegate for several instructors at the same time?</td>
+<td>Account-to-membership relationships and permission scope</td>
+<td>Next question.</td>
+</tr>
+<tr>
+<td>D-02</td>
+<td>Instructor responsibility, workspace boundaries, and content ownership transfers</td>
+<td>Isolation and financial history</td>
+<td>Open; related to O-15 and O-20.</td>
+</tr>
+<tr>
+<td>D-03</td>
+<td>Entitlements when a lesson is updated or moved and paid content is added</td>
+<td>Content versions and purchase coverage</td>
+<td>Open; O-03.</td>
+</tr>
+<tr>
+<td>D-04</td>
+<td>Incomplete courses: what was promised, and how is delivery proven?</td>
+<td>Commitments, publishing schedule, and financial holds</td>
+<td>Open; O-06.</td>
+</tr>
+<tr>
+<td>D-05</td>
+<td>Refund formula and fixed or adjustable lesson values</td>
+<td>Value history, policies, and settlements</td>
+<td>Requires specialists; O-04.</td>
+</tr>
+<tr>
+<td>D-06</td>
+<td>A refund request still under review when funds become due for release</td>
+<td>Holds, withdrawals, and concurrency</td>
+<td>Open; O-05.</td>
+</tr>
+<tr>
+<td>D-07</td>
+<td>Cart, payments, currencies, amounts, and fees</td>
+<td>Orders, attempts, and settlement</td>
+<td>Open; O-16.</td>
+</tr>
+<tr>
+<td>D-08</td>
+<td>Package structure, feature identifiers, and policy change history</td>
+<td>Settings versions and subscription rights</td>
+<td>Open; O-01 and O-17.</td>
+</tr>
+<tr>
+<td>D-09</td>
+<td>Mentoring renewal, team changes, and failure to deliver service</td>
+<td>Service periods, assignment, and compensation</td>
+<td>Open; O-07 and O-09.</td>
+</tr>
+<tr>
+<td>D-10</td>
+<td>Lesson completion definition, test criteria, and appeals</td>
+<td>Progress events, grades, and certificates</td>
+<td>Open; O-11 and O-12.</td>
+</tr>
+<tr>
+<td>D-11</td>
+<td>Retention, deletion, auditing, and private content</td>
+<td>Archiving, privacy, and backups</td>
+<td>Open; O-14 and O-22.</td>
+</tr>
+<tr>
+<td>D-12</td>
+<td>Approval of isolation approach, storage map, and operations</td>
+<td>Physical design and service boundaries</td>
+<td>After ownership and permissions are settled; O-20 and O-21.</td>
+</tr>
+</tbody></table></div>
+<h2 id="section-13">13. Checking design sufficiency before writing tables</h2>
+<h3>13.1 Scenarios the model must represent</h3>
+<ul>
+<li>An instructor purchases a course without a second identity or exposure of the seller&#39;s data.</li>
+<li>A revoked employee delegation does not retain old permissions through a session or cached data.</li>
+<li>Someone buys a lesson and later the course; ownership and amounts due are identifiable without duplication.</li>
+<li>Content withdrawn from new sales remains available to previous buyers.</li>
+<li>A platform-share change does not erase the allocation of a settlement made before the change.</li>
+<li>Duplicate payment confirmation does not duplicate balance credits or entitlements.</li>
+<li>Two concurrent withdrawal requests cannot spend the same amount twice.</li>
+<li>An incomplete course cannot pay out earnings for an individual lesson.</li>
+<li>Mentoring expiry does not delete the path or conversation history.</li>
+<li>A package change does not alter benefits for a subscriber&#39;s current period.</li>
+<li>Editing a review to below 3 changes its publication status and preserves what is needed for review.</li>
+<li>Regrading an answer preserves the reason for the grade change and its relationship to the certificate.</li>
+<li>Building a search index does not expose students&#39; notes, reports, or private conversations.</li>
+</ul>
+<h3>13.2 Conditions for moving to the logical model</h3>
+<p>Each core domain needs a data owner, identity definition, relationships and cardinality, states and transitions, associated financial or permission rules, history and deletion policy, and acceptance scenarios. A stable domain can be approved without waiting for every future feature, but we cannot declare the entire project model complete while consequential questions remain open.</p>
+<h3>13.3 Next deliverables</h3>
+<ol>
+<li><strong>Permission and data-scope matrix:</strong> Who can read and modify what, and in which dashboard.</li>
+<li><strong>Logical model and ERD for approved modules:</strong> Explicit cardinality and constraints, with open questions tracked.</li>
+<li><strong>Data dictionary:</strong> Field definitions, types, required values, sources, and retention rationale.</li>
+<li><strong>Architecture decision records:</strong> Compare isolation, storage, search, and code execution before approving them.</li>
+<li><strong>API contracts:</strong> Based on approved operations and lifecycles, not direct exposure of tables.</li>
+<li><strong>Implementation and verification plan:</strong> Phases, dependencies, responsibilities, acceptance criteria, and time estimates.</li>
+</ol>
+<h2 id="section-14">14. Version history</h2>
+<p><strong>0.1 — 28 September 2026:</strong> Responds to the request to continue documentation toward data planning. Adds candidate entities and relationships, separates identity, permissions, ownership, and entitlements, and provides initial lifecycles and an ordered question register. No isolation approach, database count, or final logical/physical model has been approved. No tables, migration files, or product code were created.</p>
+</article>
+<footer>Crow Station · Planning document for review · Source: DATA-PLANNING.en.md</footer>
+</main></div>
+<script>
+const links = Array.from(document.querySelectorAll('nav a'));
+const observer = new IntersectionObserver(entries => {
+  for (const entry of entries) if (entry.isIntersecting) {
+    for (const link of links) link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
+  }
+}, {rootMargin:'0px 0px -65% 0px',threshold:0});
+document.querySelectorAll('article h2').forEach(section => observer.observe(section));
+</script>
+</body></html>

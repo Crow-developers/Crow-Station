@@ -1,12 +1,12 @@
-# توليد نسخ القراءة
+# Generate the Reading Versions
 
-نسخ Markdown داخل `docs` هي مصدر المحتوى، وملفات HTML المرفقة قابلة للقراءة دون تثبيت أي أدوات.
+Markdown files in `docs` are the content source. The included HTML files can be read without installing any tools.
 
-لتجديد HTML بعد تعديل النصوص، من هذا المجلد وباستخدام Node.js 22.16 أو أحدث:
+To regenerate HTML after editing text, run the following from this directory using Node.js 22.16 or later:
 
 ```sh
 npm install
 npm run build
 ```
 
-يعيد الأمر توليد وثيقة المنتج ووثيقة تخطيط البيانات. لا تتصل أداة التوليد بخدمة خارجية؛ تثبيت المكتبة فقط يحتاج الاتصال بسجل npm. يُستخدم إصدار محدد من مكتبة marked. هذه أداة للوثائق، وليست تهيئة لتطبيق Crow Station.
+The command regenerates the product document and data planning document. The generator does not contact an external service; only dependency installation requires access to the npm registry. The marked library version is pinned. This is a documentation tool, not application setup for Crow Station.

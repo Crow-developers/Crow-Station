@@ -1,27 +1,27 @@
 # Crow Station
 
-منصة تعليمية للكورسات والتطبيق العملي والمسارات والإرشاد. المشروع حالياً في مرحلة التحليل والتوثيق؛ لا توجد نسخة منتج منشورة بعد.
+A learning platform for courses, hands-on practice, learning paths, and mentoring. The project is currently in analysis and documentation; no product version has been deployed yet.
 
-## الفروع الدائمة
+## Permanent branches
 
-| الفرع | دوره |
+| Branch | Role |
 | --- | --- |
-| `plan` | الخطط والمسودات والقرارات والأسئلة المفتوحة طوال عمر المشروع. |
-| `plan-ar` | النسخة العربية المطابقة لفرع plan، باسم لغة واضح للفريق. |
-| `plan-en` | ترجمة إنجليزية كاملة لنفس الخطط والهيكل، وليست خطة مختلفة. |
-| `docs` | التوثيق الرسمي الذي راجعه واعتمده الفريق، مع تمييز المصمم من المنفذ ومن توثيق الإصدارات. |
-| `develop` | دمج التطوير اليومي بعد مراجعة التغييرات. |
-| `staging` | نسخة مرشحة للاختبار والتحقق قبل الإصدار. |
-| `main` | الإصدارات المعتمدة للإنتاج. وجود الفرع الآن لا يعني وجود نشر أو منتج جاهز. |
+| `plan` | Plans, drafts, decisions, and open questions throughout the project's lifetime. |
+| `plan-ar` | The same Arabic version as plan, with an explicit language name for the team. |
+| `plan-en` | A complete English translation of the same plans and structure, not a different plan. |
+| `docs` | Official documentation reviewed and approved by the team, distinguishing design specifications, implemented behavior, and release documentation. |
+| `develop` | Integration of daily development after change review. |
+| `staging` | A candidate for testing and verification before release. |
+| `main` | Releases approved for production. The branch's existence does not mean a deployment or finished product exists. |
 
-لبدء قراءة الخطط، انتقل إلى فرع **plan** وافتح `docs/README.md`.
+To read the plans in English, open [docs/README.md](docs/README.md) on **plan-en**. The original Arabic planning branch is **plan**.
 
-هذه فروع دائمة، خصوصاً **plan**؛ لا يُحذف بعد نقل قرار منه أو إغلاق مهمة. المستندات الحالية مسودات تخطيط، ولم تتحول إلى توثيق رسمي بمجرد رفعها.
+These branches are permanent, especially **plan**; it is not deleted after a decision is transferred or a task closes. The current documents are planning drafts and do not become official merely by being uploaded.
 
-راجع [سياسة الفروع والتوثيق](BRANCHING.md) لطريقة نقل القرارات والمراجعة والإصدارات. الفروع لا تُنشئ بيئات استضافة أو نشر تلقائياً.
+See the [branch and documentation policy](BRANCHING.md) for decision transfer, review, and releases. Branches do not automatically create hosting or deployment environments.
 
-## لغتا التخطيط
+## Planning languages
 
-العربية: [plan-ar](https://github.com/Crow-developers/Crow-Station/tree/plan-ar/docs). الإنجليزية: [plan-en](https://github.com/Crow-developers/Crow-Station/tree/plan-en/docs). يبقى [plan](https://github.com/Crow-developers/Crow-Station/tree/plan/docs) المرجع العربي الأصلي دائماً.
+Arabic: [plan-ar](https://github.com/Crow-developers/Crow-Station/tree/plan-ar/docs). English: [plan-en](https://github.com/Crow-developers/Crow-Station/tree/plan-en/docs). [plan](https://github.com/Crow-developers/Crow-Station/tree/plan/docs) remains the original Arabic reference permanently.
 
-عند تعديل القرارات تُحدّث النسختان وفق سياسة المزامنة في BRANCHING.md؛ لا توجد ترجمة تلقائية أو آلية تزامن خلفية.
+When decisions change, both versions are updated according to the synchronization policy in BRANCHING.md; there is no automatic translation or background synchronization service.

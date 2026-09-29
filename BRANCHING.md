@@ -1,71 +1,71 @@
-# سياسة الفروع والتوثيق — Crow Station
+# Branch and Documentation Policy — Crow Station
 
-## 1. الهدف
+## 1. Purpose
 
-تنظيم التخطيط والمواصفات والتطوير والإصدارات دون خلط المسودة بالقرار الرسمي أو بالمحتوى المنشور للإنتاج. طلب صاحب المشروع بقاء `plan` طوال عمر المشروع، وفصل التخطيط عن التوثيق الرسمي وعن التطوير والاختبار والإنتاج.
+Organize planning, specifications, development, and releases without confusing drafts with official decisions or production content. The project owner requested that `plan` remain throughout the project's lifetime, with planning separate from official documentation, development, testing, and production.
 
-## 2. الفروع الدائمة
+## 2. Permanent branches
 
-| الفرع | ما يُحفظ فيه | قاعدة الدمج |
+| Branch | Contents | Integration rule |
 | --- | --- | --- |
-| `plan` | وثائق المنتج والبيانات، المقترحات، الأسئلة، الخطط وتاريخ تعديلها | يُحدَّث باستمرار. لا يُدمج كاملاً في فروع المنتج ولا يُحذف. |
-| `plan-ar` | نفس النسخة العربية على plan باسم يوضح اللغة | يُحدَّث مع plan إلى نفس commit، ولا يُحذف. |
-| `plan-en` | الترجمة الإنجليزية المطابقة للخطط | يُحدَّث بترجمة القرارات نفسها، ولا يُدمج فوق الملفات العربية ولا يُحذف. |
-| `docs` | المواصفات الرسمية، القرارات المعمارية، نموذج البيانات، API، أدلة التشغيل وتوثيق الإصدارات بعد اعتمادها | طلب مراجعة يضيف مادة معتمدة ومحددة، وليس استيراد جميع مسودات plan. |
-| `develop` | أعمال التطوير المتكاملة | فروع مهام قصيرة تُراجع قبل الدمج. |
-| `staging` | مرشح إصدار من develop وإصلاحات اختباره | يبدأ الترشيح بطلب مراجعة من develop؛ يُضبط نطاق المرشح أثناء اختباره. |
-| `main` | الحالة المعتمدة للإنتاج | ترقية مرشح staging بعد المراجعة والاختبارات. الإصدار يُعلَّم بوسم version tag. |
+| `plan` | Product and data documents, proposals, questions, plans, and revision history | Updated continuously. Never merged wholesale into product branches or deleted. |
+| `plan-ar` | The same Arabic version as plan with an explicit language name | Updated with plan to the same commit; never deleted. |
+| `plan-en` | The matching English translation of the plans | Updated by translating the same decisions; never merged over Arabic files or deleted. |
+| `docs` | Approved official specifications, architecture decisions, data model, API, operations guides, and release documentation | A review request adds specific approved material, not all plan drafts. |
+| `develop` | Integrated development work | Short-lived task branches are reviewed before merging. |
+| `staging` | A release candidate from develop and its testing fixes | Candidate nomination starts with a review request from develop; its scope is controlled during testing. |
+| `main` | The state approved for production | Promote a staging candidate after review and tests. Mark releases with version tags. |
 
-لا نعتمد حذفاً تلقائياً لأي فرع دائم، ولا إعادة كتابة تاريخه بـforce push. يمكن حذف فروع المهام المؤقتة بعد دمجها، وفق سياسة المستودع.
+Permanent branches are not automatically deleted or rewritten by force push. Temporary task branches may be deleted after merging, according to repository policy.
 
-## 3. كيف تنتقل الخطط إلى التوثيق الرسمي؟
+## 3. How do plans become official documentation?
 
-1. تُناقش الفكرة في `plan` وتُحدَّد حالتها: مقترح أو مبدئي أو متفق عليه أو مؤجّل.
-2. عند اعتماد جزء واضح، يُنشأ فرع قصير مثل `docs/approved-course-policy` من `docs`.
-3. تُنقل فقط المادة المعتمدة مع مصدرها من plan ومعرّف commit أو رابط النقاش، وتُصاغ كوثيقة رسمية.
-4. يُفتح Pull Request إلى `docs` يشرح ما تغير ولماذا، وتُراجع المواصفات قبل الدمج.
-5. تُحدَّث إحالة القرار في `plan` إلى المستند الرسمي، مع إبقاء سجل النقاش والمسودة وتاريخها.
+1. Discuss the idea in `plan` and identify its status: proposed, preliminary, agreed, or deferred.
+2. When a clear portion is approved, create a short-lived branch such as `docs/approved-course-policy` from `docs`.
+3. Transfer only the approved material, citing its source in plan and a commit ID or discussion link, and write it as an official document.
+4. Open a Pull Request to `docs` explaining what changed and why; review the specification before merging.
+5. Update the decision's reference in `plan` to the official document, preserving the discussion record, draft, and history.
 
-**لا نرفع المسودات الحالية إلى صفة «رسمي» دون اعتماد.** اعتماد مواصفة لا يثبت تنفيذها؛ تُوسم بوضوح «مواصفة معتمدة» أو «مطابقة لتنفيذ الإصدار ...».
+**Current drafts are not promoted to “official” without approval.** Approval of a specification does not prove implementation; label it clearly as “approved specification” or “matches implementation in release ...”.
 
-لا يُدمج فرع `docs` كله داخل فروع الكود لمجرد احتواء وثيقة مفيدة. مواصفات API وملفات الترحيل والتوثيق المرتبط بالكود يبقى لها مصدر واضح داخل فرع الكود، بينما يربط التوثيق الرسمي نسخها بوسم الإصدار أو commit المعني. نتجنب وجود نسختين متعارضتين من الحقيقة.
+Do not merge the entire `docs` branch into code branches merely because it contains a useful document. API specifications, migration files, and code-related documentation retain a clear source in the code branch, while official documentation links their versions to the relevant release tag or commit. Avoid conflicting sources of truth.
 
-## 4. مسار التطوير والإصدار
+## 4. Development and release flow
 
-فرع مهمة من `develop` ← مراجعة ودمج إلى `develop` ← ترشيح إلى `staging` ← تحقق واعتماد ← ترقية إلى `main`.
+Task branch from `develop` → review and merge into `develop` → nominate for `staging` → verify and approve → promote to `main`.
 
-- يربط كل عمل بمواصفة معتمدة، أو يشرح تغييره للمواصفة ويُحدّثها ضمن المراجعة.
-- إصلاحات staging تعود أيضاً إلى develop حتى لا تضيع في الإصدار اللاحق.
-- الإصلاح الإنتاجي العاجل يبدأ من main، ويعود إلى staging وdevelop بعد اعتماده.
-- وجود فرع `staging` لا يضبط أسرار الاختبار أو خوادمه، ووجود `main` لا ينشر شيئاً تلقائياً؛ CI/CD والبيئات عمل لاحق.
-- تفاصيل عدد المراجعين والفحوص الإلزامية تُعتمد عندما توجد اختبارات وأعضاء محددون؛ لا نضع فحصاً إلزامياً غير موجود فيعطل الفريق.
+- Each task links to an approved specification or explains and updates specification changes as part of review.
+- Staging fixes also return to develop so they are not lost in the next release.
+- Urgent production fixes start from main and return to staging and develop after approval.
+- A `staging` branch does not configure test secrets or servers; `main` does not deploy automatically. CI/CD and environments are later work.
+- Reviewer counts and mandatory checks are approved when tests and named team members exist; a nonexistent mandatory check must not block the team.
 
-## 5. الحماية المطلوبة على GitHub
+## 5. Required GitHub protection
 
-هذه متطلبات للحماية وليست ادعاءً بأنها مفعّلة بالفعل. يُوثَّق التنفيذ في `REPOSITORY-STATUS.md` على plan بعد التحقق من إعدادات المستودع.
+These are protection requirements, not a claim that they are already active. Implementation is recorded in `REPOSITORY-STATUS.md` on plan after repository settings are verified.
 
-- منع حذف الفروع السبعة الدائمة ومنع force push عليها.
-- حماية plan خصوصاً من التنظيف التلقائي بعد دمج طلبات المراجعة.
-- مراجعات قبل الدمج إلى docs وdevelop وstaging وmain بعد اكتمال التهيئة الأولية.
-- مراجعات التوثيق المالي والسياسات من المالك أو المخوَّلين بحسب اتفاق الفريق.
-- لا تغييرات في الرؤية العامة/الخاصة للمستودع أو دعوات للمساهمين دون توجيه صاحب المشروع.
+- Prevent deletion and force pushes on all seven permanent branches.
+- In particular, protect plan from automatic cleanup after Pull Requests are merged.
+- Require review requests before merging into docs, develop, staging, and main after initial setup.
+- Financial documentation and policies are reviewed by the owner or authorized people according to team agreement.
+- Do not change public/private visibility or invite contributors without the project owner's direction.
 
-توفّر GitHub قيوداً للحذف وforce push، ويمكن للحماية منع الحذف التلقائي للفروع. الإتاحة تعتمد على خطة الحساب ونوع المستودع وصلاحيات إدارته. [قواعد الحماية](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets)، [الحذف التلقائي](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-the-automatic-deletion-of-branches).
+GitHub provides deletion and force-push restrictions, and protection can prevent automatic branch deletion. Availability depends on the account plan, repository type, and administration permissions. [Ruleset rules](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets), [automatic branch deletion](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-the-automatic-deletion-of-branches).
 
-## 6. ما يُرفع وما يبقى محلياً
+## 6. What is uploaded and what stays local
 
-يرفع plan ملفات Markdown وHTML المنسّقة ومواد المصدر المتاحة وأداة توليد الوثائق. لا يرفع لقطات فحص العرض أو ملفات tmp أو node_modules أو كلمات المرور أو إعدادات البيئة المحلية.
+The plan branch includes Markdown, formatted HTML, available source material, and the document generator. It excludes rendering-check screenshots, tmp files, node_modules, passwords, and local environment settings.
 
-## 7. نقطة استئناف التخطيط
+## 7. Planning resumption point
 
-النقاش مؤجّل إلى الجلسة القادمة بناءً على طلب صاحب المشروع. السؤال المعلّق هو D-01: هل يمكن للشخص العمل كمفوَّض لدى عدة مدرسين في الوقت نفسه بصلاحيات منفصلة لكل لوحة؟ لا توجد إجابة مفترضة.
+Discussion is deferred to the next session at the project owner's request. The pending question is D-01: Can a person act as a delegate for several instructors at the same time, with separate permissions for each dashboard? No answer is assumed.
 
-## 8. تطابق العربية والإنجليزية
+## 8. Arabic and English parity
 
-- `plan` هو المرجع العربي الأصلي؛ `plan-ar` مرجع مطابق يُحدَّث معه إلى نفس commit.
-- `plan-en` يحتوي نفس الوثائق بالإنجليزية، بامتداد `.en.md` و`.en.html` مقابل `.ar.md` و`.ar.html`.
-- لا تغيّر الترجمة حالة قرار أو تحسم سؤالاً مفتوحاً. تُحفظ أرقام الأقسام ومعرّفات O وD وAC والجداول ونطاق النسخة الأولى والمؤجلات.
-- تبقى صور المصدر الأصلية دون تعديل في النسختين؛ ليست وثائق إنجليزية مُنشأة.
-- عند تحديث العربية: يُرفع نفس commit إلى plan وplan-ar، وتُترجم الفروق إلى plan-en مع ذكر commit المصدر في وصف التحديث. يُراجع التطابق وتُعاد توليد ملفات HTML قبل الرفع.
-- لا تُدمج فروع اللغات مباشرة بعضها في بعض؛ تُنقل القرارات وتُترجم، لتجنب استبدال لغة بأخرى. التزامن عملية عمل موثّقة، وليس خدمة تلقائية.
-- يبقى مسار اعتماد الوثائق الرسمية واحداً عبر docs؛ لا تتغير قواعد الإنتاج بسبب تعدد لغات التخطيط.
+- `plan` is the original Arabic reference; `plan-ar` is an identical reference updated with it to the same commit.
+- `plan-en` contains the same documents in English, using `.en.md` and `.en.html` instead of `.ar.md` and `.ar.html`.
+- Translation does not change decision status or resolve open questions. Preserve section numbers, O, D, and AC identifiers, tables, first-release scope, and deferrals.
+- Original source images remain unchanged in both versions; they are not newly created English documents.
+- When Arabic changes, push the same commit to plan and plan-ar, translate the differences into plan-en, and cite the source commit in the update description. Review parity and regenerate HTML before pushing.
+- Do not merge language branches directly into one another; transfer and translate decisions to avoid replacing one language with the other. Synchronization is a documented workflow, not an automatic service.
+- Official documentation retains one approval route through docs; additional planning languages do not change production rules.

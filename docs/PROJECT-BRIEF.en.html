@@ -1,0 +1,1079 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Crow Station | Product Brief and Planning Decisions</title>
+<style>
+:root{--ink:#172d3b;--muted:#5e6e79;--paper:#fff;--bg:#f1f4f4;--line:#dce5e6;--accent:#087d7e;--light:#eef8f6}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:28px}body{margin:0;background:var(--bg);color:var(--ink);font-family:'Segoe UI',Tahoma,Arial,sans-serif;font-size:16px;line-height:1.95}
+.layout{display:grid;grid-template-columns:275px minmax(0,1fr);max-width:1550px;margin:auto;min-height:100vh}
+aside{position:sticky;top:0;height:100vh;overflow:auto;padding:28px 20px;border-right:1px solid var(--line);background:#f8faf9}
+.brand{font-size:24px;font-weight:750;letter-spacing:-.6px;line-height:1.4;direction:ltr;text-align:left}.brand small{display:block;font-size:12px;color:var(--accent);letter-spacing:2px;margin-bottom:8px;text-transform:uppercase}
+.nav-label{font-size:13px;color:var(--muted);margin:25px 0 8px}nav a{display:block;color:#405663;text-decoration:none;padding:7px 11px;margin:2px 0;border-radius:7px;font-size:13px;line-height:1.7;border-left:3px solid transparent}nav a:hover,nav a.active{background:#e4f1ee;color:#075c5b;border-left-color:var(--accent)}
+main{min-width:0;padding:44px clamp(24px,4vw,68px) 75px}.hero{padding:32px 36px;background:#102f3a;color:white;border-radius:15px;margin-bottom:26px;position:relative;overflow:hidden;border-top:5px solid #39bca6}.eyebrow{color:#9ddfd3;font-size:13px;letter-spacing:.3px}.hero h1{font-size:clamp(27px,3vw,37px);line-height:1.6;margin:12px 0}.hero p{color:#cfdee2;margin:0;max-width:720px}.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}.tags span{font-size:12px;border:1px solid #42606a;border-radius:20px;padding:3px 12px;color:#e1efed}.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:30px}.summary div{background:white;border:1px solid var(--line);border-radius:10px;padding:15px 20px}.summary strong{display:block;color:var(--accent);font-size:21px;line-height:1.7}.summary span{font-size:12px;color:var(--muted)}
+article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1px solid var(--line);border-radius:12px}article>h2{font-size:24px;line-height:1.7;border-top:1px solid var(--line);padding-top:32px;margin:42px 0 19px;color:#075f64}article>h2:first-of-type{margin-top:24px;border-top:0;padding-top:0}h3{font-size:19px;margin:28px 0 12px;color:#254657}p{margin:12px 0}ul,ol{padding-left:25px;padding-right:0;margin:14px 0}li{padding-left:4px;margin:7px 0}li::marker{color:var(--accent)}strong{font-weight:650}blockquote{margin:23px 0;background:var(--light);padding:11px 18px;border-left:4px solid var(--accent);border-radius:6px;color:#315c59;font-size:14px}blockquote p{margin:0}code{font-family:Consolas,monospace;font-size:.86em;direction:ltr;unicode-bidi:isolate;display:inline-block;background:#edf1f3;border-radius:4px;padding:0 5px;overflow-wrap:anywhere}.table-wrap{overflow-x:auto;margin:20px 0;border:1px solid var(--line);border-radius:8px}table{width:100%;border-collapse:collapse;font-size:14px;line-height:1.9;text-align:left}th{background:#edf5f4;color:#18595a;font-weight:650}td,th{padding:12px 15px;border-bottom:1px solid var(--line);vertical-align:top}td:first-child{font-weight:600;min-width:110px}tr:last-child td{border-bottom:0}tbody tr:nth-child(even){background:#fafcfc}a{color:#076f78}footer{font-size:12px;color:var(--muted);margin-top:22px;text-align:center}.tools{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:18px;font-size:12px;color:var(--muted)}button{font-family:inherit;background:white;border:1px solid var(--line);border-radius:6px;padding:7px 16px;cursor:pointer;color:var(--ink)}button:hover{border-color:var(--accent)}
+@media(max-width:1000px){.layout{grid-template-columns:230px minmax(0,1fr)}aside{padding:22px 13px}main{padding:24px 20px}article{padding:10px 23px 25px}.hero{padding:25px}}
+@media(max-width:720px){.layout{display:block}aside{position:relative;height:auto;max-height:270px;border-right:0;border-bottom:1px solid var(--line);padding:17px 20px}.brand{font-size:20px}.brand small{display:none}.nav-label{margin-top:10px}nav{display:grid;grid-template-columns:1fr 1fr}nav a{font-size:12px}main{padding:18px 12px}.hero{padding:23px}.hero h1{font-size:27px}.summary{gap:7px}.summary div{padding:11px}.summary strong{font-size:17px}article{padding:5px 17px 25px}article>h2{font-size:21px}body{font-size:15px}table{min-width:510px}}
+@media print{@page{size:A4;margin:18mm}body{background:white;font-size:10.5pt;line-height:1.7}.layout{display:block}aside,.tools,.summary{display:none}main{padding:0;max-width:none}.hero{background:white;color:#102f3a;border:1px solid #c4d6d7;border-top:4px solid var(--accent);padding:18px}.hero p,.eyebrow,.tags span{color:#365661}.hero h1{font-size:25pt}.tags{margin-top:10px}.tags span{border-color:#aac2c6}article{padding:0;border:0}article>h2{font-size:17pt;break-after:avoid}h3{font-size:13pt;break-after:avoid}table{font-size:9pt;min-width:0}tr{break-inside:avoid}.table-wrap{overflow:visible;border-radius:0}thead{display:table-header-group}td,th{padding:6px 8px}blockquote{break-inside:avoid}footer{font-size:9pt}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside aria-label="Document contents"><div class="brand"><small>Product planning / 01</small>Crow Station</div><div class="nav-label">Document contents · 22 sections</div><nav><a href="#section-1">1. How to use this document</a>
+<a href="#section-2">2. Vision, purpose, and product boundaries</a>
+<a href="#section-3">3. Initial release scope and later phases</a>
+<a href="#section-4">4. Accounts, roles, and permissions</a>
+<a href="#section-5">5. Instructor admission, review, and contracts</a>
+<a href="#section-6">6. Courses, content, and access rights</a>
+<a href="#section-7">7. Student experience, video, and code editor</a>
+<a href="#section-8">8. Assessments, grading, and certificates</a>
+<a href="#section-9">9. Payments, earnings, and refunds</a>
+<a href="#section-10">10. Packages, promotions, and approvals</a>
+<a href="#section-11">11. Learning paths and mentoring</a>
+<a href="#section-12">12. Community, reviews, and reports</a>
+<a href="#section-13">13. Search, notifications, advertising, and analytics</a>
+<a href="#section-14">14. Rooms and future services</a>
+<a href="#section-15">15. Protection and audit</a>
+<a href="#section-16">16. Technology direction and what is settled</a>
+<a href="#section-17">17. Open questions and potential conflicts</a>
+<a href="#section-18">18. Core journeys for review</a>
+<a href="#section-19">19. Preliminary product acceptance criteria</a>
+<a href="#section-20">20. Proposed documentation completion plan</a>
+<a href="#section-21">21. Traceability to the original feature file</a>
+<a href="#section-22">22. Version history</a></nav></aside>
+<main>
+<div class="tools"><span>Planning reference · 28 September 2026</span><button onclick="window.print()">Print document</button></div>
+<header class="hero"><div class="eyebrow">CROW STATION · Version 0.1.1</div><h1>Product brief<br>and planning decisions</h1><p>One platform for learning, practice, and mentoring. An organized reference for agreed decisions and what remains to be resolved before design and implementation.</p><div class="tags"><span>Draft for review</span><span>Iraq first · Worldwide access</span><span>Website + mobile app</span></div></header>
+<div class="summary"><div><strong>September 2027</strong><span>Preliminary launch target</span></div><div><strong>1,000 users</strong><span>Concurrent-user planning target</span></div><div><strong>22 topics</strong><span>Open question register</span></div></div>
+<article>
+<blockquote>
+<p>Version 0.1.1 · September 28, 2026 · Reference draft for review · Does not authorize implementation</p>
+</blockquote>
+<h2 id="section-1">1. How to use this document</h2>
+<p>This document consolidates the project discussion into one reference to organize requirements before design and implementation. It is not a legal contract, a final technical specification, or a promise to launch every idea in the original draft.</p>
+<p>Companion document: <a href="DATA-PLANNING.en.html">Data Planning and Design Decisions</a>. It begins analyzing proposed entities and relationships; it does not approve tables or a database count. Both documents are updated together as decisions are resolved.</p>
+<p>The source is <code>Project_Features.pdf</code>, read in full at the start of the discussion, followed by the project owner&#39;s answers and subsequent corrections. Where statements differ, this document uses the latest explicit decision and retains unresolved matters as open questions. The original file was not present in the project directory when this version was prepared; unchanged images of its two pages are preserved in <code>docs/sources</code> to keep the available source with the plans.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Agreed</td>
+<td>An explicit decision in the discussion; the project owner may revisit it later.</td>
+</tr>
+<tr>
+<td>Preliminary</td>
+<td>An accepted direction whose details or final approval remain subject to review.</td>
+</tr>
+<tr>
+<td>Proposed</td>
+<td>A recommendation that has not received final approval and is not a binding requirement.</td>
+</tr>
+<tr>
+<td>Deferred</td>
+<td>Implementation or discussion has been postponed; the relevant section specifies which.</td>
+</tr>
+<tr>
+<td>Open</td>
+<td>A question or boundary that has not been resolved.</td>
+</tr>
+</tbody></table></div>
+<p><strong>Reading rule:</strong> Requirements in the following sections are agreed unless marked otherwise. The work-plan section proposes a planning sequence; it is not an approved implementation plan.</p>
+<h2 id="section-2">2. Vision, purpose, and product boundaries</h2>
+<p>Crow Station is a unified learning platform for publishing and purchasing courses, bringing the platform owner&#39;s content and other instructors&#39; content together. The learning experience includes video, coding practice, assessments, certificates, communication, and independent learning paths with paid mentoring.</p>
+<ul>
+<li>Each instructor has a profile page, dashboard, content, and delegated team.</li>
+<li>The intent is not to create independent academies with separate branding and domains for each instructor.</li>
+<li>Calling the product Multi-Tenant does not determine the system design. Data organization and isolation have not been approved.</li>
+<li>Launch content focuses on <strong>programming and cybersecurity</strong>.</li>
+<li>Iraq is the initial market, while registration and purchasing from abroad are allowed from the start, including manual payment arrangements.</li>
+<li>The platform interface supports Arabic and English at launch. Instructors choose their content language freely.</li>
+<li><strong>Crow Station</strong> is the preliminary name and may change if a better name is selected.</li>
+</ul>
+<h3>2.1 Planning assumptions</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Current position</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Target date</td>
+<td>September 2027; preliminary and subject to review after estimation.</td>
+</tr>
+<tr>
+<td>Delivery team</td>
+<td>The project owner and a team of 10 people, with intermediate programming and cybersecurity experience, using AI tools.</td>
+</tr>
+<tr>
+<td>Web frontend experience</td>
+<td>Limited, but the owner does not want this to prevent choosing an appropriate technology.</td>
+</tr>
+<tr>
+<td>Budget</td>
+<td>An operating and services budget exists; no amount or cap has been specified, and unlimited funding is not assumed.</td>
+</tr>
+<tr>
+<td>Initial load</td>
+<td>A planning target of approximately 1,000 concurrent students and instructors; the split across video, code execution, and other services is undefined.</td>
+</tr>
+<tr>
+<td>Launch channels</td>
+<td>A responsive website and Android and iOS apps together.</td>
+</tr>
+</tbody></table></div>
+<h3>2.2 Definitions that prevent confusion</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Course purchase</td>
+<td>An entitlement to the content covered by the purchase, without an expiry date.</td>
+</tr>
+<tr>
+<td>Platform subscription</td>
+<td>A time-limited package unlocking additional features; it does not automatically grant courses.</td>
+</tr>
+<tr>
+<td>Free preview</td>
+<td>One or more pre-purchase videos selected by the instructor and platform; an account is required.</td>
+</tr>
+<tr>
+<td>Refund request window</td>
+<td>The first 7 days after a purchase, during which an exceptional refund may be requested; not a free trial or a guarantee of approval.</td>
+</tr>
+<tr>
+<td>Learning path</td>
+<td>An independent product with a plan, instructions, and mentoring; not simply a course bundle.</td>
+</tr>
+<tr>
+<td>Room</td>
+<td>A hands-on learning lab inspired by TryHackMe, not the course chat.</td>
+</tr>
+<tr>
+<td>Course chat</td>
+<td>A text group discussion restricted to purchasers.</td>
+</tr>
+<tr>
+<td>Mentoring conversation</td>
+<td>A private conversation tied to the paid mentoring service and its duration.</td>
+</tr>
+<tr>
+<td>Instructor wallet</td>
+<td>Available or held earnings; not a decision to create a general student payment wallet.</td>
+</tr>
+</tbody></table></div>
+<h2 id="section-3">3. Initial release scope and later phases</h2>
+<h3>3.1 Required at launch</h3>
+<ul>
+<li>Responsive website and mobile apps, with Arabic and English interfaces.</li>
+<li>Accounts, verification at purchase, and administrator, instructor, and staff permissions.</li>
+<li>Instructor admission, contracts, initial review, and course and content management.</li>
+<li>Full and partial purchases, electronic and manual payments, refunds, wallets, and withdrawals.</li>
+<li>Subscription packages, promotions, and their administration settings; exact benefits remain to be resolved.</li>
+<li>Protected video, synchronized viewing progress, student dashboard, playlists, and notes.</li>
+<li>A desktop code editor supporting writing, editing, and execution.</li>
+<li>Quiz, test, and challenge tools; automatic grading, including AI grading for code; and certificates.</li>
+<li>Reviews, reports, and text course chats.</li>
+<li>Independent learning paths and mentoring, including around-the-clock coverage by the platform&#39;s mentoring team.</li>
+<li>Advanced semantic and content search across Arabic and English, with filters.</li>
+<li>Notifications, analytics, and audit records; integrations and retention policies will be detailed later.</li>
+</ul>
+<h3>3.2 Deferred or displayed as “Coming soon”</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Decision</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Crow Store</td>
+<td>Prepare its foundations and display “Coming soon”; sales are inactive at launch.</td>
+</tr>
+<tr>
+<td>Crow Hub</td>
+<td>GitHub-like repositories for students and the platform, with dedicated hosting; display “Coming soon”; details later.</td>
+</tr>
+<tr>
+<td>VS competitions</td>
+<td>Included in the plan, displayed as “Coming soon,” and inactive at launch.</td>
+</tr>
+<tr>
+<td>General AI features</td>
+<td>Deferred, with an explicit exception for code grading and review of grading appeals in the first release.</td>
+</tr>
+<tr>
+<td>Translation and dubbing</td>
+<td>A separate deferred discussion; neither a launch date nor a provider is selected.</td>
+</tr>
+<tr>
+<td>Rooms and labs</td>
+<td>Details and activation date are unresolved; they are not automatically included in or excluded from launch.</td>
+</tr>
+<tr>
+<td>Streak</td>
+<td>Starts with rooms and expands later, so its launch depends on the room decision.</td>
+</tr>
+<tr>
+<td>General discussion area</td>
+<td>Desired, but potentially deferred; course chats are confirmed for launch.</td>
+</tr>
+<tr>
+<td>Choosing a particular mentor</td>
+<td>Later releases; the initial service uses a mentoring team.</td>
+</tr>
+<tr>
+<td>Course chat attachments</td>
+<td>Future feature; the initial release is text-only.</td>
+</tr>
+<tr>
+<td>Bank integration for withdrawals</td>
+<td>A future possibility, not a first-release commitment.</td>
+</tr>
+</tbody></table></div>
+<h3>3.3 Currently excluded</h3>
+<p>No Flutter Web, no student downloads of course videos, no watermark in the current version, and no mobile code editor. There are no general private messages to instructors inside the platform; the agreed exception is mentoring conversations. The store is not a marketplace for third-party sellers.</p>
+<h2 id="section-4">4. Accounts, roles, and permissions</h2>
+<h3>4.1 Account journey</h3>
+<ol>
+<li>A visitor can browse only; previews and account interactions are unavailable.</li>
+<li>After registration, preview videos are available without phone or email verification.</li>
+<li>At purchase, verifying <strong>one</strong> of the two is sufficient: phone or email.</li>
+<li>All account types may purchase courses; an instructor or employee does not need a separate student account.</li>
+</ol>
+<h3>4.2 Functional roles</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Responsibility and boundaries</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Platform owner</td>
+<td>Sensitive settings, delegation, and approval of delegates&#39; financial changes and package price or benefit changes.</td>
+</tr>
+<tr>
+<td>Administration</td>
+<td>Platform operations, contracts and agreements, appointing teams, and organizing permissions.</td>
+</tr>
+<tr>
+<td>Review team</td>
+<td>Initial content acceptance, deciding review depth, publication approval, and accountability for the decision.</td>
+</tr>
+<tr>
+<td>Responsible instructor</td>
+<td>Manages their dashboard, content, and team; financial matters and withdrawals are exclusive to this person on the instructor-team side.</td>
+</tr>
+<tr>
+<td>Contributing instructor or delegated employee</td>
+<td>Works only within the delegating instructor&#39;s dashboard and assigned permissions.</td>
+</tr>
+<tr>
+<td>Support</td>
+<td>Initially may confirm manual payments and activate access; responsibilities are separated later when specialists are hired.</td>
+</tr>
+<tr>
+<td>Mentoring team</td>
+<td>Responds within assigned paths and services, with conversation history available for continuity.</td>
+</tr>
+<tr>
+<td>Advertising team</td>
+<td>Appointed by administration; exclusively manages and publishes advertisements.</td>
+</tr>
+<tr>
+<td>Reports team</td>
+<td>Sees the reporter&#39;s identity and handles the report; the instructor does not see that identity.</td>
+</tr>
+<tr>
+<td>Student</td>
+<td>Purchases, learns, and interacts within their entitlements.</td>
+</tr>
+</tbody></table></div>
+<p>These are functional roles, not final database Role names. Access boundaries for the platform&#39;s own staff require a separate permissions matrix.</p>
+<h3>4.3 Instructor delegation</h3>
+<ul>
+<li>The platform defines a permission list from which the instructor assigns permissions to each person.</li>
+<li>The instructor can grant and revoke access; access administration may also be delegated within permitted limits.</li>
+<li>A delegate cannot grant permissions beyond their own or change the responsible instructor&#39;s permissions.</li>
+<li>No financial matters, including balances, financial reports, and withdrawals, may be delegated to the instructor&#39;s staff or contributors.</li>
+<li>Multiple instructors may contribute to a course; earnings go to the responsible instructor, who distributes them without an automatic split between contributors&#39; wallets.</li>
+</ul>
+<h3>4.4 Student sessions</h3>
+<p>The initial policy permits one signed-in session on one device per student. Signing into the same account on a new device warns the student and signs out the previous device. This is broader than preventing two videos from playing at once and does not apply to instructors. Account-sharing controls may become stricter later. The behavior of an account combining instructor and student roles remains unresolved.</p>
+<h2 id="section-5">5. Instructor admission, review, and contracts</h2>
+<ol>
+<li>An instructor joins through an application approved by administration or a direct invitation.</li>
+<li>After acceptance, the instructor signs a contract containing policies and controls; signing is mandatory before publication.</li>
+<li>The specialist team reviews the first course or a sample, choosing how much review is needed to evaluate the subject matter and teaching approach.</li>
+<li>The team can approve publication and is accountable for that decision, without further administrative sign-off.</li>
+<li>An electronic contract is sufficient to begin publishing. Publishing the third video notifies administration to assess continuation, request a paper contract, or restrict publication.</li>
+<li><strong>The third video is an assessment checkpoint, not a technical limit:</strong> the fourth video is not automatically blocked.</li>
+<li>After approval, instructors can generally add or edit content and publish further courses without prior review, within their permissions and policies.</li>
+<li>Following a violation, the review team can return the instructor to a mode requiring approval of new content and edits before publication.</li>
+</ol>
+<p>Electronic signing details, paper-copy storage, sanction levels, and exactly what belongs in each course contract remain later design and policy questions.</p>
+<h2 id="section-6">6. Courses, content, and access rights</h2>
+<h3>6.1 Publication and sales</h3>
+<ul>
+<li>The instructor sets the price.</li>
+<li>Publication settings allow full-course sales, separate sections or lessons, or both.</li>
+<li>Purchased content remains accessible without expiry or another payment for the same content.</li>
+<li>The instructor decides how new lessons and updates are offered to existing purchasers, whether within the course or as related additions.</li>
+<li>When completing a course purchase, students buy only what they do not own. The instructor determines completion pricing without charging again for owned content.</li>
+<li>The instructor may impose a learning sequence, such as completing a lesson or passing a test before unlocking the next item.</li>
+<li>Publication may be immediate, on a specified date, or gradual based on time since purchase.</li>
+<li>Preview content consists of one or more videos selected by the instructor and platform. Approval details are unresolved.</li>
+</ul>
+<p><strong>Open:</strong> How do we preserve the original purchased content when it is replaced by a paid update? What defines “completion” for a course with scheduled lessons? We do not assume deletion of the original version or withdrawal of access to it.</p>
+<h3>6.2 Selling before course completion</h3>
+<ul>
+<li>Allowed, with guarantees that promised content will be delivered.</li>
+<li>Publication dates and the completion deadline are defined in the contract and clearly shown before purchase.</li>
+<li>All instructor earnings from the course remain held until completion, <strong>including separate sales of an already-published lesson</strong>.</li>
+<li>The instructor must declare completion, and the platform team must verify and approve delivery before earnings are released.</li>
+<li>Delays require administrative approval and notification of revised dates to students.</li>
+<li>If delivery fails or a delay does not suit the student, the student may choose a refund for undelivered content or the offered compensation, even after 7 days.</li>
+<li>Administrative approval of a delay does not remove this right.</li>
+</ul>
+<h3>6.3 Stopping sales and instructor departure</h3>
+<ul>
+<li>Existing purchasers retain course access even when the instructor stops selling or leaves.</li>
+<li>The platform takes over service for existing students, including assessments, certificates, and appeals.</li>
+<li>Availability to new purchasers is determined by agreement, with the instructor deciding as the owner.</li>
+<li>Options include continued sales under an agreement, transferring ownership or selling the course to the platform, or stopping availability to new purchasers.</li>
+<li>Removing the sales listing does not remove content from existing purchasers&#39; libraries.</li>
+</ul>
+<h2 id="section-7">7. Student experience, video, and code editor</h2>
+<h3>7.1 Student dashboard</h3>
+<p>A professional dashboard brings together courses, purchases, progress, assessments, results, certificates, and playlists. Students can create private playlists combining lessons from different courses they own. A playlist does not grant access to locked or unpurchased lessons.</p>
+<ul>
+<li><strong>Essential for launch:</strong> save each video&#39;s playback position and synchronize it between website and app when returning or changing devices.</li>
+<li>Notes and bookmarks linked to a timestamp within a video.</li>
+<li>These notes and bookmarks are private to the student and are not shared with instructors or other students.</li>
+</ul>
+<h3>7.2 Video and attachments</h3>
+<ul>
+<li>Viewing is inside the platform only; students cannot download course videos.</li>
+<li>No watermark for now.</li>
+<li>The goal is to reduce downloading and leakage as far as possible, not to claim that copying can be prevented absolutely.</li>
+<li>Instructors determine whether educational attachments such as PDFs, code, and exercises may be downloaded.</li>
+<li>Advertisements do not appear inside course videos.</li>
+<li>Streaming protection, storage, transcoding, and quality options have not been selected.</li>
+</ul>
+<h3>7.3 Code editor</h3>
+<ul>
+<li>Required from the first release on desktop only; unavailable on mobile.</li>
+<li>Appears beside the video, with controls to resize, hide, and show it.</li>
+<li>Supports writing, editing, and execution for practice during the lesson, not saving projects to the account.</li>
+<li>Preliminary languages: Python, C, Java, and JavaScript, with other console languages to be specified later.</li>
+<li>Unlocks after purchasing any course and remains available without a recurring subscription.</li>
+<li>If refunded purchases leave the student owning no courses, the editor locks until another course is purchased.</li>
+</ul>
+<p><strong>Open:</strong> Does purchasing a single lesson unlock the editor? How are code execution sessions isolated and their resources and duration limited?</p>
+<h2 id="section-8">8. Assessments, grading, and certificates</h2>
+<h3>8.1 Assessment tools</h3>
+<ul>
+<li>Quizzes, tests, and challenges are available in the initial release; instructors choose whether to use them, and they are not mandatory for publishing every course.</li>
+<li>The platform sets strict baseline rules for attempts and passing, with limited instructor flexibility. Values and limits are undefined.</li>
+<li>Grading is automatic from the first release; manual grading is an exception in cases defined by the instructor.</li>
+<li>Questions with predetermined answers are graded automatically without AI.</li>
+<li>Coding answers are graded by AI according to the owner&#39;s decision; this is an exception to deferring general AI features.</li>
+<li>The platform has fixed standards, with question-specific criteria possible within them; the exact boundaries remain open.</li>
+</ul>
+<h3>8.2 Appeals</h3>
+<ol>
+<li>The student submits a grading appeal.</li>
+<li>AI reviews it first.</li>
+<li>The appeal is not escalated merely because the student is unconvinced.</li>
+<li>If AI cannot resolve it, a ticket goes only to the course instructor; if that instructor has left, the platform serves the students under the continuity decision.</li>
+</ol>
+<p><strong>Open:</strong> The definition of inability to resolve an appeal, the number of repeat reviews, and the method for auditing grading quality and fairness before relying on it for certificates.</p>
+<h3>8.3 Certificates</h3>
+<ul>
+<li>Passing an assessment is required for a course certificate.</li>
+<li>Whether lessons must be watched before taking the assessment is deferred for decision.</li>
+<li>The certificate carries both the platform&#39;s and the instructor&#39;s names.</li>
+<li>Every certificate has a unique verification code and a public authenticity-check link.</li>
+<li>Verification-page fields and certificate revocation cases are undefined.</li>
+</ul>
+<h2 id="section-9">9. Payments, earnings, and refunds</h2>
+<h3>9.1 Pricing and collection</h3>
+<ul>
+<li>Instructors set course prices; the platform&#39;s percentage is agreed <strong>per course</strong>, not fixed per instructor.</li>
+<li>The percentage applies to the amount actually paid after discounts.</li>
+<li>Instructors can start a promotion directly. The platform&#39;s current percentage remains until its reduction is agreed and approved.</li>
+<li>Agreements determine how the cost of platform promotions is shared; neither party is assumed always to bear it.</li>
+<li>All financial terms are recorded inside the platform before application, whether negotiated inside or outside it.</li>
+<li>The Iraqi dinar is the preliminary primary currency; dollar handling depends on the payment service and agreements.</li>
+<li>Electronic and manual payments are supported. For manual payment, the student contacts support to arrange a transfer, and access is activated after receipt is confirmed.</li>
+<li>Manual payment is available to everyone after support arrangements and verification; it is not limited to users outside Iraq.</li>
+</ul>
+<h3>9.2 Instructor wallet and withdrawals</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Earnings type</th>
+<th>Availability rule</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Completed course sale</td>
+<td>Each new purchase amount remains held until 7 days have passed since that purchase; this is not the first 7 days of the instructor account.</td>
+</tr>
+<tr>
+<td>Incomplete course or part of one</td>
+<td>Held until course completion, the instructor&#39;s declaration, and team approval; the purchase window still matters for recent purchases.</td>
+</tr>
+<tr>
+<td>Learning path sale</td>
+<td>Net earnings are available immediately upon payment confirmation because the current agreed policy does not allow path refunds.</td>
+</tr>
+</tbody></table></div>
+<ul>
+<li>Any portion of the available balance may be withdrawn.</li>
+<li>The minimum withdrawal is 10 dollars; its dinar equivalent and conversion rate need a decision.</li>
+<li>Processing and, upon approval, transferring funds must both occur within 24 hours of the request; this is not merely a response deadline.</li>
+<li>Money, financial reports, and withdrawals belong exclusively to the responsible instructor on the instructor-team side.</li>
+<li>Handling pending refund requests and appeals before releasing balances is not fully defined.</li>
+</ul>
+<h3>9.3 Course refunds</h3>
+<ul>
+<li>The default is no refund after payment, with exceptions approved by administration and potentially delegated to a specialist department later.</li>
+<li>An ordinary exceptional request must be made within 7 days of purchase; submission does not guarantee approval.</li>
+<li>Refunds are partial based on benefit received and calculated using the <strong>number and value of watched lessons</strong>.</li>
+<li>Watching 10% of a lesson&#39;s duration is a <strong>preliminary, reviewable</strong> threshold for counting it as watched. Merely opening it is insufficient under this proposal.</li>
+<li>Free preview lessons are excluded from deductions.</li>
+<li>Instructors choose equal content-value allocation or different lesson values.</li>
+<li><strong>Fixing the value allocation at purchase remains a non-final proposal</strong>, following the owner&#39;s request to discuss it with specialists.</li>
+<li>When a refund is executed, access to the relevant content is revoked automatically or manually.</li>
+<li>Failure to deliver content on time is a separate exception allowing a refund or compensation beyond the window, at the student&#39;s choice.</li>
+<li>No final financial formula yet covers rounding, allocating discounts to lessons, payment fees, or reversing each party&#39;s share.</li>
+</ul>
+<h2 id="section-10">10. Packages, promotions, and approvals</h2>
+<h3>10.1 Subscriptions</h3>
+<ul>
+<li>Multiple packages, each with its own price and benefits. Details are deferred until the associated services are settled.</li>
+<li>Prices, benefits, grace-period length, and benefits during grace are managed per package in the administration dashboard.</li>
+<li>Package changes preserve the subscriber&#39;s current terms until renewal, when the changes take effect.</li>
+<li>Renewal is manual or automatic with user consent and subject to payment-method capabilities.</li>
+<li>Cancellation stops renewal only; it does not forfeit the paid period.</li>
+<li>Package changes are available at renewal or by canceling renewal and purchasing a replacement.</li>
+<li>Users choose to start the replacement immediately or after the current package ends.</li>
+<li>With an immediate start, the old package ends and the new one begins.</li>
+<li>The remaining period&#39;s value is credited as a discount on the replacement, under an administration-configurable policy.</li>
+<li>Whether excess value is retained as student credit is an administrative setting, not a fixed rule at present.</li>
+</ul>
+<h3>10.2 Promotions and audiences</h3>
+<ul>
+<li>Offers are not limited to school and university students; administration defines audience categories and conditions in the dashboard.</li>
+<li>Multiple discounts can be combined; administration sets compatibility and the overall maximum.</li>
+<li>How category membership is verified has not been defined.</li>
+</ul>
+<h3>10.3 Change permissions</h3>
+<p>Sensitive financial settings belong primarily to the owner. Marketing or other teams may be delegated access, but their changes require the owner&#39;s approval before application, including package prices and benefits. This does not conflict with instructors discounting their courses directly; reducing the platform&#39;s percentage still requires agreement.</p>
+<p><strong>Open:</strong> The effect of credit and switching-policy changes on existing subscriptions, notice of renewal at a new price, and the boundaries of settings that may be changed.</p>
+<h2 id="section-11">11. Learning paths and mentoring</h2>
+<h3>11.1 The learning path as an independent product</h3>
+<ul>
+<li>Available for sale by the platform and instructors from the initial release.</li>
+<li>Includes the roadmap, instructions, learning sequence, follow-up, and mentoring.</li>
+<li>Creating one does not require existing platform courses; it may reference internal content or external resources and courses.</li>
+<li>Courses are priced separately; buying a path does not automatically grant ownership of them.</li>
+<li>Under the earlier decision, instructors&#39; paths are limited to their own content, while the platform can combine different instructors&#39; content. The extent to which external resources apply to instructor paths needs clarification.</li>
+<li>No refunds for learning path purchases under the currently agreed policy.</li>
+<li>No prior content review is required before selling an instructor&#39;s path.</li>
+<li>The platform&#39;s percentage is agreed separately for each path.</li>
+</ul>
+<h3>11.2 Service duration and communication</h3>
+<ul>
+<li>Mentoring is included in the path price for an announced, agreed period beginning <strong>at purchase</strong>.</li>
+<li>When that period ends, the path and instructions remain accessible and mentoring stops; it may be extended for a fee.</li>
+<li>Private conversation history remains, but new messages stop until renewal.</li>
+<li>Communication uses a private in-platform conversation and may also take place externally, such as on WhatsApp.</li>
+<li>There is no one-hour daily limit; that proposal was explicitly canceled.</li>
+<li>The platform&#39;s mentoring team provides round-the-clock coverage; any available member may reply with access to history.</li>
+<li>Letting students select a particular mentor is deferred to later releases.</li>
+<li>When instructors and their teams provide mentoring, they define working hours, announced before purchase.</li>
+<li>Coverage of 24/7 does not itself establish a maximum response time; that has not been approved.</li>
+</ul>
+<h3>11.3 Mentoring for instructor paths</h3>
+<ul>
+<li>May be delivered by the instructor and their team, the platform team, or both together.</li>
+<li>Announcing the provider in advance is not yet a universally approved requirement; arrangements remain situation-dependent.</li>
+<li>If an offer includes platform-team mentoring, its agreement and fees must be approved <strong>before selling that service</strong>.</li>
+<li>Platform-team fees are a fixed amount per student, set separately per path according to importance, difficulty, and agreement.</li>
+<li>They are deducted automatically from the instructor&#39;s earnings in addition to the platform&#39;s percentage.</li>
+<li>Net path-sale earnings become available immediately upon payment confirmation.</li>
+</ul>
+<p><strong>Open:</strong> Renewal duration and price, discounts&#39; effect on revenue covering mentoring fees, documenting external communication, and service guarantees when continuation is impossible.</p>
+<h2 id="section-12">12. Community, reviews, and reports</h2>
+<h3>12.1 Course chat</h3>
+<ul>
+<li>An open group conversation in which purchasers, the instructor, and their team can write and reply.</li>
+<li>Completely hidden from non-purchasers, including preview-only viewers.</li>
+<li>Text-only in the initial release; images and files are future additions.</li>
+<li>Instructors can delete messages and mute or ban participants from the conversation for abuse.</li>
+<li>Access details for single-lesson purchasers after refunds or partial entitlement revocation need clarification.</li>
+<li>External contact details instructors place in the course are visible to everyone, including visitors.</li>
+</ul>
+<h3>12.2 Reviews</h3>
+<ul>
+<li>Eligibility starts after completing at least the first video, including a free preview without a purchase.</li>
+<li>Stars and written comments are available, and participation is optional; the required relationship between comments and stars needs detail.</li>
+<li>Ratings below 3/5 are reviewed before publication; 3 and above are published directly.</li>
+<li>Lowering an already-published rating below 3 temporarily hides it and returns it to review.</li>
+<li>Students may edit ratings and comments, and instructors may reply publicly.</li>
+<li>Acceptance and rejection criteria are deferred; negative criticism is not assumed to be automatically rejected or accepted.</li>
+</ul>
+<h3>12.3 Reports</h3>
+<ul>
+<li>A separate process reports course problems or instructor violations.</li>
+<li>The reporter&#39;s identity is available only to the responsible team, not to the instructor.</li>
+<li>Students track their reports and answer team questions within the platform.</li>
+<li>Priority levels, handling deadlines, and escalation are undefined.</li>
+</ul>
+<h2 id="section-13">13. Search, notifications, advertising, and analytics</h2>
+<h3>13.1 Search</h3>
+<ul>
+<li>Advanced from the start, based on meaning and content rather than exact text matching alone.</li>
+<li>Supports Arabic and English and searches across languages; an Arabic query can find relevant English content.</li>
+<li>Covers discoverable content, including unpurchased items, while keeping paid content locked and private data undisclosed.</li>
+<li>Does not require showing the information&#39;s timestamp within a video.</li>
+<li>Filters include subject area, level, language, price, instructor, and rating.</li>
+<li>The indexed text source, understanding of video content, search engine, and quality evaluation method are unresolved.</li>
+</ul>
+<h3>13.2 Notifications</h3>
+<p>Required channels include in-platform, mobile push, email, and SMS. Users control optional notifications such as promotions, while essential security and payment notifications remain mandatory. Event-to-channel mapping, preferences, sending limits, and providers will be defined later; this does not mean sending every notification through every channel.</p>
+<h3>13.3 Advertising</h3>
+<p>Includes promotion of platform courses and external organizations. Management and publication belong exclusively to an administration-appointed team, with no advertisements inside videos. Placements, pricing, and advertiser acceptance rules are open.</p>
+<h3>13.4 Analytics</h3>
+<p>The instructor dashboard shows sales, views, student progress, and assessment results, both aggregated and for individual students within the instructor&#39;s courses. Financial data remains restricted to the responsible instructor. Administration analytics, report exports, and permissions for non-financial analytics need further detail.</p>
+<h2 id="section-14">14. Rooms and future services</h2>
+<h3>14.1 Room decisions made before deferring discussion</h3>
+<ul>
+<li>Labs resemble TryHackMe rooms and contain a Machine accessed through a VPN to be selected later.</li>
+<li>Recording session and activity data is requested, but the meaning of “all activities,” its mechanisms, and retention duration remain unresolved.</li>
+<li>Platform-produced rooms are accessible through a platform subscription.</li>
+<li>An instructor can design a room and set its policies or ask the platform to design it and associate it with the course.</li>
+<li>Instructors pay hosting fees for their own rooms and choose whether student access is free or paid.</li>
+<li>Student room payments and hosting fees are handled within the platform system; no additional percentage commission for instructor rooms has been approved.</li>
+<li>Revenue from administration-produced rooms belongs to the platform.</li>
+<li>Access policies and their relationship to course purchase depend on the room and its owner under the agreement; requiring both course purchase and subscription is not a universal rule.</li>
+<li>A separate Machine instance per student was <strong>only a proposal</strong> and was not approved before discussion was deferred.</li>
+</ul>
+<h3>14.2 Other services</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Recorded scope</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Crow Store</td>
+<td>Physical and digital products and platform brands only, with no third-party sellers. Prepare the foundation and show “Coming soon.”</td>
+</tr>
+<tr>
+<td>Crow Hub</td>
+<td>A GitHub-like service for students and the platform, with dedicated hosting, inactive at launch.</td>
+</tr>
+<tr>
+<td>VS</td>
+<td>Competitions in the plan without a defined mechanism; “Coming soon.”</td>
+</tr>
+<tr>
+<td>Streak</td>
+<td>Applies to rooms first, then expands; no calculation rule is approved yet.</td>
+</tr>
+<tr>
+<td>Translation and dubbing</td>
+<td>Deferred for discussion, not an instructor requirement.</td>
+</tr>
+</tbody></table></div>
+<h2 id="section-15">15. Protection and audit</h2>
+<ul>
+<li>Protection covers content, particularly video, account-sharing prevention, and checking content rights and violations.</li>
+<li>Suspected leakage or sharing generates an alert for team investigation; suspicion alone does not automatically suspend an account.</li>
+<li>No watermark for now.</li>
+<li>Recording user and instructor activity is an explicit requirement; before design it must become a defined event list, audit record, permission model, and retention period.</li>
+<li>The rights-checking mechanism does not automatically override instructor approval and first-review policy; subsequent monitoring remains open for design.</li>
+<li>Protection details must not be presented as an absolute guarantee against leakage.</li>
+</ul>
+<h2 id="section-16">16. Technology direction and what is settled</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Decision or status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Code organization</td>
+<td>Clean Architecture.</td>
+</tr>
+<tr>
+<td>Backend and API</td>
+<td>ASP.NET Core on .NET 10.</td>
+</tr>
+<tr>
+<td>Database</td>
+<td>PostgreSQL.</td>
+</tr>
+<tr>
+<td>Mobile app</td>
+<td>Flutter, not Flutter Web for the website.</td>
+</tr>
+<tr>
+<td>Web frontend</td>
+<td>A separate technology not yet selected; criteria include practicality, performance, maintainability, and user experience.</td>
+</tr>
+<tr>
+<td>Redis</td>
+<td>Interpreted as what the owner meant by “rides”; its name and role need confirmation.</td>
+</tr>
+<tr>
+<td>File storage</td>
+<td>MinIO or an alternative; the provider is undecided.</td>
+</tr>
+<tr>
+<td>Runtime deployment</td>
+<td>Docker and Docker Compose are the agreed direction; production, scaling, and availability design is not yet detailed.</td>
+</tr>
+<tr>
+<td>Instructor data isolation</td>
+<td>Unresolved; choosing PostgreSQL does not determine shared databases, separate schemas, or separate databases.</td>
+</tr>
+<tr>
+<td>AI</td>
+<td>Its grading use is agreed; provider, model, policies, and cost remain open.</td>
+</tr>
+<tr>
+<td>Video, search, and code execution</td>
+<td>Functional requirements are agreed; architecture and provider choices remain open.</td>
+</tr>
+</tbody></table></div>
+<p>The original file&#39;s “Two DB / one database per room” proposal is not approved. Clean Architecture is not equated with microservices; service distribution is a separate later decision.</p>
+<h2 id="section-17">17. Open questions and potential conflicts</h2>
+<p>This prioritization organizes discussion; it does not authorize decisions on the project owner&#39;s behalf.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Topic</th>
+<th>Decision needed</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>O-01</td>
+<td>Launch scope</td>
+<td>Rooms and Streak timing, activating packages without rooms, and the final decision on the general discussion area.</td>
+</tr>
+<tr>
+<td>O-02</td>
+<td>Operating figures</td>
+<td>Concurrent video viewers, code runners, and chat users within the 1,000-user target.</td>
+</tr>
+<tr>
+<td>O-03</td>
+<td>Permanent access and paid updates</td>
+<td>Preserving purchased content when replaced or updated; boundaries for missing or rights-infringing content.</td>
+</tr>
+<tr>
+<td>O-04</td>
+<td>Refund policy</td>
+<td>The 10% threshold, lesson and discount formula, and fixing values at purchase after specialist review.</td>
+</tr>
+<tr>
+<td>O-05</td>
+<td>Requests within the window</td>
+<td>Preventing funds from being released before resolving a refund requested within 7 days but not yet processed.</td>
+</tr>
+<tr>
+<td>O-06</td>
+<td>Guarantees and completion</td>
+<td>Defining a completed course, scheduled lessons, publication commitments, and documented team approval.</td>
+</tr>
+<tr>
+<td>O-07</td>
+<td>Paths and mentoring</td>
+<td>No refunds and immediate earnings for an ongoing service: how to handle mentoring not delivered or discontinued.</td>
+</tr>
+<tr>
+<td>O-08</td>
+<td>Path resources</td>
+<td>Limiting instructors&#39; paths to their own content versus allowing external resources: the precise scope of each type.</td>
+</tr>
+<tr>
+<td>O-09</td>
+<td>Mentoring responsibility</td>
+<td>Provider identification before sale, collaboration arrangements, response deadlines despite 24/7 coverage, and renewal prices and periods.</td>
+</tr>
+<tr>
+<td>O-10</td>
+<td>Mentoring cost</td>
+<td>What happens when a discounted price cannot cover the fixed fee and platform percentage.</td>
+</tr>
+<tr>
+<td>O-11</td>
+<td>AI and appeals</td>
+<td>Grading criteria and quality measurement, inability-to-resolve criteria triggering a ticket, and attempt limits.</td>
+</tr>
+<tr>
+<td>O-12</td>
+<td>Assessment rules</td>
+<td>Passing grades, attempts, entry conditions, and settings instructors may change.</td>
+</tr>
+<tr>
+<td>O-13</td>
+<td>Reviews</td>
+<td>Rejection criteria, text-edit review, and comments without stars if allowed.</td>
+</tr>
+<tr>
+<td>O-14</td>
+<td>Audit and privacy</td>
+<td>Recorded events, retention, staff access, and lab and conversation logs.</td>
+</tr>
+<tr>
+<td>O-15</td>
+<td>Accounts with multiple roles</td>
+<td>Applying the one-device policy to instructors who purchase and learn, and team permission boundaries.</td>
+</tr>
+<tr>
+<td>O-16</td>
+<td>Funds and currencies</td>
+<td>Payment gateways, currency differences, rounding and fees, withdrawal-threshold conversion, and failed transfers.</td>
+</tr>
+<tr>
+<td>O-17</td>
+<td>Package changes</td>
+<td>Protecting purchasers&#39; terms when changing switching, credit, and owner-controlled policies.</td>
+</tr>
+<tr>
+<td>O-18</td>
+<td>Apps</td>
+<td>A separate student app or an initially combined app with roles; mobile administration and instructor functions.</td>
+</tr>
+<tr>
+<td>O-19</td>
+<td>Search</td>
+<td>Index sources, limits on paid-content snippets, and cross-language result quality measurement.</td>
+</tr>
+<tr>
+<td>O-20</td>
+<td>Architecture</td>
+<td>Web frontend, isolation, video storage, search, code execution, Redis, backups, and recovery.</td>
+</tr>
+<tr>
+<td>O-21</td>
+<td>Non-functional requirements</td>
+<td>Response times, availability, accessibility, storage limits, support, and monitoring plans.</td>
+</tr>
+<tr>
+<td>O-22</td>
+<td>Contracts and policies</td>
+<td>Specialist review of contracts, content rights, refunds, cancellation, and data policies before publication approval.</td>
+</tr>
+</tbody></table></div>
+<h2 id="section-18">18. Core journeys for review</h2>
+<h3>18.1 Buying a course and learning</h3>
+<p>Browse → register → free preview → select content → verify phone or email → electronic payment or manual arrangement with support → payment confirmation → entitlement granted → synchronized viewing progress, practice, and assessments → certificate upon passing its assessment under conditions to be completed later.</p>
+<h3>18.2 New instructor</h3>
+<p>Application or invitation → administrative acceptance → electronic contract and initial content review before publication → team approval → publication → administration notified at the third video → administrative assessment without automatically blocking the fourth → continuation, paper contract request, or restrictions determined by responsible staff.</p>
+<h3>18.3 A course sold before completion</h3>
+<p>Commitments and schedule in the contract and sales page → purchase with content status disclosed → all course earnings held → scheduled publication → completion declared → team verification and approval → release of eligible earnings. Delay requires approval and notification and preserves the student&#39;s refund-or-compensation choice.</p>
+<h3>18.4 Buying a path with platform mentoring</h3>
+<p>Independent path, instructions, and announced mentoring period → fee agreement approved for an instructor path → purchase and payment confirmation → mentoring period starts immediately → platform percentage and fixed mentoring fee calculated → net earnings made available to the instructor → communication with any available member → period ends and new messages stop while history remains → paid renewal if desired.</p>
+<h3>18.5 Withdrawing earnings</h3>
+<p>Responsible instructor with available funds → request for part of the balance meeting the minimum → review → approval and transfer within 24 hours of the request. Rejection, failure, and appeal details need later documentation.</p>
+<h2 id="section-19">19. Preliminary product acceptance criteria</h2>
+<p>These examples can later become test scenarios; they do not mean the functionality has been implemented or tested successfully now.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Scenario and expected outcome</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AC-01</td>
+<td>Visitors browse but cannot preview; unverified accounts can preview, while purchase requires one contact method to be verified.</td>
+</tr>
+<tr>
+<td>AC-02</td>
+<td>No initial publication before signing and approval; publishing the third video alerts administration without automatically blocking the fourth.</td>
+</tr>
+<tr>
+<td>AC-03</td>
+<td>An instructor&#39;s employee cannot access financial matters, request withdrawals, raise their own permissions, or alter the responsible instructor.</td>
+</tr>
+<tr>
+<td>AC-04</td>
+<td>Student sign-in on a new device produces a warning and signs out the previous session under policy.</td>
+</tr>
+<tr>
+<td>AC-05</td>
+<td>Students resume video from the saved position when moving from the website to the app after sign-in.</td>
+</tr>
+<tr>
+<td>AC-06</td>
+<td>Stopping new course sales does not revoke existing purchasers&#39; access.</td>
+</tr>
+<tr>
+<td>AC-07</td>
+<td>Buying a lesson in an incomplete course does not make earnings withdrawable before completion and approval.</td>
+</tr>
+<tr>
+<td>AC-08</td>
+<td>Free preview viewing does not reduce refunds; the viewing threshold and formula will be tested after approval.</td>
+</tr>
+<tr>
+<td>AC-09</td>
+<td>Net path earnings are available immediately after payment, less platform mentoring fees where applicable.</td>
+</tr>
+<tr>
+<td>AC-10</td>
+<td>Mentoring expiry blocks new messages while retaining history and the path; renewal restores communication.</td>
+</tr>
+<tr>
+<td>AC-11</td>
+<td>A rating below 3 awaits review; reducing a published rating below 3 temporarily hides it.</td>
+</tr>
+<tr>
+<td>AC-12</td>
+<td>Instructors cannot see reporter identities, and non-purchasers cannot see course chat.</td>
+</tr>
+<tr>
+<td>AC-13</td>
+<td>Private notes and bookmarks are not visible to other accounts or public search.</td>
+</tr>
+<tr>
+<td>AC-14</td>
+<td>A package price change does not alter current-period terms; a delegate&#39;s change is not applied before owner approval.</td>
+</tr>
+<tr>
+<td>AC-15</td>
+<td>The editor works on desktop after entitlement and is absent on mobile; execution is isolated according to a later security design.</td>
+</tr>
+<tr>
+<td>AC-16</td>
+<td>Grading appeals are reviewed automatically and sent to the instructor only when the later-approved inability-to-resolve criterion is met.</td>
+</tr>
+<tr>
+<td>AC-17</td>
+<td>Arabic queries find relevant English content in agreed reference examples without exposing private content.</td>
+</tr>
+</tbody></table></div>
+<h2 id="section-20">20. Proposed documentation completion plan</h2>
+<p>This document does not start implementation. The following sequence turns it into a reviewable, implementable specification package.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Output</th>
+<th>Exit criterion</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1. Decision review</td>
+<td>Correct this document and prioritize open questions</td>
+<td>Approve vision and scope without fundamental conflicts.</td>
+</tr>
+<tr>
+<td>2. Product requirements</td>
+<td>Detailed PRD, journeys, exceptional cases, and permissions matrix</td>
+<td>Every core capability has clear rules and acceptance criteria.</td>
+</tr>
+<tr>
+<td>3. Architecture design</td>
+<td>Module boundaries, web technology, isolation, integrations, runtime, and protection</td>
+<td>Review alternatives, cost, and risks and approve decisions.</td>
+</tr>
+<tr>
+<td>4. Data model</td>
+<td>Entities, relationships, lifecycles, constraints, and history</td>
+<td>Cover entitlements, money, and content without hidden financial assumptions.</td>
+</tr>
+<tr>
+<td>5. API contracts</td>
+<td>Documented permissions, requests, responses, errors, and events</td>
+<td>APIs align with the data model and website and app journeys.</td>
+</tr>
+<tr>
+<td>6. Implementation plan</td>
+<td>Phases, responsibilities, dependencies, estimates, and acceptance criteria</td>
+<td>Realistically review the September 2027 target against team resources.</td>
+</tr>
+</tbody></table></div>
+<p>Proposed functional areas for study: identity and permissions; catalog and publication; entitlements and video; orders and money; subscriptions and promotions; assessments and certificates; paths and mentoring; community and support; search and notifications; administration and audit. These are responsibility boundaries, not a decision to create microservices.</p>
+<h2 id="section-21">21. Traceability to the original feature file</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Original idea</th>
+<th>Location and discussion outcome</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Name</td>
+<td>Section 2: Crow Station provisionally.</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Road Maps</td>
+<td>Section 11: an independent product with mentoring from launch.</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Publish Own Course</td>
+<td>Section 5: acceptance or invitation, contract, and initial review, rather than anonymous open publication.</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Code Editor</td>
+<td>Section 7: console execution beside the video on desktop.</td>
+</tr>
+<tr>
+<td>5</td>
+<td>3 Learning Tracks</td>
+<td>Beginner/intermediate/professional levels proposed in the source; final structure is unapproved. A level filter is required.</td>
+</tr>
+<tr>
+<td>6</td>
+<td>AI / API</td>
+<td>Section 8: code grading and appeals initially; other uses deferred.</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Challenges</td>
+<td>Section 8: optional instructor tools available at launch.</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Rooms</td>
+<td>Section 14: labs; details and launch remain to be decided.</td>
+</tr>
+<tr>
+<td>9</td>
+<td>VS</td>
+<td>“Coming soon.”</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Chat</td>
+<td>Section 12: text conversation per course; general chat may be deferred.</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Crow Hub</td>
+<td>Section 14: GitHub-like repositories, “Coming soon.”</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Teacher Work / Multi-Tenant</td>
+<td>Sections 2, 4, 13, and 16: unified platform, instructors, and analytics; isolation undecided.</td>
+</tr>
+<tr>
+<td>13</td>
+<td>User Registration</td>
+<td>Section 4: account and preview, then verification at purchase.</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Offers</td>
+<td>Section 10: flexible promotions, combined discounts, and financial agreements.</td>
+</tr>
+<tr>
+<td>15</td>
+<td>AD</td>
+<td>Section 13: administrative team, no in-video advertisements.</td>
+</tr>
+<tr>
+<td>16</td>
+<td>Dubbing + Translation</td>
+<td>Discussion deferred.</td>
+</tr>
+<tr>
+<td>17</td>
+<td>Bilingual Support</td>
+<td>Arabic and English interfaces from the start.</td>
+</tr>
+<tr>
+<td>18</td>
+<td>Crow Store (Card)</td>
+<td>Expanded into a store for platform products only; “Coming soon.”</td>
+</tr>
+<tr>
+<td>19</td>
+<td>Student Offers</td>
+<td>Multiple administrable audience categories, not only students.</td>
+</tr>
+<tr>
+<td>20</td>
+<td>Search Engine</td>
+<td>Section 13: semantic, content, and cross-language search with filters.</td>
+</tr>
+<tr>
+<td>21</td>
+<td>Anti-Corruption</td>
+<td>Section 15: content and account protection and verification before action.</td>
+</tr>
+<tr>
+<td>22</td>
+<td>Streak</td>
+<td>Starts with rooms; details later.</td>
+</tr>
+<tr>
+<td>23</td>
+<td>Teacher Dashboard</td>
+<td>Sections 4, 6, 9, and 13: content, team, analytics, and permission-controlled finances.</td>
+</tr>
+<tr>
+<td>24</td>
+<td>Notification</td>
+<td>Section 13: multiple channels and preferences, with essential notifications mandatory.</td>
+</tr>
+<tr>
+<td>Note</td>
+<td>Currencies</td>
+<td>Dinar as the preliminary primary currency; dollars according to payment services and agreements.</td>
+</tr>
+<tr>
+<td>Note</td>
+<td>Video validity and protection</td>
+<td>Entitlement has no expiry; download prevention is agreed, while streaming-link validity is a later technical decision.</td>
+</tr>
+<tr>
+<td>Note</td>
+<td>Two DB / a database per room</td>
+<td>An unapproved source proposal; PostgreSQL is approved and isolation remains open.</td>
+</tr>
+</tbody></table></div>
+<h2 id="section-22">22. Version history</h2>
+<p><strong>0.1.1 — September 28, 2026:</strong> Added the companion data-planning reference after the request to continue analysis. No business decisions changed; all new entities and relationships in the companion document are proposals under review.</p>
+<p><strong>0.1 — September 28, 2026:</strong> First structured consolidation of discussion decisions through confirmation of the planning user count and the request to prepare this document. No product implementation, approved database schema, or approved API contracts are included in this release. Future updates will explicitly record decision changes rather than silently changing their meaning.</p>
+</article>
+<footer>Crow Station · Planning document for review · Source: PROJECT-BRIEF.en.md</footer>
+</main></div>
+<script>
+const links = Array.from(document.querySelectorAll('nav a'));
+const observer = new IntersectionObserver(entries => {
+  for (const entry of entries) if (entry.isIntersecting) {
+    for (const link of links) link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
+  }
+}, {rootMargin:'0px 0px -65% 0px',threshold:0});
+document.querySelectorAll('article h2').forEach(section => observer.observe(section));
+</script>
+</body></html>
