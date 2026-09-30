@@ -7,9 +7,9 @@ This directory is a reference for product analysis and planning, not a software 
 - **To begin reviewing:** Read vision and scope (2–3), the rules for your area of interest, then the open questions (17).
 - **For next steps:** See the documentation completion plan (20). System architecture, data model, and API details are not yet approved.
 
-Product version: **0.1.1**. Data planning version: **0.1**. Last content update: **28 September 2026**.
+Product version: **0.2**. Data planning version: **0.2**. Last content update: **30 September 2026**.
 
-In data planning, begin with section 3 for the entity map, then section 12 for the order of missing decisions. The current question, D-01, asks whether a person can be a delegate for more than one instructor at the same time. No assumed answer has been recorded.
+Multiple assistant teams, one dashboard per instructor, launch assistant services, and course transfer rules are settled. The next unanswered question: Is the previous instructor's and their team's course-management access revoked immediately after transfer while the previous instructor retains only historical financial records? Other open details are in D-02 and D-13. This batch does not start product implementation.
 
 “Agreed” means a point was resolved in discussion, not that the product was implemented. The document preserves distinctions between proposals, preliminary decisions, and deferrals. Regenerate HTML after editing the source to keep both formats aligned. The current formatter is `tools/docs/build-brief.mjs`; it contains no product code.
 

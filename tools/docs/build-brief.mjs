@@ -5,12 +5,12 @@ import { fileURLToPath } from 'node:url';
 
 const isData = process.argv[2] === 'data';
 const basename = isData ? 'DATA-PLANNING.en' : 'PROJECT-BRIEF.en';
-const version = isData ? '0.1' : '0.1.1';
+const version = '0.2';
 const title = isData ? 'Data Planning and Design Decisions' : 'Product Brief and Planning Decisions';
 const heroTitle = isData ? 'Data planning<br>before table design' : 'Product brief<br>and planning decisions';
 const description = isData ? 'From product requirements to entities, relationships, and lifecycles. A conceptual proposal showing what we know and what still needs a decision, without assuming the database design is complete.' : 'One platform for learning, practice, and mentoring. An organized reference for agreed decisions and what remains to be resolved before design and implementation.';
 const tags = isData ? ['Proposed design for review','PostgreSQL · Isolation undecided','No tables or migrations yet'] : ['Draft for review','Iraq first · Worldwide access','Website + mobile app'];
-const stats = isData ? [['18 domains','Proposed entity map'],['12 decisions','Data discussion sequence'],['Conceptual model','Not a final schema']] : [['September 2027','Preliminary launch target'],['1,000 users','Concurrent-user planning target'],['22 topics','Open question register']];
+const stats = isData ? [['18 domains','Proposed entity map'],['13 decisions','Data discussion sequence'],['Conceptual model','Not a final schema']] : [['September 2027','Preliminary launch target'],['1,000 users','Concurrent-user planning target'],['22 topics','Open question register']];
 const source = new URL(`../../docs/${basename}.md`, import.meta.url);
 const destination = new URL(`../../docs/${basename}.html`, import.meta.url);
 const markdown = await readFile(source, 'utf8');
@@ -48,7 +48,7 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 <div class="layout">
 <aside aria-label="Document contents"><div class="brand"><small>${isData ? 'Data planning / 02' : 'Product planning / 01'}</small>Crow Station</div><div class="nav-label">Document contents · ${sections.length} sections</div><nav>${nav}</nav></aside>
 <main>
-<div class="tools"><span>Planning reference · 28 September 2026</span><button onclick="window.print()">Print document</button></div>
+<div class="tools"><span>Planning reference · 30 September 2026</span><button onclick="window.print()">Print document</button></div>
 <header class="hero"><div class="eyebrow">CROW STATION · Version ${version}</div><h1>${heroTitle}</h1><p>${description}</p><div class="tags">${tags.map(tag=>`<span>${tag}</span>`).join('')}</div></header>
 <div class="summary">${stats.map(([value,label])=>`<div><strong>${value}</strong><span>${label}</span></div>`).join('')}</div>
 <article>${rendered}</article>

@@ -1,6 +1,6 @@
 # Crow Station — Data Planning and Design Decisions
 
-> Version 0.1 · 28 September 2026 · Proposed conceptual analysis · Not a final database schema
+> Version 0.2 · 30 September 2026 · Proposed conceptual analysis · Not a final database schema
 
 ## 1. Is the product document enough to design the databases?
 
@@ -86,7 +86,9 @@ Detailed tables for Crow Store, Crow Hub, VS, or rooms will not be created now. 
 - Participation in teaching a course is separate from staff membership and permission to view financial information.
 - Course ownership transfers are recorded historically so changing the current owner does not change the beneficiary of an earlier purchase.
 
-**Open before approving cardinality:** Can a person belong to several instructors' teams at the same time? Can an instructor own more than one workspace? Neither is assumed to be a final decision.
+**Agreed — D-01:** A person may assist several instructors simultaneously with separate permissions per dashboard; the platform can supply staff assistants.
+
+**Agreed:** Each instructor has one dashboard; they request a platform assistant, approve the candidate, and define permissions. Service and transfer details follow below.
 
 ### 4.3 Isolation alternatives
 
@@ -99,6 +101,24 @@ Detailed tables for Crow Store, Crow Hub, VS, or rooms will not be created now. 
 **Technical fact:** PostgreSQL schemas do not provide strict security isolation by themselves; access depends on privileges. Row-level security (RLS) can be considered as an additional layer, with attention to exceptions for owners and roles allowed to bypass it. This informs comparison of alternatives and does not approve a particular isolation mechanism. [Schemas](https://www.postgresql.org/docs/current/ddl-schemas.html), [row security policies](https://www.postgresql.org/docs/current/ddl-rowsecurity.html).
 
 Isolation must cover files, search, background jobs, and reports, not just instructor dashboard queries. The basic test: membership in one instructor's dashboard must not expose another dashboard's data or files.
+
+### 4.4 Assistant service — effects on data
+
+**Agreed:** The instructor's request, platform proposal, and instructor approval precede assignment; the instructor sets permissions. Service fees use only their available balance. Service continues during the dashboard-configured grace period, then access stops if unpaid. Records are retained and administration must confirm restoration after payment. The instructor can terminate immediately, with settlement under the offer. The service is in the first release.
+
+**Analytical proposal:** AssistantOffer, AssistantRequest, ServiceAssignment, ServiceCharge, and ServiceLifecycleEvent entities linked to the assistant's membership, instructor, offer, and accepted terms. Record request, nomination, approval, permission grants, deductions, grace, suspension, termination, and restoration decisions. These are not approved table names.
+
+**Data integrity proposal:** Deductions and withdrawals share protection against double spending of available funds; execution priority needs a decision. Stopping service in one dashboard does not remove other memberships. Separating service records, membership, and financial movements preserves work and history when access is revoked.
+
+**Open:** Deduction timing and retries, grace-period fee settlement, scope of grace configuration, and receipt and onward payment of fees to assistants. An assistant payment account or prepaid balance is not assumed.
+
+### 4.5 Course ownership transfer — financial history and responsibility
+
+**Agreed:** Administration and both instructors approve, later sales use a new agreement, and earlier earnings remain with the previous instructor. The new instructor assumes all course and existing-student responsibilities while purchases and access are preserved. Resetting starts the course's accounting under the new instructor; it does not delete history or reset an entire instructor wallet.
+
+**Analytical proposal:** A CourseOwnershipTransfer record contains both parties, approvals, effective time, and references to the previous and new agreements. Each sale's earnings remain linked to the beneficiary and agreement at sale, rather than inferred solely from the current owner. Service responsibility changes are separate from ownership of earlier earnings.
+
+**Open:** Previous instructor and team access after transfer is the next unanswered question; concurrent transactions, refunds, and incomplete-course commitments also need detail.
 
 ## 5. Content, entitlements, and partial sales
 
@@ -240,7 +260,7 @@ This is a list of conceptual relationships, not a final diagram of all entities.
 | Relationship | Candidate cardinality | Status |
 | --- | --- | --- |
 | User and purchase orders | One user has multiple orders | Directly inferred from repeat purchases. |
-| User and instructor teams | Through memberships with permissions | Multiple teams for one person are the subject of D-01. |
+| User and instructor teams | Through memberships with permissions | Multiple teams for one person are agreed in D-01; permissions are separate for each dashboard. |
 | Course and participating instructors | Multiple contributors and one financially responsible instructor at a given time | Meaning agreed; historical representation of responsibility changes is proposed. |
 | Course, sections, and lessons | An initial hierarchy | Moving and reusing lessons require a decision. |
 | Offer and content coverage | An offer covers a course or part of it | Representation of coverage and versions needs detail. |
@@ -258,8 +278,8 @@ We will ask one question at a time and update this table and the product documen
 
 | ID | Question or decision | Impact | Status |
 | --- | --- | --- | --- |
-| D-01 | Can a person act as a delegate for several instructors at the same time? | Account-to-membership relationships and permission scope | Next question. |
-| D-02 | Instructor responsibility, workspace boundaries, and content ownership transfers | Isolation and financial history | Open; related to O-15 and O-20. |
+| D-01 | Can a person act as a delegate for several instructors at the same time? | Account-to-membership relationships and permission scope | Settled: yes, with separate permissions; the instructor requests, approves, and grants permissions to a platform assistant. |
+| D-02 | Instructor responsibility, workspace boundaries, and content ownership transfers | Isolation and financial history | One dashboard, transfer finances, and student responsibility settled; previous instructor and team access remains open; O-15 and O-20. |
 | D-03 | Entitlements when a lesson is updated or moved and paid content is added | Content versions and purchase coverage | Open; O-03. |
 | D-04 | Incomplete courses: what was promised, and how is delivery proven? | Commitments, publishing schedule, and financial holds | Open; O-06. |
 | D-05 | Refund formula and fixed or adjustable lesson values | Value history, policies, and settlements | Requires specialists; O-04. |
@@ -270,6 +290,7 @@ We will ask one question at a time and update this table and the product documen
 | D-10 | Lesson completion definition, test criteria, and appeals | Progress events, grades, and certificates | Open; O-11 and O-12. |
 | D-11 | Retention, deletion, auditing, and private content | Archiving, privacy, and backups | Open; O-14 and O-22. |
 | D-12 | Approval of isolation approach, storage map, and operations | Physical design and service boundaries | After ownership and permissions are settled; O-20 and O-21. |
+| D-13 | Assistant service lifecycle, fees, and settlement | Memberships, charges, balance, and access suspension | Core rules settled; collection timing, grace settlement, and assistant payment remain open; O-05 and O-15. |
 
 ## 13. Checking design sufficiency before writing tables
 
@@ -303,5 +324,7 @@ Each core domain needs a data owner, identity definition, relationships and card
 6. **Implementation and verification plan:** Phases, dependencies, responsibilities, acceptance criteria, and time estimates.
 
 ## 14. Version history
+
+**0.2 — 30 September 2026:** Settled D-01 and part of D-02; added proposed assistant-service and ownership-transfer analysis and D-13. Updated decision status without approving tables or isolation. Previous instructor and team access after transfer remains unanswered.
 
 **0.1 — 28 September 2026:** Responds to the request to continue documentation toward data planning. Adds candidate entities and relationships, separates identity, permissions, ownership, and entitlements, and provides initial lifecycles and an ordered question register. No isolation approach, database count, or final logical/physical model has been approved. No tables, migration files, or product code were created.

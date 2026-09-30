@@ -58,7 +58,7 @@ The plan branch includes Markdown, formatted HTML, available source material, an
 
 ## 7. Planning resumption point
 
-Discussion is deferred to the next session at the project owner's request. The pending question is D-01: Can a person act as a delegate for several instructors at the same time, with separate permissions for each dashboard? No answer is assumed.
+Multiple assistant teams, one dashboard per instructor, launch assistant services, and course transfer rules are settled. The next unanswered question: Is the previous instructor's and their team's course-management access revoked immediately after transfer while the previous instructor retains only historical financial records? Other open details are in D-02 and D-13. This batch does not start product implementation.
 
 ## 8. Arabic and English parity
 

@@ -1,6 +1,6 @@
 # Repository Organization Status
 
-Last update: 29 September 2026.
+Last update: 30 September 2026.
 
 ## Completed locally
 
@@ -32,7 +32,7 @@ Here, reset means replacing active history and branch contents; it does not clai
 
 ## Next session
 
-Resume question D-01 in the data document. There is no need to reopen it tonight, and this work includes no product implementation or production deployment.
+Multiple assistant teams, one dashboard per instructor, launch assistant services, and course transfer rules are settled. The next unanswered question: Is the previous instructor's and their team's course-management access revoked immediately after transfer while the previous instructor retains only historical financial records? Other open details are in D-02 and D-13. This batch does not start product implementation.
 
 ## Arabic and English planning versions — 29 September 2026
 
@@ -44,3 +44,7 @@ Resume question D-01 in the data document. There is no need to reopen it tonight
 - Ruleset 24138328 now includes plan-ar and plan-en; all seven branches are protected against deletion and force pushes without bypass exceptions.
 - Plans were not merged into main; docs, develop, staging, and main remain unchanged.
 - Future language updates require review and translation under BRANCHING.md; synchronization is not automatic.
+
+## Decision batch — 30 September 2026
+
+Product and data planning documents are version 0.2. This batch consolidates assistant-service and course-transfer answers, preserving the final unanswered question. Arabic is published on plan and plan-ar and English on plan-en; no merge to main or promotion of drafts to official documentation.

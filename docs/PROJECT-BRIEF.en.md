@@ -1,6 +1,6 @@
 # Crow Station — Product Brief and Planning Decisions
 
-> Version 0.1.1 · September 28, 2026 · Reference draft for review · Does not authorize implementation
+> Version 0.2 · 30 September 2026 · Reference draft for review · Does not authorize implementation
 
 ## 1. How to use this document
 
@@ -61,6 +61,8 @@ Crow Station is a unified learning platform for publishing and purchasing course
 
 ### 3.1 Required at launch
 
+- Platform staff assistant service: requests, assignment, fees, grace periods, suspension, and termination with separate permissions.
+
 - Responsive website and mobile apps, with Arabic and English interfaces.
 - Accounts, verification at purchase, and administrator, instructor, and staff permissions.
 - Instructor admission, contracts, initial review, and course and content management.
@@ -111,7 +113,7 @@ No Flutter Web, no student downloads of course videos, no watermark in the curre
 | Administration | Platform operations, contracts and agreements, appointing teams, and organizing permissions. |
 | Review team | Initial content acceptance, deciding review depth, publication approval, and accountability for the decision. |
 | Responsible instructor | Manages their dashboard, content, and team; financial matters and withdrawals are exclusive to this person on the instructor-team side. |
-| Contributing instructor or delegated employee | Works only within the delegating instructor's dashboard and assigned permissions. |
+| Contributing instructor or delegated employee | May work for multiple instructors with independent permissions and data boundaries in each dashboard. |
 | Support | Initially may confirm manual payments and activate access; responsibilities are separated later when specialists are hired. |
 | Mentoring team | Responds within assigned paths and services, with conversation history available for continuity. |
 | Advertising team | Appointed by administration; exclusively manages and publishes advertisements. |
@@ -122,15 +124,38 @@ These are functional roles, not final database Role names. Access boundaries for
 
 ### 4.3 Instructor delegation
 
-- The platform defines a permission list from which the instructor assigns permissions to each person.
-- The instructor can grant and revoke access; access administration may also be delegated within permitted limits.
-- A delegate cannot grant permissions beyond their own or change the responsible instructor's permissions.
-- No financial matters, including balances, financial reports, and withdrawals, may be delegated to the instructor's staff or contributors.
-- Multiple instructors may contribute to a course; earnings go to the responsible instructor, who distributes them without an automatic split between contributors' wallets.
+- Each instructor has one dashboard containing their courses and team.
+- A person may assist several instructors simultaneously, with separate permissions and data boundaries for each dashboard.
+- The platform defines the permission list from which instructors select grants for each person.
+- Instructors can grant and revoke access and delegate access management within permitted limits.
+- Delegates cannot grant permissions beyond their own or change the responsible instructor's permissions.
+- No financial matters, including balances, financial reports, and withdrawal requests, may be delegated to instructor staff or contributors.
+- Several instructors may contribute to one course; earnings go to the responsible instructor, who distributes them outside an automatic split between contributor wallets.
 
 ### 4.4 Student sessions
 
 The initial policy permits one signed-in session on one device per student. Signing into the same account on a new device warns the student and signs out the previous device. This is broader than preventing two videos from playing at once and does not apply to instructors. Account-sharing controls may become stricter later. The behavior of an account combining instructor and student roles remains unresolved.
+
+### 4.5 Assistants from the platform's staff
+
+**Agreed — required from the first release:**
+
+- The instructor requests an assistant; the platform proposes a staff member, and the instructor approves before assignment.
+- The instructor chooses the assistant's permissions from the platform's list. The prohibition on delegating financial matters still applies.
+- This is a paid service with modest fees; no numeric amounts have been approved.
+- Offers, prices, and terms are managed from the dashboard, supporting monthly, hourly, task-based, or individually agreed pricing.
+- Fees are managed inside the platform; the instructor can track amounts due and deductions from their dashboard.
+- Fees are deducted only from the instructor's available balance, never from held amounts.
+- If the balance is insufficient, the instructor receives a payment grace period configured from the dashboard. Whether it is global or per offer is unresolved.
+- Service continues during the grace period. If it ends without payment, service is suspended and the assistant loses access to this instructor's dashboard, while work and records are preserved.
+- After payment, restoring the service and permissions requires administration confirmation; payment alone does not automatically restore access.
+- The instructor may terminate the service at any time; amounts due are calculated under the agreed offer terms.
+- Termination immediately revokes access even if financial settlement remains pending, while preserving work and records.
+- Suspension or termination concerns the service relationship with the relevant instructor; it does not delete the assistant's account or permissions with another instructor.
+
+**Future proposal:** This service might be offered as a job posting; its mechanism and phase are undefined.
+
+**Open:** Deduction dates, priority relative to withdrawal requests, collection retries, settlement for work during grace, the deduction recipient, and how the assistant is paid. A prepaid balance and direct payment to an assistant wallet are not assumed. Settlement details do not change the agreed withdrawal deadline.
 
 ## 5. Instructor admission, review, and contracts
 
@@ -177,6 +202,17 @@ Electronic signing details, paper-copy storage, sanction levels, and exactly wha
 - Availability to new purchasers is determined by agreement, with the instructor deciding as the owner.
 - Options include continued sales under an agreement, transferring ownership or selling the course to the platform, or stopping availability to new purchasers.
 - Removing the sales listing does not remove content from existing purchasers' libraries.
+
+### 6.4 Transferring course ownership to another instructor
+
+- Transfer is allowed with approval from administration, the previous instructor, and the new instructor.
+- Course fees and revenue-share terms are agreed anew with the receiving instructor as for a new publication in their account, applying only to sales after transfer.
+- Earnings from earlier sales remain with the previous instructor under the previous agreement, including amounts not yet released or withdrawn.
+- Resetting means starting independent financial accounting for this course under the new instructor; it does not erase earlier records or earnings or reset either instructor's entire balance.
+- Existing students retain purchases and access; transfer does not require them to buy the course again.
+- Responsibility for the course and all existing students passes to the new instructor, including assessments, appeals, and conversations.
+- **Open — next question:** Is the previous instructor's and their team's management access revoked immediately after transfer, while the previous instructor retains access only to historical financial records? The project owner has not answered this question.
+- **Open:** Transfer approval mechanics and effective time, concurrent transactions, and who bears refunds or incomplete-course commitments arising from pre-transfer sales.
 
 ## 7. Student experience, video, and code editor
 
@@ -460,7 +496,7 @@ This prioritization organizes discussion; it does not authorize decisions on the
 | O-12 | Assessment rules | Passing grades, attempts, entry conditions, and settings instructors may change. |
 | O-13 | Reviews | Rejection criteria, text-edit review, and comments without stars if allowed. |
 | O-14 | Audit and privacy | Recorded events, retention, staff access, and lab and conversation logs. |
-| O-15 | Accounts with multiple roles | Applying the one-device policy to instructors who purchase and learn, and team permission boundaries. |
+| O-15 | Multiple-role accounts and teams | Student device policy for multiple-role accounts; previous instructor and team access after ownership transfer. Multiple assistant teams and one dashboard per instructor are settled. |
 | O-16 | Funds and currencies | Payment gateways, currency differences, rounding and fees, withdrawal-threshold conversion, and failed transfers. |
 | O-17 | Package changes | Protecting purchasers' terms when changing switching, credit, and owner-controlled policies. |
 | O-18 | Apps | A separate student app or an initially combined app with roles; mobile administration and instructor functions. |
@@ -514,6 +550,11 @@ These examples can later become test scenarios; they do not mean the functionali
 | AC-15 | The editor works on desktop after entitlement and is absent on mobile; execution is isolated according to a later security design. |
 | AC-16 | Grading appeals are reviewed automatically and sent to the instructor only when the later-approved inability-to-resolve criterion is met. |
 | AC-17 | Arabic queries find relevant English content in agreed reference examples without exposing private content. |
+| AC-18 | One assistant works with multiple instructors under separate permissions; access to one dashboard does not expose another's data. |
+| AC-19 | A platform assistant is assigned only after the instructor requests help and approves the candidate; the instructor grants permissions without financial delegation. |
+| AC-20 | Assistant fees use only available funds; insufficiency starts a dashboard-configured grace period, whose unpaid expiry blocks access and preserves records. |
+| AC-21 | Payment after suspension does not restore permissions without administration confirmation; termination immediately revokes access while financial settlement remains separate. |
+| AC-22 | Course transfer preserves purchases and assigns teaching responsibility to the new instructor; earlier earnings remain with the previous instructor and later sales use the new agreement without erasing history. |
 
 ## 20. Proposed documentation completion plan
 
@@ -563,6 +604,8 @@ Proposed functional areas for study: identity and permissions; catalog and publi
 | Note | Two DB / a database per room | An unapproved source proposal; PostgreSQL is approved and isolation remains open. |
 
 ## 22. Version history
+
+**0.2 — 30 September 2026:** Settled multiple assistant team memberships and one dashboard per instructor. Documented paid platform assistants from the first release, including fees, grace periods, suspension, and termination. Approved course transfer with new financial terms for later sales, preserved previous earnings, and transferred student responsibility. Previous instructor and team access after transfer remains open. Product implementation has not started.
 
 **0.1.1 — September 28, 2026:** Added the companion data-planning reference after the request to continue analysis. No business decisions changed; all new entities and relationships in the companion document are proposals under review.
 

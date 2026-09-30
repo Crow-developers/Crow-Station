@@ -35,12 +35,12 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 <a href="#section-13">13. Checking design sufficiency before writing tables</a>
 <a href="#section-14">14. Version history</a></nav></aside>
 <main>
-<div class="tools"><span>Planning reference · 28 September 2026</span><button onclick="window.print()">Print document</button></div>
-<header class="hero"><div class="eyebrow">CROW STATION · Version 0.1</div><h1>Data planning<br>before table design</h1><p>From product requirements to entities, relationships, and lifecycles. A conceptual proposal showing what we know and what still needs a decision, without assuming the database design is complete.</p><div class="tags"><span>Proposed design for review</span><span>PostgreSQL · Isolation undecided</span><span>No tables or migrations yet</span></div></header>
-<div class="summary"><div><strong>18 domains</strong><span>Proposed entity map</span></div><div><strong>12 decisions</strong><span>Data discussion sequence</span></div><div><strong>Conceptual model</strong><span>Not a final schema</span></div></div>
+<div class="tools"><span>Planning reference · 30 September 2026</span><button onclick="window.print()">Print document</button></div>
+<header class="hero"><div class="eyebrow">CROW STATION · Version 0.2</div><h1>Data planning<br>before table design</h1><p>From product requirements to entities, relationships, and lifecycles. A conceptual proposal showing what we know and what still needs a decision, without assuming the database design is complete.</p><div class="tags"><span>Proposed design for review</span><span>PostgreSQL · Isolation undecided</span><span>No tables or migrations yet</span></div></header>
+<div class="summary"><div><strong>18 domains</strong><span>Proposed entity map</span></div><div><strong>13 decisions</strong><span>Data discussion sequence</span></div><div><strong>Conceptual model</strong><span>Not a final schema</span></div></div>
 <article>
 <blockquote>
-<p>Version 0.1 · 28 September 2026 · Proposed conceptual analysis · Not a final database schema</p>
+<p>Version 0.2 · 30 September 2026 · Proposed conceptual analysis · Not a final database schema</p>
 </blockquote>
 <h2 id="section-1">1. Is the product document enough to design the databases?</h2>
 <p><strong>It is enough to begin analysis and draw a conceptual model, but not to approve all final tables, relationships, and constraints.</strong> We have a broad picture of the product&#39;s behavior, but some rules that change the meaning of ownership, entitlements, balances, and permissions remain undecided.</p>
@@ -264,7 +264,8 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 <li>Participation in teaching a course is separate from staff membership and permission to view financial information.</li>
 <li>Course ownership transfers are recorded historically so changing the current owner does not change the beneficiary of an earlier purchase.</li>
 </ul>
-<p><strong>Open before approving cardinality:</strong> Can a person belong to several instructors&#39; teams at the same time? Can an instructor own more than one workspace? Neither is assumed to be a final decision.</p>
+<p><strong>Agreed — D-01:</strong> A person may assist several instructors simultaneously with separate permissions per dashboard; the platform can supply staff assistants.</p>
+<p><strong>Agreed:</strong> Each instructor has one dashboard; they request a platform assistant, approve the candidate, and define permissions. Service and transfer details follow below.</p>
 <h3>4.3 Isolation alternatives</h3>
 <div class="table-wrap"><table>
 <thead>
@@ -292,6 +293,15 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 </tbody></table></div>
 <p><strong>Technical fact:</strong> PostgreSQL schemas do not provide strict security isolation by themselves; access depends on privileges. Row-level security (RLS) can be considered as an additional layer, with attention to exceptions for owners and roles allowed to bypass it. This informs comparison of alternatives and does not approve a particular isolation mechanism. <a href="https://www.postgresql.org/docs/current/ddl-schemas.html">Schemas</a>, <a href="https://www.postgresql.org/docs/current/ddl-rowsecurity.html">row security policies</a>.</p>
 <p>Isolation must cover files, search, background jobs, and reports, not just instructor dashboard queries. The basic test: membership in one instructor&#39;s dashboard must not expose another dashboard&#39;s data or files.</p>
+<h3>4.4 Assistant service — effects on data</h3>
+<p><strong>Agreed:</strong> The instructor&#39;s request, platform proposal, and instructor approval precede assignment; the instructor sets permissions. Service fees use only their available balance. Service continues during the dashboard-configured grace period, then access stops if unpaid. Records are retained and administration must confirm restoration after payment. The instructor can terminate immediately, with settlement under the offer. The service is in the first release.</p>
+<p><strong>Analytical proposal:</strong> AssistantOffer, AssistantRequest, ServiceAssignment, ServiceCharge, and ServiceLifecycleEvent entities linked to the assistant&#39;s membership, instructor, offer, and accepted terms. Record request, nomination, approval, permission grants, deductions, grace, suspension, termination, and restoration decisions. These are not approved table names.</p>
+<p><strong>Data integrity proposal:</strong> Deductions and withdrawals share protection against double spending of available funds; execution priority needs a decision. Stopping service in one dashboard does not remove other memberships. Separating service records, membership, and financial movements preserves work and history when access is revoked.</p>
+<p><strong>Open:</strong> Deduction timing and retries, grace-period fee settlement, scope of grace configuration, and receipt and onward payment of fees to assistants. An assistant payment account or prepaid balance is not assumed.</p>
+<h3>4.5 Course ownership transfer — financial history and responsibility</h3>
+<p><strong>Agreed:</strong> Administration and both instructors approve, later sales use a new agreement, and earlier earnings remain with the previous instructor. The new instructor assumes all course and existing-student responsibilities while purchases and access are preserved. Resetting starts the course&#39;s accounting under the new instructor; it does not delete history or reset an entire instructor wallet.</p>
+<p><strong>Analytical proposal:</strong> A CourseOwnershipTransfer record contains both parties, approvals, effective time, and references to the previous and new agreements. Each sale&#39;s earnings remain linked to the beneficiary and agreement at sale, rather than inferred solely from the current owner. Service responsibility changes are separate from ownership of earlier earnings.</p>
+<p><strong>Open:</strong> Previous instructor and team access after transfer is the next unanswered question; concurrent transactions, refunds, and incomplete-course commitments also need detail.</p>
 <h2 id="section-5">5. Content, entitlements, and partial sales</h2>
 <p><strong>Agreed:</strong> Students do not pay twice for the same content and retain purchased content without expiration. Instructors control whether additions and updates are available to previous buyers.</p>
 <p>The proposed model separates three things:</p>
@@ -473,7 +483,7 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 <tr>
 <td>User and instructor teams</td>
 <td>Through memberships with permissions</td>
-<td>Multiple teams for one person are the subject of D-01.</td>
+<td>Multiple teams for one person are agreed in D-01; permissions are separate for each dashboard.</td>
 </tr>
 <tr>
 <td>Course and participating instructors</td>
@@ -532,13 +542,13 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 <td>D-01</td>
 <td>Can a person act as a delegate for several instructors at the same time?</td>
 <td>Account-to-membership relationships and permission scope</td>
-<td>Next question.</td>
+<td>Settled: yes, with separate permissions; the instructor requests, approves, and grants permissions to a platform assistant.</td>
 </tr>
 <tr>
 <td>D-02</td>
 <td>Instructor responsibility, workspace boundaries, and content ownership transfers</td>
 <td>Isolation and financial history</td>
-<td>Open; related to O-15 and O-20.</td>
+<td>One dashboard, transfer finances, and student responsibility settled; previous instructor and team access remains open; O-15 and O-20.</td>
 </tr>
 <tr>
 <td>D-03</td>
@@ -600,6 +610,12 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 <td>Physical design and service boundaries</td>
 <td>After ownership and permissions are settled; O-20 and O-21.</td>
 </tr>
+<tr>
+<td>D-13</td>
+<td>Assistant service lifecycle, fees, and settlement</td>
+<td>Memberships, charges, balance, and access suspension</td>
+<td>Core rules settled; collection timing, grace settlement, and assistant payment remain open; O-05 and O-15.</td>
+</tr>
 </tbody></table></div>
 <h2 id="section-13">13. Checking design sufficiency before writing tables</h2>
 <h3>13.1 Scenarios the model must represent</h3>
@@ -630,6 +646,7 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 <li><strong>Implementation and verification plan:</strong> Phases, dependencies, responsibilities, acceptance criteria, and time estimates.</li>
 </ol>
 <h2 id="section-14">14. Version history</h2>
+<p><strong>0.2 — 30 September 2026:</strong> Settled D-01 and part of D-02; added proposed assistant-service and ownership-transfer analysis and D-13. Updated decision status without approving tables or isolation. Previous instructor and team access after transfer remains unanswered.</p>
 <p><strong>0.1 — 28 September 2026:</strong> Responds to the request to continue documentation toward data planning. Adds candidate entities and relationships, separates identity, permissions, ownership, and entitlements, and provides initial lifecycles and an ordered question register. No isolation approach, database count, or final logical/physical model has been approved. No tables, migration files, or product code were created.</p>
 </article>
 <footer>Crow Station · Planning document for review · Source: DATA-PLANNING.en.md</footer>

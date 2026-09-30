@@ -43,12 +43,12 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 <a href="#section-21">21. Traceability to the original feature file</a>
 <a href="#section-22">22. Version history</a></nav></aside>
 <main>
-<div class="tools"><span>Planning reference · 28 September 2026</span><button onclick="window.print()">Print document</button></div>
-<header class="hero"><div class="eyebrow">CROW STATION · Version 0.1.1</div><h1>Product brief<br>and planning decisions</h1><p>One platform for learning, practice, and mentoring. An organized reference for agreed decisions and what remains to be resolved before design and implementation.</p><div class="tags"><span>Draft for review</span><span>Iraq first · Worldwide access</span><span>Website + mobile app</span></div></header>
+<div class="tools"><span>Planning reference · 30 September 2026</span><button onclick="window.print()">Print document</button></div>
+<header class="hero"><div class="eyebrow">CROW STATION · Version 0.2</div><h1>Product brief<br>and planning decisions</h1><p>One platform for learning, practice, and mentoring. An organized reference for agreed decisions and what remains to be resolved before design and implementation.</p><div class="tags"><span>Draft for review</span><span>Iraq first · Worldwide access</span><span>Website + mobile app</span></div></header>
 <div class="summary"><div><strong>September 2027</strong><span>Preliminary launch target</span></div><div><strong>1,000 users</strong><span>Concurrent-user planning target</span></div><div><strong>22 topics</strong><span>Open question register</span></div></div>
 <article>
 <blockquote>
-<p>Version 0.1.1 · September 28, 2026 · Reference draft for review · Does not authorize implementation</p>
+<p>Version 0.2 · 30 September 2026 · Reference draft for review · Does not authorize implementation</p>
 </blockquote>
 <h2 id="section-1">1. How to use this document</h2>
 <p>This document consolidates the project discussion into one reference to organize requirements before design and implementation. It is not a legal contract, a final technical specification, or a promise to launch every idea in the original draft.</p>
@@ -175,18 +175,32 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 <h2 id="section-3">3. Initial release scope and later phases</h2>
 <h3>3.1 Required at launch</h3>
 <ul>
-<li>Responsive website and mobile apps, with Arabic and English interfaces.</li>
-<li>Accounts, verification at purchase, and administrator, instructor, and staff permissions.</li>
-<li>Instructor admission, contracts, initial review, and course and content management.</li>
-<li>Full and partial purchases, electronic and manual payments, refunds, wallets, and withdrawals.</li>
-<li>Subscription packages, promotions, and their administration settings; exact benefits remain to be resolved.</li>
-<li>Protected video, synchronized viewing progress, student dashboard, playlists, and notes.</li>
-<li>A desktop code editor supporting writing, editing, and execution.</li>
-<li>Quiz, test, and challenge tools; automatic grading, including AI grading for code; and certificates.</li>
-<li>Reviews, reports, and text course chats.</li>
-<li>Independent learning paths and mentoring, including around-the-clock coverage by the platform&#39;s mentoring team.</li>
-<li>Advanced semantic and content search across Arabic and English, with filters.</li>
-<li>Notifications, analytics, and audit records; integrations and retention policies will be detailed later.</li>
+<li><p>Platform staff assistant service: requests, assignment, fees, grace periods, suspension, and termination with separate permissions.</p>
+</li>
+<li><p>Responsive website and mobile apps, with Arabic and English interfaces.</p>
+</li>
+<li><p>Accounts, verification at purchase, and administrator, instructor, and staff permissions.</p>
+</li>
+<li><p>Instructor admission, contracts, initial review, and course and content management.</p>
+</li>
+<li><p>Full and partial purchases, electronic and manual payments, refunds, wallets, and withdrawals.</p>
+</li>
+<li><p>Subscription packages, promotions, and their administration settings; exact benefits remain to be resolved.</p>
+</li>
+<li><p>Protected video, synchronized viewing progress, student dashboard, playlists, and notes.</p>
+</li>
+<li><p>A desktop code editor supporting writing, editing, and execution.</p>
+</li>
+<li><p>Quiz, test, and challenge tools; automatic grading, including AI grading for code; and certificates.</p>
+</li>
+<li><p>Reviews, reports, and text course chats.</p>
+</li>
+<li><p>Independent learning paths and mentoring, including around-the-clock coverage by the platform&#39;s mentoring team.</p>
+</li>
+<li><p>Advanced semantic and content search across Arabic and English, with filters.</p>
+</li>
+<li><p>Notifications, analytics, and audit records; integrations and retention policies will be detailed later.</p>
+</li>
 </ul>
 <h3>3.2 Deferred or displayed as “Coming soon”</h3>
 <div class="table-wrap"><table>
@@ -277,7 +291,7 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 </tr>
 <tr>
 <td>Contributing instructor or delegated employee</td>
-<td>Works only within the delegating instructor&#39;s dashboard and assigned permissions.</td>
+<td>May work for multiple instructors with independent permissions and data boundaries in each dashboard.</td>
 </tr>
 <tr>
 <td>Support</td>
@@ -303,14 +317,34 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 <p>These are functional roles, not final database Role names. Access boundaries for the platform&#39;s own staff require a separate permissions matrix.</p>
 <h3>4.3 Instructor delegation</h3>
 <ul>
-<li>The platform defines a permission list from which the instructor assigns permissions to each person.</li>
-<li>The instructor can grant and revoke access; access administration may also be delegated within permitted limits.</li>
-<li>A delegate cannot grant permissions beyond their own or change the responsible instructor&#39;s permissions.</li>
-<li>No financial matters, including balances, financial reports, and withdrawals, may be delegated to the instructor&#39;s staff or contributors.</li>
-<li>Multiple instructors may contribute to a course; earnings go to the responsible instructor, who distributes them without an automatic split between contributors&#39; wallets.</li>
+<li>Each instructor has one dashboard containing their courses and team.</li>
+<li>A person may assist several instructors simultaneously, with separate permissions and data boundaries for each dashboard.</li>
+<li>The platform defines the permission list from which instructors select grants for each person.</li>
+<li>Instructors can grant and revoke access and delegate access management within permitted limits.</li>
+<li>Delegates cannot grant permissions beyond their own or change the responsible instructor&#39;s permissions.</li>
+<li>No financial matters, including balances, financial reports, and withdrawal requests, may be delegated to instructor staff or contributors.</li>
+<li>Several instructors may contribute to one course; earnings go to the responsible instructor, who distributes them outside an automatic split between contributor wallets.</li>
 </ul>
 <h3>4.4 Student sessions</h3>
 <p>The initial policy permits one signed-in session on one device per student. Signing into the same account on a new device warns the student and signs out the previous device. This is broader than preventing two videos from playing at once and does not apply to instructors. Account-sharing controls may become stricter later. The behavior of an account combining instructor and student roles remains unresolved.</p>
+<h3>4.5 Assistants from the platform&#39;s staff</h3>
+<p><strong>Agreed — required from the first release:</strong></p>
+<ul>
+<li>The instructor requests an assistant; the platform proposes a staff member, and the instructor approves before assignment.</li>
+<li>The instructor chooses the assistant&#39;s permissions from the platform&#39;s list. The prohibition on delegating financial matters still applies.</li>
+<li>This is a paid service with modest fees; no numeric amounts have been approved.</li>
+<li>Offers, prices, and terms are managed from the dashboard, supporting monthly, hourly, task-based, or individually agreed pricing.</li>
+<li>Fees are managed inside the platform; the instructor can track amounts due and deductions from their dashboard.</li>
+<li>Fees are deducted only from the instructor&#39;s available balance, never from held amounts.</li>
+<li>If the balance is insufficient, the instructor receives a payment grace period configured from the dashboard. Whether it is global or per offer is unresolved.</li>
+<li>Service continues during the grace period. If it ends without payment, service is suspended and the assistant loses access to this instructor&#39;s dashboard, while work and records are preserved.</li>
+<li>After payment, restoring the service and permissions requires administration confirmation; payment alone does not automatically restore access.</li>
+<li>The instructor may terminate the service at any time; amounts due are calculated under the agreed offer terms.</li>
+<li>Termination immediately revokes access even if financial settlement remains pending, while preserving work and records.</li>
+<li>Suspension or termination concerns the service relationship with the relevant instructor; it does not delete the assistant&#39;s account or permissions with another instructor.</li>
+</ul>
+<p><strong>Future proposal:</strong> This service might be offered as a job posting; its mechanism and phase are undefined.</p>
+<p><strong>Open:</strong> Deduction dates, priority relative to withdrawal requests, collection retries, settlement for work during grace, the deduction recipient, and how the assistant is paid. A prepaid balance and direct payment to an assistant wallet are not assumed. Settlement details do not change the agreed withdrawal deadline.</p>
 <h2 id="section-5">5. Instructor admission, review, and contracts</h2>
 <ol>
 <li>An instructor joins through an application approved by administration or a direct invitation.</li>
@@ -353,6 +387,17 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 <li>Availability to new purchasers is determined by agreement, with the instructor deciding as the owner.</li>
 <li>Options include continued sales under an agreement, transferring ownership or selling the course to the platform, or stopping availability to new purchasers.</li>
 <li>Removing the sales listing does not remove content from existing purchasers&#39; libraries.</li>
+</ul>
+<h3>6.4 Transferring course ownership to another instructor</h3>
+<ul>
+<li>Transfer is allowed with approval from administration, the previous instructor, and the new instructor.</li>
+<li>Course fees and revenue-share terms are agreed anew with the receiving instructor as for a new publication in their account, applying only to sales after transfer.</li>
+<li>Earnings from earlier sales remain with the previous instructor under the previous agreement, including amounts not yet released or withdrawn.</li>
+<li>Resetting means starting independent financial accounting for this course under the new instructor; it does not erase earlier records or earnings or reset either instructor&#39;s entire balance.</li>
+<li>Existing students retain purchases and access; transfer does not require them to buy the course again.</li>
+<li>Responsibility for the course and all existing students passes to the new instructor, including assessments, appeals, and conversations.</li>
+<li><strong>Open — next question:</strong> Is the previous instructor&#39;s and their team&#39;s management access revoked immediately after transfer, while the previous instructor retains access only to historical financial records? The project owner has not answered this question.</li>
+<li><strong>Open:</strong> Transfer approval mechanics and effective time, concurrent transactions, and who bears refunds or incomplete-course commitments arising from pre-transfer sales.</li>
 </ul>
 <h2 id="section-7">7. Student experience, video, and code editor</h2>
 <h3>7.1 Student dashboard</h3>
@@ -746,8 +791,8 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 </tr>
 <tr>
 <td>O-15</td>
-<td>Accounts with multiple roles</td>
-<td>Applying the one-device policy to instructors who purchase and learn, and team permission boundaries.</td>
+<td>Multiple-role accounts and teams</td>
+<td>Student device policy for multiple-role accounts; previous instructor and team access after ownership transfer. Multiple assistant teams and one dashboard per instructor are settled.</td>
 </tr>
 <tr>
 <td>O-16</td>
@@ -872,6 +917,26 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 <tr>
 <td>AC-17</td>
 <td>Arabic queries find relevant English content in agreed reference examples without exposing private content.</td>
+</tr>
+<tr>
+<td>AC-18</td>
+<td>One assistant works with multiple instructors under separate permissions; access to one dashboard does not expose another&#39;s data.</td>
+</tr>
+<tr>
+<td>AC-19</td>
+<td>A platform assistant is assigned only after the instructor requests help and approves the candidate; the instructor grants permissions without financial delegation.</td>
+</tr>
+<tr>
+<td>AC-20</td>
+<td>Assistant fees use only available funds; insufficiency starts a dashboard-configured grace period, whose unpaid expiry blocks access and preserves records.</td>
+</tr>
+<tr>
+<td>AC-21</td>
+<td>Payment after suspension does not restore permissions without administration confirmation; termination immediately revokes access while financial settlement remains separate.</td>
+</tr>
+<tr>
+<td>AC-22</td>
+<td>Course transfer preserves purchases and assigns teaching responsibility to the new instructor; earlier earnings remain with the previous instructor and later sales use the new agreement without erasing history.</td>
 </tr>
 </tbody></table></div>
 <h2 id="section-20">20. Proposed documentation completion plan</h2>
@@ -1062,6 +1127,7 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 </tr>
 </tbody></table></div>
 <h2 id="section-22">22. Version history</h2>
+<p><strong>0.2 — 30 September 2026:</strong> Settled multiple assistant team memberships and one dashboard per instructor. Documented paid platform assistants from the first release, including fees, grace periods, suspension, and termination. Approved course transfer with new financial terms for later sales, preserved previous earnings, and transferred student responsibility. Previous instructor and team access after transfer remains open. Product implementation has not started.</p>
 <p><strong>0.1.1 — September 28, 2026:</strong> Added the companion data-planning reference after the request to continue analysis. No business decisions changed; all new entities and relationships in the companion document are proposals under review.</p>
 <p><strong>0.1 — September 28, 2026:</strong> First structured consolidation of discussion decisions through confirmation of the planning user count and the request to prepare this document. No product implementation, approved database schema, or approved API contracts are included in this release. Future updates will explicitly record decision changes rather than silently changing their meaning.</p>
 </article>
