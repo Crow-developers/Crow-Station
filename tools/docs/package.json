@@ -3,9 +3,13 @@
   "private": true,
   "type": "module",
   "description": "Local rendering of Crow Station planning documents; not product code",
-  "engines": { "node": ">=22.16.0" },
-  "scripts": {
-    "build": "node build-brief.mjs && node build-brief.mjs data"
+  "engines": {
+    "node": ">=22.16.0"
   },
-  "dependencies": { "marked": "17.0.5" }
+  "scripts": {
+    "build": "node build-brief.mjs && node build-brief.mjs data && node build-brief.mjs handoff"
+  },
+  "dependencies": {
+    "marked": "17.0.5"
+  }
 }

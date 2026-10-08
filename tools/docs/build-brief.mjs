@@ -4,13 +4,14 @@ const { marked } = createRequire(import.meta.url)('marked');
 import { fileURLToPath } from 'node:url';
 
 const isData = process.argv[2] === 'data';
-const basename = isData ? 'DATA-PLANNING.ar' : 'PROJECT-BRIEF.ar';
-const version = '0.2';
-const title = isData ? 'تخطيط البيانات والقرارات المؤثرة في التصميم' : 'وثيقة المنتج وقرارات التخطيط';
-const heroTitle = isData ? 'تخطيط البيانات<br>قبل تصميم الجداول' : 'وثيقة المنتج<br>وقرارات التخطيط';
-const description = isData ? 'من متطلبات المنتج إلى الكيانات والعلاقات ودورات الحياة. تصور مفاهيمي يوضح ما نعرفه وما يحتاج إلى قرار، دون افتراض اكتمال تصميم قاعدة البيانات.' : 'منصة واحدة للتعلّم والتطبيق والإرشاد. مرجع منظّم لما اتفقنا عليه، وما نحتاج إلى حسمه قبل التصميم والتنفيذ.';
-const tags = isData ? ['تصميم مقترح للمراجعة','PostgreSQL · العزل لم يُحسم','لا جداول أو ترحيلات بعد'] : ['مسودة للمراجعة','العراق أولاً · الوصول متاح عالمياً','موقع + تطبيق موبايل'];
-const stats = isData ? [['18 مجموعة','خريطة كيانات مقترحة'],['13 قراراً','لترتيب نقاش البيانات'],['نموذج مفاهيمي','ليس مخططاً نهائياً']] : [['سبتمبر 2027','هدف إطلاق مبدئي'],['1,000 مستخدم','هدف تخطيطي للتزامن'],['22 موضوعاً','في سجل الأسئلة المفتوحة']];
+const isHandoff = process.argv[2] === 'handoff';
+const basename = isHandoff ? 'TEAM-HANDOFF.ar' : isData ? 'DATA-PLANNING.ar' : 'PROJECT-BRIEF.ar';
+const version = isHandoff ? '0.1' : '0.2';
+const title = isHandoff ? 'تسليم التحليل والتخطيط للفريق' : isData ? 'تخطيط البيانات والقرارات المؤثرة في التصميم' : 'وثيقة المنتج وقرارات التخطيط';
+const heroTitle = isHandoff ? 'دليل الفريق<br>لاستكمال قرارات المشروع' : isData ? 'تخطيط البيانات<br>قبل تصميم الجداول' : 'وثيقة المنتج<br>وقرارات التخطيط';
+const description = isHandoff ? 'نقطة بداية واضحة للفريق: القرارات الأحدث، ما تغيّر عن الوثائق السابقة، الأسئلة المتبقية، وآلية الإجابة والمراجعة والتسليم.' : isData ? 'من متطلبات المنتج إلى الكيانات والعلاقات ودورات الحياة. تصور مفاهيمي يوضح ما نعرفه وما يحتاج إلى قرار، دون افتراض اكتمال تصميم قاعدة البيانات.' : 'منصة واحدة للتعلّم والتطبيق والإرشاد. مرجع منظّم لما اتفقنا عليه، وما نحتاج إلى حسمه قبل التصميم والتنفيذ.';
+const tags = isHandoff ? ['تحليل وتخطيط فقط','تغييرات لاحقة للإصدار 0.2','سؤال واحد في كل مرة'] : isData ? ['تصميم مقترح للمراجعة','PostgreSQL · العزل لم يُحسم','لا جداول أو ترحيلات بعد'] : ['مسودة للمراجعة','العراق أولاً · الوصول متاح عالمياً','موقع + تطبيق موبايل'];
+const stats = isHandoff ? [['13 قراراً','من آخر نقاشات المشروع'],['24 سؤالاً','خريطة مقترحة للنقاش'],['H-Q01','نقطة الاستئناف الفعلية']] : isData ? [['18 مجموعة','خريطة كيانات مقترحة'],['13 قراراً','لترتيب نقاش البيانات'],['نموذج مفاهيمي','ليس مخططاً نهائياً']] : [['سبتمبر 2027','هدف إطلاق مبدئي'],['1,000 مستخدم','هدف تخطيطي للتزامن'],['22 موضوعاً','في سجل الأسئلة المفتوحة']];
 const source = new URL(`../../docs/${basename}.md`, import.meta.url);
 const destination = new URL(`../../docs/${basename}.html`, import.meta.url);
 const markdown = await readFile(source, 'utf8');
@@ -22,7 +23,7 @@ rendered = rendered.replace(/<h2>([\s\S]*?)<\/h2>/g, (_, title) => {
   return `<h2 id="${id}">${title}</h2>`;
 });
 rendered = rendered.replace(/<h1>[\s\S]*?<\/h1>/, '').replace(/<table>/g, '<div class="table-wrap"><table>').replace(/<\/table>/g, '</table></div>');
-rendered = rendered.replace(/href="(PROJECT-BRIEF\.ar|DATA-PLANNING\.ar)\.md"/g, 'href="$1.html"');
+rendered = rendered.replace(/href="(PROJECT-BRIEF\.ar|DATA-PLANNING\.ar|TEAM-HANDOFF\.ar)\.md"/g, 'href="$1.html"');
 const nav = sections.map(s => `<a href="#${s.id}">${s.title}</a>`).join('\n');
 const html = `<!doctype html>
 <html lang="ar" dir="rtl">
@@ -46,9 +47,9 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 </head>
 <body>
 <div class="layout">
-<aside aria-label="فهرس الوثيقة"><div class="brand"><small>${isData ? 'Data planning / 02' : 'Product planning / 01'}</small>Crow Station</div><div class="nav-label">فهرس الوثيقة · ${sections.length} قسماً</div><nav>${nav}</nav></aside>
+<aside aria-label="فهرس الوثيقة"><div class="brand"><small>${isHandoff ? 'Team handoff / 03' : isData ? 'Data planning / 02' : 'Product planning / 01'}</small>Crow Station</div><div class="nav-label">فهرس الوثيقة · ${sections.length} قسماً</div><nav>${nav}</nav></aside>
 <main>
-<div class="tools"><span>مرجع التخطيط · 30 سبتمبر 2026</span><button onclick="window.print()">طباعة الوثيقة</button></div>
+<div class="tools"><span>مرجع التخطيط · ${isHandoff ? '8 أكتوبر 2026' : '30 سبتمبر 2026'}</span><button onclick="window.print()">طباعة الوثيقة</button></div>
 <header class="hero"><div class="eyebrow">CROW STATION · الإصدار ${version}</div><h1>${heroTitle}</h1><p>${description}</p><div class="tags">${tags.map(tag=>`<span>${tag}</span>`).join('')}</div></header>
 <div class="summary">${stats.map(([value,label])=>`<div><strong>${value}</strong><span>${label}</span></div>`).join('')}</div>
 <article>${rendered}</article>
