@@ -93,6 +93,11 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 <li>Iraq is the initial market, while registration and purchasing from abroad are allowed from the start, including manual payment arrangements.</li>
 <li>The platform interface supports Arabic and English at launch. Instructors choose their content language freely.</li>
 <li><strong>Crow Station</strong> is the preliminary name and may change if a better name is selected.</li>
+<li>The platform includes <strong>B2B institutional training</strong> solutions for companies with dedicated reporting dashboards, and partnerships with Iraqi and Arab universities.</li>
+<li>Supports <strong>live events</strong> such as free webinars and live Q&amp;A sessions where the schedule is set by the course presenter.</li>
+<li>Hosts <strong>periodic competitions</strong> for programming and cybersecurity (CTFs) with prizes and sponsorship partnerships.</li>
+<li>Provides <strong>open resources</strong> for students (free tools, ready project templates) to encourage hands-on learning.</li>
+<li>Supports a <strong>project marketplace</strong> where students can sell their projects and templates with multiple licenses.</li>
 </ul>
 <h3>2.1 Planning assumptions</h3>
 <div class="table-wrap"><table>
@@ -224,7 +229,7 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 </tr>
 <tr>
 <td>General AI features</td>
-<td>Deferred, with an explicit exception for code grading and review of grading appeals in the first release.</td>
+<td>Deferred for full automation, but <strong>adopted</strong> since the first release for: code grading and review of grading appeals, <strong>personal AI Tutor</strong>, <strong>automatic lesson summaries</strong>, <strong>smart course recommendations</strong>, and <strong>initial grading of text (Essay) questions</strong>.</td>
 </tr>
 <tr>
 <td>Translation and dubbing</td>
@@ -253,6 +258,22 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 <tr>
 <td>Bank integration for withdrawals</td>
 <td>A future possibility, not a first-release commitment.</td>
+</tr>
+<tr>
+<td>Cryptocurrencies and installment payments</td>
+<td>Open for discussion; depends on future partnerships with payment providers.</td>
+</tr>
+<tr>
+<td>Virtual and augmented reality (VR/AR)</td>
+<td>Open for discussion; deferred to a later phase after the core infrastructure stabilizes.</td>
+</tr>
+<tr>
+<td>Live streaming for paid courses</td>
+<td>Open for discussion; starts with free webinars and Q&amp;A sessions first.</td>
+</tr>
+<tr>
+<td>Hackathon environment (48 hours)</td>
+<td>Open for discussion; deferred to a phase after the periodic competitions launch.</td>
 </tr>
 </tbody></table></div>
 <h3>3.3 Currently excluded</h3>
@@ -435,6 +456,7 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 <li>Questions with predetermined answers are graded automatically without AI.</li>
 <li>Coding answers are graded by AI according to the owner&#39;s decision; this is an exception to deferring general AI features.</li>
 <li>The platform has fixed standards, with question-specific criteria possible within them; the exact boundaries remain open.</li>
+<li><strong>Automated Proctoring:</strong> Adopted for critical assessments (such as final certificates) to ensure integrity, with advanced anti-cheating mechanisms (randomized questions, time pressure, browser lockdown). Technical details deferred to design phase.</li>
 </ul>
 <h3>8.2 Appeals</h3>
 <ol>
@@ -646,6 +668,52 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 <td>Deferred for discussion, not an instructor requirement.</td>
 </tr>
 </tbody></table></div>
+<h3>14.3 Gamification and Adaptive Learning</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Decision</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Points and Badges system</td>
+<td>Adopted in first version to motivate students.</td>
+</tr>
+<tr>
+<td>Leaderboards</td>
+<td>Adopted (weekly, monthly, all-time).</td>
+</tr>
+<tr>
+<td>Adaptive Learning</td>
+<td>Adopted, adjusts content difficulty based on student performance.</td>
+</tr>
+<tr>
+<td>AI-personalized learning paths</td>
+<td>Adopted, generated based on student goals and level.</td>
+</tr>
+</tbody></table></div>
+<h3>14.4 Collaborative Services</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Decision</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Group projects</td>
+<td>Adopted with Code Review between team members, but collaborative editor and task division (Kanban) are open.</td>
+</tr>
+<tr>
+<td>Virtual study rooms</td>
+<td>Adopted with Pair Programming.</td>
+</tr>
+<tr>
+<td>Alumni network</td>
+<td>Open for discussion, structure and LinkedIn integration details not settled.</td>
+</tr>
+</tbody></table></div>
 <h2 id="section-15">15. Protection and audit</h2>
 <ul>
 <li>Protection covers content, particularly video, account-sharing prevention, and checking content rights and violations.</li>
@@ -654,6 +722,12 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 <li>Recording user and instructor activity is an explicit requirement; before design it must become a defined event list, audit record, permission model, and retention period.</li>
 <li>The rights-checking mechanism does not automatically override instructor approval and first-review policy; subsequent monitoring remains open for design.</li>
 <li>Protection details must not be presented as an absolute guarantee against leakage.</li>
+<li><strong>Web Application Firewall (WAF):</strong> Adopted with custom rules to protect paid courses from DDoS and Brute Force attacks.</li>
+<li><strong>Two-Factor Authentication (MFA):</strong> Mandatory for instructors and admins (method not yet specified: TOTP, WebAuthn, or Hardware Keys).</li>
+<li><strong>Session management:</strong> Maximum two concurrent devices (phone and computer) per account.</li>
+<li><strong>Right to be Forgotten:</strong> Adopted, users can request permanent deletion of all their data.</li>
+<li><strong>Accessibility:</strong> Comply with WCAG 2.1 AA standard from first version.</li>
+<li><strong>Account recovery:</strong> Dual strategy (security questions + identity verification).</li>
 </ul>
 <h2 id="section-16">16. Technology direction and what is settled</h2>
 <div class="table-wrap"><table>
@@ -1130,6 +1204,14 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 <p><strong>0.2 — 30 September 2026:</strong> Settled multiple assistant team memberships and one dashboard per instructor. Documented paid platform assistants from the first release, including fees, grace periods, suspension, and termination. Approved course transfer with new financial terms for later sales, preserved previous earnings, and transferred student responsibility. Previous instructor and team access after transfer remains open. Product implementation has not started.</p>
 <p><strong>0.1.1 — September 28, 2026:</strong> Added the companion data-planning reference after the request to continue analysis. No business decisions changed; all new entities and relationships in the companion document are proposals under review.</p>
 <p><strong>0.1 — September 28, 2026:</strong> First structured consolidation of discussion decisions through confirmation of the planning user count and the request to prepare this document. No product implementation, approved database schema, or approved API contracts are included in this release. Future updates will explicitly record decision changes rather than silently changing their meaning.</p>
+<h3>23. B2B Institutional Training and Partnerships</h3>
+<ul>
+<li><strong>Institutional solutions:</strong> The platform provides company dashboards for employee training with detailed progress and achievement reports.</li>
+<li><strong>Employment access:</strong> Allows employers to access top student records (with student consent) for employment purposes.</li>
+<li><strong>University partnerships:</strong> Agreements with Iraqi and Arab universities to grant joint accredited certificates.</li>
+<li><strong>Student discounts:</strong> Special discounts for university students upon verification of their university cards.</li>
+<li><strong>Continuing education hours (CEUs/CPEs):</strong> Provide accredited hours for professionals who need them to renew their professional certificates.</li>
+</ul>
 </article>
 <footer>Crow Station · Planning document for review · Source: PROJECT-BRIEF.en.md</footer>
 </main></div>

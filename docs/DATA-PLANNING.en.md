@@ -69,6 +69,11 @@ The English names provide a shared team vocabulary only; they are not final tabl
 | Certificates | Certificate, VerificationToken | Issuance and public verification without exposing the student's profile | 8 |
 | Community | CourseConversation, Message, ModerationAction, Review, ReviewRevision, Report | Conversations, reviews, moderation decisions, and reports | 12 |
 | Shared services | Notification, DeliveryAttempt, Preference, AdCampaign, AuditEvent, ApprovalRequest | Notifications, advertising, auditing, and approvals | 10, 13, 15 |
+| B2B Training | B2BOrganization, B2BMembership, B2BReporting, B2BContract | Company accounts, their employee memberships, their progress reports, and training agreements | 16 |
+| Achievements and Gamification | Achievement, Badge, LeaderboardEntry, StreakLog | Points and badges system, leaderboards, and streak logging | 14.3 |
+| Collaborative Projects | GroupProject, ProjectTeam, TeamMembership, ProjectSubmission | Team projects, their reviews, and deliverables | 14.4 |
+| Lab State | LabSessionState, LabEnvironmentTemplate, LabResourceQuota | Preserve lab state between sessions, templates, and resource limits | NQ-11, NQ-16 |
+| External Integrations | OAuthConnection, ExternalIdentity | Link GitHub/GitLab accounts and external identities | NQ-01 |
 
 Detailed tables for Crow Store, Crow Hub, VS, or rooms will not be created now. We retain their expected boundaries and links and design them when their functions are resolved; displaying “Coming soon” alone does not require a complete commerce or repository database.
 
@@ -85,6 +90,7 @@ Detailed tables for Crow Store, Crow Hub, VS, or rooms will not be created now. 
 - A membership links a person's account to a workspace and carries permission grants and their activation and revocation dates.
 - Participation in teaching a course is separate from staff membership and permission to view financial information.
 - Course ownership transfers are recorded historically so changing the current owner does not change the beneficiary of an earlier purchase.
+- Linking student account to GitHub/GitLab via OAuthConnection provides external proof of projects and facilitates displaying them in their profile. The relationship is optional and does not replace official contact methods (Email/Phone).
 
 **Agreed — D-01:** A person may assist several instructors simultaneously with separate permissions per dashboard; the platform can supply staff assistants.
 
@@ -291,6 +297,10 @@ We will ask one question at a time and update this table and the product documen
 | D-11 | Retention, deletion, auditing, and private content | Archiving, privacy, and backups | Open; O-14 and O-22. |
 | D-12 | Approval of isolation approach, storage map, and operations | Physical design and service boundaries | After ownership and permissions are settled; O-20 and O-21. |
 | D-13 | Assistant service lifecycle, fees, and settlement | Memberships, charges, balance, and access suspension | Core rules settled; collection timing, grace settlement, and assistant payment remain open; O-05 and O-15. |
+| D-14 | Resource limits per lab session (CPU, RAM, Network, execution duration) | LabSessionState and LabResourceQuota entities | Open |
+| D-15 | Achievement relationship to the entity it is earned from (course, lesson, assessment, project) | Achievement and Badges design and multiple sources | Open |
+| D-16 | Group projects and their deliverables data model | GroupProject, ProjectSubmission, TeamMembership | Open |
+| D-17 | B2BOrganization lifecycle and its relationship to User and B2BMembership | Institutional training model and its agreements | Open |
 
 ## 13. Checking design sufficiency before writing tables
 

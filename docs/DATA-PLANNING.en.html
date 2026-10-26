@@ -251,6 +251,36 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 <td>Notifications, advertising, auditing, and approvals</td>
 <td>10, 13, 15</td>
 </tr>
+<tr>
+<td>B2B Training</td>
+<td>B2BOrganization, B2BMembership, B2BReporting, B2BContract</td>
+<td>Company accounts, their employee memberships, their progress reports, and training agreements</td>
+<td>16</td>
+</tr>
+<tr>
+<td>Achievements and Gamification</td>
+<td>Achievement, Badge, LeaderboardEntry, StreakLog</td>
+<td>Points and badges system, leaderboards, and streak logging</td>
+<td>14.3</td>
+</tr>
+<tr>
+<td>Collaborative Projects</td>
+<td>GroupProject, ProjectTeam, TeamMembership, ProjectSubmission</td>
+<td>Team projects, their reviews, and deliverables</td>
+<td>14.4</td>
+</tr>
+<tr>
+<td>Lab State</td>
+<td>LabSessionState, LabEnvironmentTemplate, LabResourceQuota</td>
+<td>Preserve lab state between sessions, templates, and resource limits</td>
+<td>NQ-11, NQ-16</td>
+</tr>
+<tr>
+<td>External Integrations</td>
+<td>OAuthConnection, ExternalIdentity</td>
+<td>Link GitHub/GitLab accounts and external identities</td>
+<td>NQ-01</td>
+</tr>
 </tbody></table></div>
 <p>Detailed tables for Crow Store, Crow Hub, VS, or rooms will not be created now. We retain their expected boundaries and links and design them when their functions are resolved; displaying “Coming soon” alone does not require a complete commerce or repository database.</p>
 <h2 id="section-4">4. Identity and instructor dashboard boundaries</h2>
@@ -263,6 +293,7 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 <li>A membership links a person&#39;s account to a workspace and carries permission grants and their activation and revocation dates.</li>
 <li>Participation in teaching a course is separate from staff membership and permission to view financial information.</li>
 <li>Course ownership transfers are recorded historically so changing the current owner does not change the beneficiary of an earlier purchase.</li>
+<li>Linking student account to GitHub/GitLab via OAuthConnection provides external proof of projects and facilitates displaying them in their profile. The relationship is optional and does not replace official contact methods (Email/Phone).</li>
 </ul>
 <p><strong>Agreed — D-01:</strong> A person may assist several instructors simultaneously with separate permissions per dashboard; the platform can supply staff assistants.</p>
 <p><strong>Agreed:</strong> Each instructor has one dashboard; they request a platform assistant, approve the candidate, and define permissions. Service and transfer details follow below.</p>
@@ -615,6 +646,30 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 <td>Assistant service lifecycle, fees, and settlement</td>
 <td>Memberships, charges, balance, and access suspension</td>
 <td>Core rules settled; collection timing, grace settlement, and assistant payment remain open; O-05 and O-15.</td>
+</tr>
+<tr>
+<td>D-14</td>
+<td>Resource limits per lab session (CPU, RAM, Network, execution duration)</td>
+<td>LabSessionState and LabResourceQuota entities</td>
+<td>Open</td>
+</tr>
+<tr>
+<td>D-15</td>
+<td>Achievement relationship to the entity it is earned from (course, lesson, assessment, project)</td>
+<td>Achievement and Badges design and multiple sources</td>
+<td>Open</td>
+</tr>
+<tr>
+<td>D-16</td>
+<td>Group projects and their deliverables data model</td>
+<td>GroupProject, ProjectSubmission, TeamMembership</td>
+<td>Open</td>
+</tr>
+<tr>
+<td>D-17</td>
+<td>B2BOrganization lifecycle and its relationship to User and B2BMembership</td>
+<td>Institutional training model and its agreements</td>
+<td>Open</td>
 </tr>
 </tbody></table></div>
 <h2 id="section-13">13. Checking design sufficiency before writing tables</h2>

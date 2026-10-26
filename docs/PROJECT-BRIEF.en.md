@@ -31,6 +31,11 @@ Crow Station is a unified learning platform for publishing and purchasing course
 - Iraq is the initial market, while registration and purchasing from abroad are allowed from the start, including manual payment arrangements.
 - The platform interface supports Arabic and English at launch. Instructors choose their content language freely.
 - **Crow Station** is the preliminary name and may change if a better name is selected.
+- The platform includes **B2B institutional training** solutions for companies with dedicated reporting dashboards, and partnerships with Iraqi and Arab universities.
+- Supports **live events** such as free webinars and live Q&A sessions where the schedule is set by the course presenter.
+- Hosts **periodic competitions** for programming and cybersecurity (CTFs) with prizes and sponsorship partnerships.
+- Provides **open resources** for students (free tools, ready project templates) to encourage hands-on learning.
+- Supports a **project marketplace** where students can sell their projects and templates with multiple licenses.
 
 ### 2.1 Planning assumptions
 
@@ -83,7 +88,7 @@ Crow Station is a unified learning platform for publishing and purchasing course
 | Crow Store | Prepare its foundations and display “Coming soon”; sales are inactive at launch. |
 | Crow Hub | GitHub-like repositories for students and the platform, with dedicated hosting; display “Coming soon”; details later. |
 | VS competitions | Included in the plan, displayed as “Coming soon,” and inactive at launch. |
-| General AI features | Deferred, with an explicit exception for code grading and review of grading appeals in the first release. |
+| General AI features | Deferred for full automation, but **adopted** since the first release for: code grading and review of grading appeals, **personal AI Tutor**, **automatic lesson summaries**, **smart course recommendations**, and **initial grading of text (Essay) questions**. |
 | Translation and dubbing | A separate deferred discussion; neither a launch date nor a provider is selected. |
 | Rooms and labs | Details and activation date are unresolved; they are not automatically included in or excluded from launch. |
 | Streak | Starts with rooms and expands later, so its launch depends on the room decision. |
@@ -91,6 +96,10 @@ Crow Station is a unified learning platform for publishing and purchasing course
 | Choosing a particular mentor | Later releases; the initial service uses a mentoring team. |
 | Course chat attachments | Future feature; the initial release is text-only. |
 | Bank integration for withdrawals | A future possibility, not a first-release commitment. |
+| Cryptocurrencies and installment payments | Open for discussion; depends on future partnerships with payment providers. |
+| Virtual and augmented reality (VR/AR) | Open for discussion; deferred to a later phase after the core infrastructure stabilizes. |
+| Live streaming for paid courses | Open for discussion; starts with free webinars and Q&A sessions first. |
+| Hackathon environment (48 hours) | Open for discussion; deferred to a phase after the periodic competitions launch. |
 
 ### 3.3 Currently excluded
 
@@ -254,7 +263,7 @@ A professional dashboard brings together courses, purchases, progress, assessmen
 - Questions with predetermined answers are graded automatically without AI.
 - Coding answers are graded by AI according to the owner's decision; this is an exception to deferring general AI features.
 - The platform has fixed standards, with question-specific criteria possible within them; the exact boundaries remain open.
-
+- **Automated Proctoring:** Adopted for critical assessments (such as final certificates) to ensure integrity, with advanced anti-cheating mechanisms (randomized questions, time pressure, browser lockdown). Technical details deferred to design phase.
 ### 8.2 Appeals
 
 1. The student submits a grading appeal.
@@ -448,6 +457,22 @@ The instructor dashboard shows sales, views, student progress, and assessment re
 | VS | Competitions in the plan without a defined mechanism; “Coming soon.” |
 | Streak | Applies to rooms first, then expands; no calculation rule is approved yet. |
 | Translation and dubbing | Deferred for discussion, not an instructor requirement. |
+### 14.3 Gamification and Adaptive Learning
+
+| Feature | Decision |
+| --- | --- |
+| Points and Badges system | Adopted in first version to motivate students. |
+| Leaderboards | Adopted (weekly, monthly, all-time). |
+| Adaptive Learning | Adopted, adjusts content difficulty based on student performance. |
+| AI-personalized learning paths | Adopted, generated based on student goals and level. |
+
+### 14.4 Collaborative Services
+
+| Service | Decision |
+| --- | --- |
+| Group projects | Adopted with Code Review between team members, but collaborative editor and task division (Kanban) are open. |
+| Virtual study rooms | Adopted with Pair Programming. |
+| Alumni network | Open for discussion, structure and LinkedIn integration details not settled. |
 
 ## 15. Protection and audit
 
@@ -457,6 +482,12 @@ The instructor dashboard shows sales, views, student progress, and assessment re
 - Recording user and instructor activity is an explicit requirement; before design it must become a defined event list, audit record, permission model, and retention period.
 - The rights-checking mechanism does not automatically override instructor approval and first-review policy; subsequent monitoring remains open for design.
 - Protection details must not be presented as an absolute guarantee against leakage.
+- **Web Application Firewall (WAF):** Adopted with custom rules to protect paid courses from DDoS and Brute Force attacks.
+- **Two-Factor Authentication (MFA):** Mandatory for instructors and admins (method not yet specified: TOTP, WebAuthn, or Hardware Keys).
+- **Session management:** Maximum two concurrent devices (phone and computer) per account.
+- **Right to be Forgotten:** Adopted, users can request permanent deletion of all their data.
+- **Accessibility:** Comply with WCAG 2.1 AA standard from first version.
+- **Account recovery:** Dual strategy (security questions + identity verification).
 
 ## 16. Technology direction and what is settled
 
@@ -610,3 +641,11 @@ Proposed functional areas for study: identity and permissions; catalog and publi
 **0.1.1 — September 28, 2026:** Added the companion data-planning reference after the request to continue analysis. No business decisions changed; all new entities and relationships in the companion document are proposals under review.
 
 **0.1 — September 28, 2026:** First structured consolidation of discussion decisions through confirmation of the planning user count and the request to prepare this document. No product implementation, approved database schema, or approved API contracts are included in this release. Future updates will explicitly record decision changes rather than silently changing their meaning.
+
+### 23. B2B Institutional Training and Partnerships
+
+- **Institutional solutions:** The platform provides company dashboards for employee training with detailed progress and achievement reports.
+- **Employment access:** Allows employers to access top student records (with student consent) for employment purposes.
+- **University partnerships:** Agreements with Iraqi and Arab universities to grant joint accredited certificates.
+- **Student discounts:** Special discounts for university students upon verification of their university cards.
+- **Continuing education hours (CEUs/CPEs):** Provide accredited hours for professionals who need them to renew their professional certificates.
