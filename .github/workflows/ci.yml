@@ -1,0 +1,341 @@
+# Continuous integration: every pull request and every push to a long-lived branch.
+# The single required status check for branch protection is "CI / ci-success".
+name: CI
+
+on:
+  pull_request:
+    branches: [develop, staging, main]
+  push:
+    branches: [develop, staging, main]
+  merge_group:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  DOTNET_NOLOGO: "true"
+  DOTNET_CLI_TELEMETRY_OPTOUT: "true"
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: "true"
+  NEXT_TELEMETRY_DISABLED: "1"
+
+jobs:
+  # Decide which parts changed so unrelated jobs are skipped (the gate still reports success).
+  changes:
+    name: Detect changes
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      backend: ${{ steps.filter.outputs.backend }}
+      web: ${{ steps.filter.outputs.web }}
+      docker: ${{ steps.filter.outputs.docker }}
+      workflows: ${{ steps.filter.outputs.workflows }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4.0.3
+        id: filter
+        with:
+          filters: |
+            backend:
+              - 'backend/**'
+              - '.editorconfig'
+              - '.github/workflows/ci.yml'
+            web:
+              - 'frontend/web/**'
+              - '.github/workflows/ci.yml'
+            docker:
+              - '**/Dockerfile'
+              - '**/.dockerignore'
+              - 'compose.yaml'
+              - 'backend/**'
+              - 'frontend/web/**'
+              - '.github/workflows/ci.yml'
+            workflows:
+              - '.github/**'
+
+  backend:
+    name: Backend · build, lint, test
+    needs: changes
+    if: needs.changes.outputs.backend == 'true' || github.event_name != 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: backend/global.json
+          cache: true
+          cache-dependency-path: backend/**/packages.lock.json
+
+      - name: Restore (locked)
+        run: |
+          dotnet tool restore
+          dotnet restore CrowStation.slnx --locked-mode
+
+      - name: Verify formatting and code style
+        run: dotnet format CrowStation.slnx --verify-no-changes --no-restore --verbosity minimal
+
+      - name: Build (warnings are errors)
+        run: dotnet build CrowStation.slnx --configuration Release --no-restore
+
+      - name: Test (unit, architecture, integration with Testcontainers)
+        run: >
+          dotnet test --solution CrowStation.slnx
+          --configuration Release --no-build
+          --results-directory "$GITHUB_WORKSPACE/backend/TestResults"
+          --report-trx
+          --coverage --coverage-output-format cobertura --coverage-settings coverage.config
+
+      - name: Coverage summary
+        if: ${{ !cancelled() }}
+        run: |
+          dotnet tool run reportgenerator \
+            -reports:"TestResults/**/*.cobertura.xml" \
+            -targetdir:TestResults/coverage \
+            -reporttypes:"MarkdownSummaryGithub;Cobertura;HtmlInline"
+          cat TestResults/coverage/SummaryGithub.md >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: ${{ !cancelled() }}
+        with:
+          name: backend-test-results
+          path: backend/TestResults
+          retention-days: 14
+          if-no-files-found: warn
+
+  web:
+    name: Web · lint, typecheck, test, build
+    needs: changes
+    if: needs.changes.outputs.web == 'true' || github.event_name != 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: frontend/web
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: frontend/web/.nvmrc
+          cache: npm
+          cache-dependency-path: frontend/web/package-lock.json
+
+      - name: Install (clean, from lockfile)
+        run: npm ci --no-audit --no-fund
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Formatting
+        run: npm run format:check
+
+      - name: Unit tests with coverage
+        run: npm run test:coverage
+        env:
+          CI: "true"
+
+      - name: Production build
+        run: npm run build
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: ${{ !cancelled() }}
+        with:
+          name: web-test-results
+          path: |
+            frontend/web/coverage
+            frontend/web/test-results
+          retention-days: 14
+          if-no-files-found: warn
+
+  docker:
+    name: Docker · ${{ matrix.image }} (lint, build, scan)
+    needs: changes
+    if: needs.changes.outputs.docker == 'true' || github.event_name != 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    permissions:
+      contents: read
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - image: api
+            context: backend
+          - image: web
+            context: frontend/web
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Lint Dockerfile
+        uses: hadolint/hadolint-action@06be81baf89a55ffd0e24b8f04a4185738dd3387 # v3.5.0
+        with:
+          dockerfile: ${{ matrix.context }}/Dockerfile
+          config: .hadolint.yaml
+
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+
+      - name: Build image
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          context: ${{ matrix.context }}
+          load: true
+          push: false
+          tags: crow-station-${{ matrix.image }}:ci
+          build-args: VERSION=0.0.0-ci.${{ github.run_number }}
+          cache-from: type=gha,scope=${{ matrix.image }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.image }}
+
+      - name: Scan image for vulnerabilities (fail on fixable HIGH/CRITICAL)
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          image-ref: crow-station-${{ matrix.image }}:ci
+          scanners: vuln
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          exit-code: "1"
+          format: table
+
+      - name: Export scan as SARIF
+        if: ${{ !cancelled() }}
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          image-ref: crow-station-${{ matrix.image }}:ci
+          scanners: vuln
+          format: sarif
+          output: trivy-${{ matrix.image }}.sarif
+          skip-setup-trivy: true
+
+      - name: Upload scan to GitHub code scanning
+        # Forks get a read-only token, so uploads only run for branches of this repository.
+        if: ${{ !cancelled() && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
+        uses: github/codeql-action/upload-sarif@9b3254085494b55a0f7c4c2b3d2d52cc712ce370 # v4.39.1
+        with:
+          sarif_file: trivy-${{ matrix.image }}.sarif
+          category: trivy-${{ matrix.image }}
+
+  smoke:
+    name: Smoke test · full stack with Docker Compose
+    needs: [changes, docker]
+    if: needs.changes.outputs.docker == 'true' || github.event_name != 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Start the stack
+        run: |
+          cp .env.example .env
+          docker compose up --detach --build --wait --wait-timeout 300
+
+      - name: Check API and web
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://localhost:8080/health/ready; then break; fi
+            echo "API not ready yet ($attempt)"; sleep 2
+          done
+          echo
+          curl -fsS http://localhost:8080/health/ready | grep -q '"status":"Healthy"'
+          curl -fsS http://localhost:8080/api/v1/diagnostics/time | grep -q utcNow
+          curl -fsS http://localhost:3000/api/health | grep -q Healthy
+          curl -fsS http://localhost:3000/ | grep -q "Crow Station"
+          curl -fsSI http://localhost:3000/ | grep -qi "x-frame-options: DENY"
+
+      - name: Logs on failure
+        if: failure()
+        run: docker compose logs --no-color
+
+      - name: Stop the stack
+        if: always()
+        run: docker compose down --volumes
+
+  workflows:
+    name: Lint workflows
+    needs: changes
+    if: needs.changes.outputs.workflows == 'true' || github.event_name != 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: actionlint
+        run: docker run --rm -v "$PWD:/repo" -w /repo rhysd/actionlint:1.7.12 -color
+
+  secrets:
+    name: Secret scan
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: gitleaks
+        run: >
+          docker run --rm -v "$PWD:/repo" zricethezav/gitleaks:v8.30.1
+          git /repo --redact --verbose --config /repo/.gitleaks.toml
+
+  dependency-review:
+    name: Dependency review
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v5.0.0
+        with:
+          fail-on-severity: high
+          deny-licenses: GPL-3.0-only, GPL-3.0-or-later, AGPL-3.0-only, AGPL-3.0-or-later
+          comment-summary-in-pr: on-failure
+
+  # One stable check to require in branch protection. Skipped jobs count as success, failures do not.
+  ci-success:
+    name: ci-success
+    if: always()
+    needs: [changes, backend, web, docker, smoke, workflows, secrets, dependency-review]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    steps:
+      - name: All required jobs passed
+        env:
+          RESULTS: ${{ join(needs.*.result, ' ') }}
+        run: |
+          echo "Job results: $RESULTS"
+          for result in $RESULTS; do
+            if [[ "$result" == "failure" || "$result" == "cancelled" ]]; then
+              echo "::error::At least one CI job did not succeed."
+              exit 1
+            fi
+          done

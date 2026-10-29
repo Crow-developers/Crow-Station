@@ -1,0 +1,5 @@
+# Dockerfile linting rules (hadolint). Fail on warnings and errors.
+failure-threshold: warning
+trustedRegistries:
+  - mcr.microsoft.com
+  - docker.io
