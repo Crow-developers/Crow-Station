@@ -48,3 +48,10 @@ Multiple assistant teams, one dashboard per instructor, launch assistant service
 ## Decision batch — 30 September 2026
 
 Product and data planning documents are version 0.2. This batch consolidates assistant-service and course-transfer answers, preserving the final unanswered question. Arabic is published on plan and plan-ar and English on plan-en; no merge to main or promotion of drafts to official documentation.
+
+## Session — 29 October 2026
+
+- H-Q01–H-Q04 were settled and decisions H-D39–H-D43 recorded in handoff 0.2 and in `docs/DECISION-CARDS.en.md`; H-D09 was superseded by H-D40.
+- Arabic was published on plan and plan-ar at the same commit, and English on plan-en, together with full translations of the team handoff and the exploratory session log.
+- Session summary for the team: `docs/SESSION-HANDOFF-2026-10-29.en.md`.
+- The decisions are not yet merged into the product and data documents (still 0.2), and docs, develop, staging, and main are unchanged.
