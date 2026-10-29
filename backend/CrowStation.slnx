@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/CrowStation.Api/CrowStation.Api.csproj" />
+    <Project Path="src/CrowStation.Application/CrowStation.Application.csproj" />
+    <Project Path="src/CrowStation.Domain/CrowStation.Domain.csproj" />
+    <Project Path="src/CrowStation.Infrastructure/CrowStation.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/CrowStation.Api.IntegrationTests/CrowStation.Api.IntegrationTests.csproj" />
+    <Project Path="tests/CrowStation.Application.UnitTests/CrowStation.Application.UnitTests.csproj" />
+    <Project Path="tests/CrowStation.Architecture.Tests/CrowStation.Architecture.Tests.csproj" />
+    <Project Path="tests/CrowStation.Domain.UnitTests/CrowStation.Domain.UnitTests.csproj" />
+  </Folder>
+</Solution>
