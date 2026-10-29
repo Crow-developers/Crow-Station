@@ -10,13 +10,13 @@ COPY src/CrowStation.Domain/*.csproj src/CrowStation.Domain/packages.lock.json s
 COPY src/CrowStation.Application/*.csproj src/CrowStation.Application/packages.lock.json src/CrowStation.Application/
 COPY src/CrowStation.Infrastructure/*.csproj src/CrowStation.Infrastructure/packages.lock.json src/CrowStation.Infrastructure/
 COPY src/CrowStation.Api/*.csproj src/CrowStation.Api/packages.lock.json src/CrowStation.Api/
-RUN --mount=type=cache,id=nuget,target=/root/.nuget/packages \
-    dotnet restore src/CrowStation.Api/CrowStation.Api.csproj --locked-mode
+# Packages are restored into this layer (not a cache mount) so they are always cached together with it;
+# otherwise a cached restore layer can meet an empty package folder and publish fails with NETSDK1064.
+RUN dotnet restore src/CrowStation.Api/CrowStation.Api.csproj --locked-mode
 
 COPY src/ src/
 ARG VERSION=0.0.0-local
-RUN --mount=type=cache,id=nuget,target=/root/.nuget/packages \
-    dotnet publish src/CrowStation.Api/CrowStation.Api.csproj \
+RUN dotnet publish src/CrowStation.Api/CrowStation.Api.csproj \
       --configuration Release \
       --no-restore \
       --output /app \
