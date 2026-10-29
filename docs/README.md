@@ -1,10 +1,12 @@
 # Crow Station Documentation
 
+**For the team — start here:** [Formatted handoff](TEAM-HANDOFF.en.html) · [Editable handoff source](TEAM-HANDOFF.en.md), version 0.2, 29 October 2026. It contains decisions newer than version 0.2 of the documents below, and the current resume point: **H-Q05** (refund calculation and lesson values). The full exploratory session log is in [PLATFORM-DECISIONS-LOG.en.md](PLATFORM-DECISIONS-LOG.en.md).
+
 This directory is a reference for product analysis and planning, not a software implementation.
 
 - **Product document:** [Formatted reading version](PROJECT-BRIEF.en.html) · [Editable source](PROJECT-BRIEF.en.md).
 - **Data planning:** [Formatted reading version](DATA-PLANNING.en.html) · [Editable source](DATA-PLANNING.en.md).
-- **Decision cards:** [The project owner's answers, one question at a time](DECISION-CARDS.en.md), starting 29 October 2026. Latest: H-Q01 (H-D39) and H-Q02 (H-D40, superseding H-D09). Next question: H-Q03.
+- **Decision cards:** [The project owner's answers, one question at a time](DECISION-CARDS.en.md), starting 29 October 2026. Settled so far: H-Q01 to H-Q04 (H-D39 to H-D43; H-D40 supersedes H-D09).
 - **To begin reviewing:** Read vision and scope (2–3), the rules for your area of interest, then the open questions (17).
 - **For next steps:** See the documentation completion plan (20). System architecture, data model, and API details are not yet approved.
 

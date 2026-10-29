@@ -9,4 +9,4 @@ npm install
 npm run build
 ```
 
-The command regenerates the product document and data planning document. The generator does not contact an external service; only dependency installation requires access to the npm registry. The marked library version is pinned. This is a documentation tool, not application setup for Crow Station.
+The command regenerates the product document, the data planning document, and the team handoff. To generate the handoff alone: `node build-brief.mjs handoff`. The generator does not contact an external service; only dependency installation requires access to the npm registry. The marked library version is pinned. This is a documentation tool, not application setup for Crow Station.

@@ -4,13 +4,14 @@ const { marked } = createRequire(import.meta.url)('marked');
 import { fileURLToPath } from 'node:url';
 
 const isData = process.argv[2] === 'data';
-const basename = isData ? 'DATA-PLANNING.en' : 'PROJECT-BRIEF.en';
+const isHandoff = process.argv[2] === 'handoff';
+const basename = isHandoff ? 'TEAM-HANDOFF.en' : isData ? 'DATA-PLANNING.en' : 'PROJECT-BRIEF.en';
 const version = '0.2';
-const title = isData ? 'Data Planning and Design Decisions' : 'Product Brief and Planning Decisions';
-const heroTitle = isData ? 'Data planning<br>before table design' : 'Product brief<br>and planning decisions';
-const description = isData ? 'From product requirements to entities, relationships, and lifecycles. A conceptual proposal showing what we know and what still needs a decision, without assuming the database design is complete.' : 'One platform for learning, practice, and mentoring. An organized reference for agreed decisions and what remains to be resolved before design and implementation.';
-const tags = isData ? ['Proposed design for review','PostgreSQL · Isolation undecided','No tables or migrations yet'] : ['Draft for review','Iraq first · Worldwide access','Website + mobile app'];
-const stats = isData ? [['18 domains','Proposed entity map'],['13 decisions','Data discussion sequence'],['Conceptual model','Not a final schema']] : [['September 2027','Preliminary launch target'],['1,000 users','Concurrent-user planning target'],['22 topics','Open question register']];
+const title = isHandoff ? 'Analysis and Planning Handoff for the Team' : isData ? 'Data Planning and Design Decisions' : 'Product Brief and Planning Decisions';
+const heroTitle = isHandoff ? 'Team guide<br>to completing project decisions' : isData ? 'Data planning<br>before table design' : 'Product brief<br>and planning decisions';
+const description = isHandoff ? 'A clear starting point for the team: the latest decisions, what changed from earlier documents, the remaining questions, and how answers are recorded, reviewed, and handed over.' : isData ? 'From product requirements to entities, relationships, and lifecycles. A conceptual proposal showing what we know and what still needs a decision, without assuming the database design is complete.' : 'One platform for learning, practice, and mentoring. An organized reference for agreed decisions and what remains to be resolved before design and implementation.';
+const tags = isHandoff ? ['Analysis and planning only','Changes after version 0.2','One question at a time'] : isData ? ['Proposed design for review','PostgreSQL · Isolation undecided','No tables or migrations yet'] : ['Draft for review','Iraq first · Worldwide access','Website + mobile app'];
+const stats = isHandoff ? [['43 decisions','H-D01 to H-D43'],['24 questions','Proposed discussion map'],['H-Q05','Current resume point']] : isData ? [['18 domains','Proposed entity map'],['13 decisions','Data discussion sequence'],['Conceptual model','Not a final schema']] : [['September 2027','Preliminary launch target'],['1,000 users','Concurrent-user planning target'],['22 topics','Open question register']];
 const source = new URL(`../../docs/${basename}.md`, import.meta.url);
 const destination = new URL(`../../docs/${basename}.html`, import.meta.url);
 const markdown = await readFile(source, 'utf8');
@@ -22,7 +23,7 @@ rendered = rendered.replace(/<h2>([\s\S]*?)<\/h2>/g, (_, title) => {
   return `<h2 id="${id}">${title}</h2>`;
 });
 rendered = rendered.replace(/<h1>[\s\S]*?<\/h1>/, '').replace(/<table>/g, '<div class="table-wrap"><table>').replace(/<\/table>/g, '</table></div>');
-rendered = rendered.replace(/href="(PROJECT-BRIEF\.en|DATA-PLANNING\.en)\.md"/g, 'href="$1.html"');
+rendered = rendered.replace(/href="(PROJECT-BRIEF\.en|DATA-PLANNING\.en|TEAM-HANDOFF\.en)\.md"/g, 'href="$1.html"');
 const nav = sections.map(s => `<a href="#${s.id}">${s.title}</a>`).join('\n');
 const html = `<!doctype html>
 <html lang="en" dir="ltr">
@@ -46,7 +47,7 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 </head>
 <body>
 <div class="layout">
-<aside aria-label="Document contents"><div class="brand"><small>${isData ? 'Data planning / 02' : 'Product planning / 01'}</small>Crow Station</div><div class="nav-label">Document contents · ${sections.length} sections</div><nav>${nav}</nav></aside>
+<aside aria-label="Document contents"><div class="brand"><small>${isHandoff ? 'Team handoff / 03' : isData ? 'Data planning / 02' : 'Product planning / 01'}</small>Crow Station</div><div class="nav-label">Document contents · ${sections.length} sections</div><nav>${nav}</nav></aside>
 <main>
 <div class="tools"><span>Planning reference · 30 September 2026</span><button onclick="window.print()">Print document</button></div>
 <header class="hero"><div class="eyebrow">CROW STATION · Version ${version}</div><h1>${heroTitle}</h1><p>${description}</p><div class="tags">${tags.map(tag=>`<span>${tag}</span>`).join('')}</div></header>

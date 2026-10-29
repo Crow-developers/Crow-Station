@@ -1,0 +1,918 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Crow Station | Analysis and Planning Handoff for the Team</title>
+<style>
+:root{--ink:#172d3b;--muted:#5e6e79;--paper:#fff;--bg:#f1f4f4;--line:#dce5e6;--accent:#087d7e;--light:#eef8f6}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:28px}body{margin:0;background:var(--bg);color:var(--ink);font-family:'Segoe UI',Tahoma,Arial,sans-serif;font-size:16px;line-height:1.95}
+.layout{display:grid;grid-template-columns:275px minmax(0,1fr);max-width:1550px;margin:auto;min-height:100vh}
+aside{position:sticky;top:0;height:100vh;overflow:auto;padding:28px 20px;border-right:1px solid var(--line);background:#f8faf9}
+.brand{font-size:24px;font-weight:750;letter-spacing:-.6px;line-height:1.4;direction:ltr;text-align:left}.brand small{display:block;font-size:12px;color:var(--accent);letter-spacing:2px;margin-bottom:8px;text-transform:uppercase}
+.nav-label{font-size:13px;color:var(--muted);margin:25px 0 8px}nav a{display:block;color:#405663;text-decoration:none;padding:7px 11px;margin:2px 0;border-radius:7px;font-size:13px;line-height:1.7;border-left:3px solid transparent}nav a:hover,nav a.active{background:#e4f1ee;color:#075c5b;border-left-color:var(--accent)}
+main{min-width:0;padding:44px clamp(24px,4vw,68px) 75px}.hero{padding:32px 36px;background:#102f3a;color:white;border-radius:15px;margin-bottom:26px;position:relative;overflow:hidden;border-top:5px solid #39bca6}.eyebrow{color:#9ddfd3;font-size:13px;letter-spacing:.3px}.hero h1{font-size:clamp(27px,3vw,37px);line-height:1.6;margin:12px 0}.hero p{color:#cfdee2;margin:0;max-width:720px}.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}.tags span{font-size:12px;border:1px solid #42606a;border-radius:20px;padding:3px 12px;color:#e1efed}.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:30px}.summary div{background:white;border:1px solid var(--line);border-radius:10px;padding:15px 20px}.summary strong{display:block;color:var(--accent);font-size:21px;line-height:1.7}.summary span{font-size:12px;color:var(--muted)}
+article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1px solid var(--line);border-radius:12px}article>h2{font-size:24px;line-height:1.7;border-top:1px solid var(--line);padding-top:32px;margin:42px 0 19px;color:#075f64}article>h2:first-of-type{margin-top:24px;border-top:0;padding-top:0}h3{font-size:19px;margin:28px 0 12px;color:#254657}p{margin:12px 0}ul,ol{padding-left:25px;padding-right:0;margin:14px 0}li{padding-left:4px;margin:7px 0}li::marker{color:var(--accent)}strong{font-weight:650}blockquote{margin:23px 0;background:var(--light);padding:11px 18px;border-left:4px solid var(--accent);border-radius:6px;color:#315c59;font-size:14px}blockquote p{margin:0}code{font-family:Consolas,monospace;font-size:.86em;direction:ltr;unicode-bidi:isolate;display:inline-block;background:#edf1f3;border-radius:4px;padding:0 5px;overflow-wrap:anywhere}.table-wrap{overflow-x:auto;margin:20px 0;border:1px solid var(--line);border-radius:8px}table{width:100%;border-collapse:collapse;font-size:14px;line-height:1.9;text-align:left}th{background:#edf5f4;color:#18595a;font-weight:650}td,th{padding:12px 15px;border-bottom:1px solid var(--line);vertical-align:top}td:first-child{font-weight:600;min-width:110px}tr:last-child td{border-bottom:0}tbody tr:nth-child(even){background:#fafcfc}a{color:#076f78}footer{font-size:12px;color:var(--muted);margin-top:22px;text-align:center}.tools{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:18px;font-size:12px;color:var(--muted)}button{font-family:inherit;background:white;border:1px solid var(--line);border-radius:6px;padding:7px 16px;cursor:pointer;color:var(--ink)}button:hover{border-color:var(--accent)}
+@media(max-width:1000px){.layout{grid-template-columns:230px minmax(0,1fr)}aside{padding:22px 13px}main{padding:24px 20px}article{padding:10px 23px 25px}.hero{padding:25px}}
+@media(max-width:720px){.layout{display:block}aside{position:relative;height:auto;max-height:270px;border-right:0;border-bottom:1px solid var(--line);padding:17px 20px}.brand{font-size:20px}.brand small{display:none}.nav-label{margin-top:10px}nav{display:grid;grid-template-columns:1fr 1fr}nav a{font-size:12px}main{padding:18px 12px}.hero{padding:23px}.hero h1{font-size:27px}.summary{gap:7px}.summary div{padding:11px}.summary strong{font-size:17px}article{padding:5px 17px 25px}article>h2{font-size:21px}body{font-size:15px}table{min-width:510px}}
+@media print{@page{size:A4;margin:18mm}body{background:white;font-size:10.5pt;line-height:1.7}.layout{display:block}aside,.tools,.summary{display:none}main{padding:0;max-width:none}.hero{background:white;color:#102f3a;border:1px solid #c4d6d7;border-top:4px solid var(--accent);padding:18px}.hero p,.eyebrow,.tags span{color:#365661}.hero h1{font-size:25pt}.tags{margin-top:10px}.tags span{border-color:#aac2c6}article{padding:0;border:0}article>h2{font-size:17pt;break-after:avoid}h3{font-size:13pt;break-after:avoid}table{font-size:9pt;min-width:0}tr{break-inside:avoid}.table-wrap{overflow:visible;border-radius:0}thead{display:table-header-group}td,th{padding:6px 8px}blockquote{break-inside:avoid}footer{font-size:9pt}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside aria-label="Document contents"><div class="brand"><small>Team handoff / 03</small>Crow Station</div><div class="nav-label">Document contents · 12 sections</div><nav><a href="#section-1">1. Start here</a>
+<a href="#section-2">2. The project and the scope of this task</a>
+<a href="#section-3">3. Collaboration rules and approving answers</a>
+<a href="#section-4">4. Latest decisions — these take precedence over the version 0.2 text when they conflict</a>
+<a href="#section-5">5. Reconciling older documents before building any design on them</a>
+<a href="#section-6">6. Stable decisions team members need</a>
+<a href="#section-7">7. Proposed question list, in order</a>
+<a href="#section-8">8. Splitting work within the team — an editable proposal</a>
+<a href="#section-9">9. Template for recording an answer or decision</a>
+<a href="#section-10">10. Next batch deliverables and readiness criteria</a>
+<a href="#section-11">11. Working with the repository and handing over between team members</a>
+<a href="#section-12">12. Status of this handoff and the team&#39;s first step</a></nav></aside>
+<main>
+<div class="tools"><span>Planning reference · 30 September 2026</span><button onclick="window.print()">Print document</button></div>
+<header class="hero"><div class="eyebrow">CROW STATION · Version 0.2</div><h1>Team guide<br>to completing project decisions</h1><p>A clear starting point for the team: the latest decisions, what changed from earlier documents, the remaining questions, and how answers are recorded, reviewed, and handed over.</p><div class="tags"><span>Analysis and planning only</span><span>Changes after version 0.2</span><span>One question at a time</span></div></header>
+<div class="summary"><div><strong>43 decisions</strong><span>H-D01 to H-D43</span></div><div><strong>24 questions</strong><span>Proposed discussion map</span></div><div><strong>H-Q05</strong><span>Current resume point</span></div></div>
+<article>
+<blockquote>
+<p>Version 0.2 · 29 October 2026 · Reference for completing questions and decisions · Analysis phase only</p>
+</blockquote>
+<h2 id="section-1">1. Start here</h2>
+<p><strong>What the team is asked to do:</strong> help the project owner complete the business rules and open questions, and turn the answers into clear, reviewable requirements before designing the database, the API, and the implementation plan. This handoff does not start programming, and it does not turn proposals into approved decisions.</p>
+<p><strong>Exact resume point — H-Q05:</strong> How do we calculate refunds for a course that mixes video, text, and tests, and what lesson values are approved? H-Q01 to H-Q04 were settled on 29 October 2026; see section 4.3 and the <a href="DECISION-CARDS.en.md">decision cards</a>.</p>
+<p><strong>Note on the current reference:</strong> the product document and the data planning document in the repository are at version 0.2, dated 30 September 2026. Later answers from the discussion have not yet been merged into them, including the removal of partial sales and the independent price of each course. Section 4 collects these decisions, and section 5 lists the places that need updating. Do not use older conflicting text as current policy.</p>
+<p>Read in this order:</p>
+<ol>
+<li>This file, especially the latest decisions and the resume point.</li>
+<li>The <a href="PROJECT-BRIEF.en.html">product document</a>: vision, scope, business rules, and journeys, applying the corrections in this handoff.</li>
+<li><a href="DATA-PLANNING.en.html">Data planning</a>: proposed entities and relationships, not approved tables.</li>
+<li>The <a href="../BRANCHING.md">branch policy</a> and <a href="../REPOSITORY-STATUS.md">repository status</a>.</li>
+</ol>
+<h2 id="section-2">2. The project and the scope of this task</h2>
+<p>Crow Station is a unified learning platform that brings together courses from the platform owner and other instructors. Students enter a single catalog; each instructor has their own page and a single dashboard for themselves and their team. It is not a set of separate academies with their own domains and branding per instructor. Calling it &quot;multi-tenant&quot; does not settle how technical isolation is done.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Current status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Audience</td>
+<td>Programming and cybersecurity; Iraq first, with access allowed from abroad. Payment follows the available services and agreements.</td>
+</tr>
+<tr>
+<td>Channels</td>
+<td>Responsive website and mobile app, with Arabic and English interfaces.</td>
+</tr>
+<tr>
+<td>Team and timeline</td>
+<td>The project owner with a team of 10 people with intermediate experience in programming, cybersecurity, and AI tools; September 2027 is a preliminary, revisable launch target.</td>
+</tr>
+<tr>
+<td>Planning size</td>
+<td>About 1,000 users; the split between viewers, code runners, chats, and the actual load needs detail.</td>
+</tr>
+<tr>
+<td>Technologies with agreed direction</td>
+<td>Clean Architecture, ASP.NET Core on .NET 10, PostgreSQL, Flutter for mobile, Docker and Docker Compose.</td>
+</tr>
+<tr>
+<td>Open technical decisions</td>
+<td>Web front end, isolation, MinIO or an alternative, confirming Redis and its role, video streaming, search, code execution, the AI provider, and production operations.</td>
+</tr>
+<tr>
+<td>Needed now</td>
+<td>Answers and business rules, a decision log, and a permissions matrix; then a logical model, API contracts, and an implementation plan once requirements are stable.</td>
+</tr>
+<tr>
+<td>Not needed now</td>
+<td>Programming the product, creating final tables or migrations, launching production environments, or choosing providers without review.</td>
+</tr>
+</tbody></table></div>
+<p>The first version has a broad scope: accounts, instructors, courses, payments and wallets, video and progress, the desktop editor, tests, grading and certificates, course chat, tracks and mentoring, search and notifications, and the paid assistant service. This is an indicative list; scope details are in the product document.</p>
+<p>Crow Store, Crow Hub, and VS are planned as &quot;coming soon&quot; features. Translation, dubbing, and general AI are deferred; <strong>AI code grading and AI review of grading appeals are a required exception from the start</strong>. Rooms and Streak still have undecided launch timing and details; do not automatically place them inside or outside the first version.</p>
+<h2 id="section-3">3. Collaboration rules and approving answers</h2>
+<ul>
+<li>We discuss <strong>one question at a time</strong> with the project owner. The team may prepare several topics, but we do not ask them to answer a long list in one go.</li>
+<li>We collect a related group of answers, then document, review, and update Arabic and English in one batch.</li>
+<li>&quot;Yes&quot; after a two-option question is not a clear choice; ask which one is meant. No answer is not agreement.</li>
+<li>When asked &quot;what is best?&quot;, the team gives a recommendation with its reasons and impact; it stays a proposal until the project owner explicitly approves it.</li>
+<li>If the project owner changes an earlier decision, we record the change and remove the effect of the cancelled decision from rules, journeys, acceptance criteria, and the data model.</li>
+<li>A settled question is not raised again unless there is a new conflict or an explicit review request. Unsettled details within the same topic may be asked.</li>
+<li>The phrase &quot;from the dashboard&quot; alone does not say who holds the permission, the scope of the setting, or when it takes effect and how it affects existing agreements; fill in these limits when needed.</li>
+<li>Specialist recommendations are input for review; we do not attribute approval to the project owner or a role to a team member without agreement.</li>
+</ul>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Meaning in the team log</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Agreed</td>
+<td>An explicit decision; can be revised later by a new documented decision.</td>
+</tr>
+<tr>
+<td>Preliminary</td>
+<td>An accepted direction with details or final review pending.</td>
+</tr>
+<tr>
+<td>Proposed</td>
+<td>A recommendation that has not been approved.</td>
+</tr>
+<tr>
+<td>Open</td>
+<td>A question without a sufficient answer.</td>
+</tr>
+<tr>
+<td>Deferred</td>
+<td>Discussion or implementation is deferred, stating which.</td>
+</tr>
+<tr>
+<td>Cancelled or superseded</td>
+<td>An earlier decision that was overturned; it stays in the history and is not used as a current rule.</td>
+</tr>
+</tbody></table></div>
+<h2 id="section-4">4. Latest decisions — these take precedence over the version 0.2 text when they conflict</h2>
+<p>This section comes from the project owner&#39;s answers in the discussion after version 0.2 was published and until the handoff was requested. The H-D identifiers belong to this handoff; they do not replace the existing O and D identifiers. They were compiled on 8 October 2026; this does not claim every answer was given on that day.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Current decision</th>
+<th>What remains open or what the decision does not mean</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>H-D01</td>
+<td>Transferring a course removes all permissions of the previous instructor and their team on the transferred course, while keeping their account, records, expenses, and balance.</td>
+<td>It does not delete the instructor&#39;s account or remove their permissions on their other courses; the limits on viewing data of past students need defining.</td>
+</tr>
+<tr>
+<td>H-D02</td>
+<td>A refund follows the original purchase and the shares of its parties: pre-transfer sales follow the old agreement, and later ones follow the new agreement.</td>
+<td>Responsibility of the new instructor for breaching an obligation transferred to them is defined in the transfer agreement. The detailed proof and settlement mechanism is not settled.</td>
+</tr>
+<tr>
+<td>H-D03</td>
+<td>Every purchase has a 7-day period during which its earnings do not move to the available balance. Earnings from an incomplete course stay held until the course is completed and approved.</td>
+<td>These are cumulative conditions where they apply; the end of the period alone does not release earnings from an incomplete course.</td>
+</tr>
+<tr>
+<td>H-D04</td>
+<td>A request submitted within the period is not rejected because of administrative delay. The purchase amount stays held until the request is decided.</td>
+<td>This does not mean the refund is automatically accepted; it is assessed under the rules. Review time and the refund execution procedure need detail.</td>
+</tr>
+<tr>
+<td>H-D05</td>
+<td>A course may be transferred while a refund is pending; the amount stays linked to the instructor the student bought from. An approved refund is paid from the held amount; otherwise the earnings return to the first instructor once the other release conditions are met.</td>
+<td>A change of owner does not move the old transaction&#39;s earnings to the new owner, and does not drop the request. Details of partial refunds and the remainder will be set by the formula later.</td>
+</tr>
+<tr>
+<td>H-D06</td>
+<td>Correcting, updating, or replacing a purchased lesson gives the earlier buyer the new version at no extra charge, and they do not lose the purchased content.</td>
+<td>There is no approval yet for keeping every old version as a visible archive; the effect of updates on progress is the current question.</td>
+</tr>
+<tr>
+<td>H-D07</td>
+<td>An independent add-on outside the promised content may be priced, provided it is optional and does not reduce the original course.</td>
+<td>How this add-on is sold needs to be tied to the whole-course purchase decision; we do not assume it is a single lesson offered for sale.</td>
+</tr>
+<tr>
+<td>H-D08</td>
+<td>Moving a lesson to another course does not remove access for those who owned it, does not erase their progress, and does not require them to buy the other course.</td>
+<td>It does not automatically give them the rest of the new course&#39;s lessons or services. How the lesson appears in their library needs journey design.</td>
+</tr>
+<tr>
+<td>H-D09</td>
+<td><del>The same lesson can be used in several courses.</del> <strong>Superseded by H-D40 on 29 October 2026.</strong></td>
+<td>The project owner did not recall this answer when reviewing it, and the repository does not hold its original wording. The rule in force is H-D40.</td>
+</tr>
+<tr>
+<td>H-D10</td>
+<td>Purchases are for the whole course only, and each course has its own price, even if it contains lessons shared with a course the student owns.</td>
+<td>This cancels selling sections and lessons individually, a &quot;complete the course&quot; price, and discounting shared lessons when buying another course.</td>
+</tr>
+<tr>
+<td>H-D11</td>
+<td>No special notice tells the student that lessons repeat between the course they want to buy and courses they own.</td>
+<td>This does not cancel the usual syllabus display or course description.</td>
+</tr>
+<tr>
+<td>H-D12</td>
+<td>The proposal that the platform pays refunds from its own money and records a debt on the instructor when their balance runs out was not approved; the project owner stressed holding amounts while refund eligibility lasts.</td>
+<td>Any possible exceptional case outside the hold, such as liability for a breach after transfer, needs a separate decision; we do not assume the platform funds it or that the student&#39;s right is automatically refused.</td>
+</tr>
+<tr>
+<td>H-D13</td>
+<td>A course sequence may include video lessons, text lessons, and standalone tests.</td>
+<td>The meaning of completion and of benefit for refund purposes differs by type and needs a decision; a video watch threshold does not automatically apply to text or tests.</td>
+</tr>
+</tbody></table></div>
+<h4>4.2 Exploratory session decisions — 19 October 2026</h4>
+<p>This section comes from the full exploratory session log with the project owner: <code>docs/PLATFORM-DECISIONS-LOG.en.md</code> (147 questions across 30 areas). Only <strong>settled</strong> decisions are recorded here; items marked &quot;open / not settled / needs detail&quot; stay tracked in the log file and are not repeated here. IDs from H-D14 onward extend the section 4 series and do not replace O, D, or H-Q identifiers.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Current decision</th>
+<th>What remains open or what the decision does not mean</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>H-D14</td>
+<td>Identity and access: students&#39; accounts link to GitHub/GitLab automatically; MFA is mandatory for instructors and administrators; account recovery uses both security questions and identity verification; concurrent sessions are limited to two devices (phone and computer).</td>
+<td>The MFA method is not defined; the idle sign-out policy is open.</td>
+</tr>
+<tr>
+<td>H-D15</td>
+<td>Edge protection: a WAF with custom rules for paid courses.</td>
+<td>Rule tuning is deferred to implementation.</td>
+</tr>
+<tr>
+<td>H-D16</td>
+<td>Labs: lab state is saved between sessions, and a full terminal (Linux shell) is provided.</td>
+<td>Isolation technology, resource limits, Docker-in-Docker, and preventing malicious activity are open (NQ-07–NQ-10).</td>
+</tr>
+<tr>
+<td>H-D17</td>
+<td>Content and ownership: content ownership follows the instructor&#39;s contract; old courses are not removed from the platform.</td>
+<td>The DMCA process, protection against internal theft, and the major-version policy (v1→v2) are open.</td>
+</tr>
+<tr>
+<td>H-D18</td>
+<td>Learning experience: personal notes tied to video timestamps, Picture-in-Picture, and a visual progress timeline.</td>
+<td>Offline mode on mobile and sharing bookmarks are open.</td>
+</tr>
+<tr>
+<td>H-D19</td>
+<td>Tests and certificates: automated proctoring for critical tests; programming questions with automated grading and text questions with initial AI grading; publicly verifiable certificates.</td>
+<td>Anti-cheating details and anti-forgery technology are open.</td>
+</tr>
+<tr>
+<td>H-D20</td>
+<td>Advanced AI: a personal AI tutor, initial AI grading of text questions, automatic summaries, and smart recommendations.</td>
+<td>Quality criteria and appeal escalation stay tied to O-11 and H-Q13.</td>
+</tr>
+<tr>
+<td>H-D21</td>
+<td>Privacy and accessibility: commitment to the right to be forgotten and to WCAG 2.1 AA.</td>
+<td>Data storage location and compliance with GDPR and Iraqi law are open; handling minors is open.</td>
+</tr>
+<tr>
+<td>H-D22</td>
+<td>Community: a discussion forum for each course, run by the instructor and assistant, with administration access; public comments on lessons with offensive-language filtering.</td>
+<td>The reputation system and Discord/Slack channels are open.</td>
+</tr>
+<tr>
+<td>H-D23</td>
+<td>Growth: a referral program, and percentage coupons with a usage limit.</td>
+<td>An affiliate program (future), a public API, and geographic pricing are open.</td>
+</tr>
+<tr>
+<td>H-D24</td>
+<td>Operational resilience: multi-region deployment.</td>
+<td>RPO/RTO targets and the outage communication plan are open.</td>
+</tr>
+<tr>
+<td>H-D25</td>
+<td>Corporate training (B2B): an enterprise solution with a reporting dashboard, employer access to top performers&#39; records, university partnerships, and student discounts.</td>
+<td>The student consent mechanism, access scope, and contract pricing are open (tied to O-22).</td>
+</tr>
+<tr>
+<td>H-D26</td>
+<td>Live events: free webinars and workshops, and live Q&amp;A sessions on a schedule set by the course presenter.</td>
+<td>Live streaming of paid courses and automatic recording are open.</td>
+</tr>
+<tr>
+<td>H-D27</td>
+<td>Gamification: points and badges, leaderboards, adaptive learning, personalized tracks, and a streak system.</td>
+<td>Launch timing of Streaks and Rooms stays tied to O-01 and H-Q21; approval does not mean launching in the first version.</td>
+</tr>
+<tr>
+<td>H-D28</td>
+<td>Wallet and competitions: an internal digital wallet for instructors to manage their earnings; periodic programming competitions and CTF competitions.</td>
+<td>Cryptocurrency, installments, an internal currency, hackathons, and prize funding are open.</td>
+</tr>
+<tr>
+<td>H-D29</td>
+<td>Accreditation: pursue professional accreditation and continuing education hours (CEUs/CPEs), partnerships with major companies, and digitally signed instructor certificates.</td>
+<td>The timeline and choice of partners are deferred to planning.</td>
+</tr>
+<tr>
+<td>H-D30</td>
+<td>Security: periodic penetration tests by specialists, and building an internal security team.</td>
+<td>Cyber insurance, the incident response plan, and the breach notification mechanism are open.</td>
+</tr>
+<tr>
+<td>H-D31</td>
+<td>Geographic expansion: other Arab markets, accepting instructors from other countries, partnerships with foreign platforms, and content translation in the future.</td>
+<td>How to handle cultural differences is open.</td>
+</tr>
+<tr>
+<td>H-D32</td>
+<td>Open resources: free tools for students and ready-made project templates.</td>
+<td>An open library, community contributions, and a public Q&amp;A forum are open.</td>
+</tr>
+<tr>
+<td>H-D33</td>
+<td>Collaboration and marketplace: group projects with code review between members; a marketplace for projects and templates with review before publishing, ratings, and multiple licenses; platform plugins are not published before testing.</td>
+<td>The collaborative editor, task splitting, contribution assessment, commission rate, and plugin revenue model are open.</td>
+</tr>
+<tr>
+<td>H-D34</td>
+<td>Career services: a job board for graduates, mock interviews, job recommendations, and soft-skills workshops.</td>
+<td>A CV review service is open.</td>
+</tr>
+<tr>
+<td>H-D35</td>
+<td>Instructor analytics: an advanced analytics dashboard, video heatmaps, smart improvement recommendations, and benchmarking between courses.</td>
+<td>Predictive dropout analytics are open.</td>
+</tr>
+<tr>
+<td>H-D36</td>
+<td>Subscription and preview: a freemium model; a free preview limited to the first three videos of a course, with the rest paid; <strong>no</strong> family memberships; <strong>no</strong> peer assessment system.</td>
+<td>Unlimited annual subscriptions and pay-what-you-want are open; the preview does not break the whole-course purchase rule (H-D10).</td>
+</tr>
+<tr>
+<td>H-D37</td>
+<td>Audio and peer learning: an advanced audio player and an official podcast channel; virtual study rooms and pair programming.</td>
+<td>Offline podcast downloads, audio interviews, study groups, and peer teaching are open.</td>
+</tr>
+<tr>
+<td>H-D38</td>
+<td>Alumni and open source: networking events and discounts for alumni; encouraging open-source contribution with a project list and Git workshops.</td>
+<td>The alumni network structure, a mentorship system, and contributor rewards are open.</td>
+</tr>
+</tbody></table></div>
+<p><strong>Note:</strong> the decisions in this section expand the platform&#39;s feature scope and do not change the financial rules (refunds, holds, ownership transfer) in 4.1, and they do not close questions in the O, D, and H-Q logs. The list of required updates in section 5 is extended when these decisions are merged into the product and data planning documents in a later documentation batch.</p>
+<p><strong>Important sequence:</strong> the project owner first agreed to count a shared lesson once, then explicitly changed this to paying for each course separately. The decision in force is H-D10. Similarly, the decision that lesson updates are free limits the instructor&#39;s earlier freedom to price each update.</p>
+<h4>4.3 Decisions from the 29 October 2026 session — updates, progress, and sales</h4>
+<p>The project owner answered H-Q01 to H-Q04 in a written session on 29 October 2026. The full cards, using the section 9 template, are in the <a href="DECISION-CARDS.en.md">decision cards</a>.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Current decision</th>
+<th>What remains open or what the decision does not mean</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>H-D39</td>
+<td>Updating a lesson the student has completed does not cancel their completion. The lesson stays complete, the student sees a notice that it was updated, and reviewing the new version is optional. Certificates issued before the update stay valid.</td>
+<td>The form and channel of the notice, the effect of an update on a lesson not yet completed, and the definition of completion itself (H-Q12) are open.</td>
+</tr>
+<tr>
+<td>H-D40</td>
+<td>Each lesson belongs to exactly one course. The instructor may copy a lesson to another course; the copy is an independent lesson with its own progress and updates, and editing one copy does not change the other. Supersedes H-D09.</td>
+<td>Does not change H-D08 (moving a lesson) or H-D10 (each course priced independently). Who owns copies when course ownership is transferred, and whether quizzes and attachments are copied automatically, are open.</td>
+</tr>
+<tr>
+<td>H-D41</td>
+<td>A paid add-on (H-D07) is shown on the course page as an optional extra with a separate price, and only students who own the course can buy it. It is not sold on its own to non-buyers.</td>
+<td>Whether it can be bought together with the course in one transaction, its refund rules, and whether it moves with a course ownership transfer are open.</td>
+</tr>
+<tr>
+<td>H-D42</td>
+<td>An incomplete course can only be sold with a declared syllabus: the list of upcoming lessons and an expected completion date, shown to the student before purchase. The course is complete when the whole list is published and approved by the platform, at which point the earnings release rule (H-D03) applies.</td>
+<td>Limits on changing the declared syllabus after sale, who in the platform approves completion, and the review time are open.</td>
+</tr>
+<tr>
+<td>H-D43</td>
+<td>If the declared completion date is missed, the instructor is entitled to one justified extension, and students are notified. If still late after the extension, the student may request a refund from the held amount, and sales of the course stop.</td>
+<td>The maximum extension length, the refund request window, whether the refund is full or partial depending on what was published (H-Q05), and resuming sales after completion are open.</td>
+</tr>
+</tbody></table></div>
+<h2 id="section-5">5. Reconciling older documents before building any design on them</h2>
+<p>This is a <strong>list of required updates</strong>; its existence does not mean the version 0.2 documents have already been changed. The handoff file collects the latest answers so the team can merge them in a consistent documentation batch.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Location</th>
+<th>Required correction</th>
+<th>Decision reference</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Product document: terminology, 3.1, 6.1, and journey 18.1</td>
+<td>Remove partial sales and the &quot;complete the course&quot; price; purchases are for the whole course and each course has its own price.</td>
+<td>H-D10</td>
+</tr>
+<tr>
+<td>Data planning: 5, D-03 and D-10; product document: 6.1 and 7</td>
+<td>Tie each lesson to one course, and add copying as an independent lesson that records its source; keep the student&#39;s completion when a lesson is updated, with an &quot;updated&quot; notice state.</td>
+<td>H-D39, H-D40</td>
+</tr>
+<tr>
+<td>Product document: 6.1, 6.2 and 9.2; data planning: D-04</td>
+<td>Add the course-linked paid add-on, the declared syllabus with a date for incomplete courses, and the single extension followed by refunds and stopping sales.</td>
+<td>H-D41–H-D43</td>
+</tr>
+<tr>
+<td>Product document: 6.1 and O-03</td>
+<td>Update the rules that corrections, updates, and replacements are free, and separate the independent add-on from the promised content.</td>
+<td>H-D06, H-D07</td>
+</tr>
+<tr>
+<td>Product document: 6.2 and 9.2</td>
+<td>Remove examples of selling a single lesson from an incomplete course; keep holding all earnings from an incomplete course.</td>
+<td>H-D03, H-D10</td>
+</tr>
+<tr>
+<td>Product document: 6.4 and O-15</td>
+<td>Turn the question about the old team&#39;s access into a settled decision, keeping the account and financial history.</td>
+<td>H-D01</td>
+</tr>
+<tr>
+<td>Product document: 6.4, 9.3 and O-05</td>
+<td>Document refunds during transfer, preventing rejection because of administrative delay, and continuing the hold.</td>
+<td>H-D02–H-D05</td>
+</tr>
+<tr>
+<td>Product document: 7.3</td>
+<td>Close the question of unlocking the editor by buying a single lesson, since it no longer applies; do not remove the code execution isolation question.</td>
+<td>H-D10</td>
+</tr>
+<tr>
+<td>Data planning: 4.5, 5, 11 and 13.1</td>
+<td>Reset display and entitlement around the course purchase, with a continuing right to a moved lesson; separate content reuse from course pricing.</td>
+<td>H-D01, H-D06–H-D10</td>
+</tr>
+<tr>
+<td>Data planning: 7.2 and D-06</td>
+<td>The hold on a request submitted on time is a settled decision, not just a proposal awaiting approval.</td>
+<td>H-D04</td>
+</tr>
+<tr>
+<td>Data planning: 5.1 and 10; product document: 7 and 8</td>
+<td>Record mixed content types as a settled decision, keeping completion and refund rules for each type open.</td>
+<td>H-D13</td>
+</tr>
+<tr>
+<td>Data planning: D-02 and D-03</td>
+<td>Update the settled parts while keeping unanswered details of transfer, progress, and versions open.</td>
+<td>H-D01, H-D02, H-D05–H-D10</td>
+</tr>
+<tr>
+<td>Acceptance criteria: AC-07, AC-22 and purchase-related criteria</td>
+<td>Change the AC-07 example to buying an incomplete course; extend AC-22 to permissions and holds; add cases for updates and reuse.</td>
+<td>H-D01–H-D11</td>
+</tr>
+<tr>
+<td>README, branch policy, repository status, and HTML versions</td>
+<td>Update the old resume point; keep question identifiers and document superseded items, and regenerate the reading pages.</td>
+<td>H-Q01</td>
+</tr>
+<tr>
+<td>Product document: scope and vision</td>
+<td>Add the scope of corporate training (B2B) and reporting dashboards, live events (webinars, Q&amp;A), competitions (hackathons, CTFs), open resources (free tools, templates), and the project marketplace.</td>
+<td>H-D25, H-D26, H-D28, H-D32, H-D33</td>
+</tr>
+<tr>
+<td>Product document: business rules and journeys</td>
+<td>Add gamification rules (streaks, leaderboards, points) and adaptive learning. Define the free preview rules (first 3 videos) without breaking the whole-course purchase rule (H-D10). Add the GitHub/GitLab account linking journey and the group project joining journey.</td>
+<td>H-D27, H-D36, H-D14, H-D33</td>
+</tr>
+<tr>
+<td>Product document: AI</td>
+<td>Expand the AI scope to include a personal AI tutor, automatic summaries, smart course recommendations, and initial grading of text (essay) questions.</td>
+<td>H-D20</td>
+</tr>
+<tr>
+<td>Product document: security and privacy</td>
+<td>Document the WAF, the right to be forgotten, WCAG 2.1 AA compliance, automated proctoring for tests, and the dual account recovery strategy.</td>
+<td>H-D15, H-D21, H-D19, H-D14</td>
+</tr>
+<tr>
+<td>Data planning: entities</td>
+<td>Add new entities needed to support the decisions: B2B Organization, B2B User, Achievement/Badge, Group Project, Project Marketplace Item, Lab Session State.</td>
+<td>H-D25, H-D27, H-D33, H-D16</td>
+</tr>
+<tr>
+<td>Data planning: relationships</td>
+<td>Update user relationships to link GitHub/GitLab (OAuth mapping). Add the relationship between a course and its earlier versions (versioning). Link certificates to the external verification system.</td>
+<td>H-D14, H-D17, H-D19</td>
+</tr>
+<tr>
+<td>Data planning: security and retention rules</td>
+<td>Add fields for the status of right-to-be-forgotten requests (Deletion Request Status) and accessibility requirements for metadata. Define the lab lifecycle (saving state between sessions).</td>
+<td>H-D21, H-D16</td>
+</tr>
+</tbody></table></div>
+<p><strong>Lesson-based refund rules are not cancelled just because selling single lessons was cancelled.</strong> A lesson is still a unit of content, progress, and possible benefit calculation within the course; the formula and the 10% threshold still need specialist review.</p>
+<h2 id="section-6">6. Stable decisions team members need</h2>
+<p>This is an operational summary to help follow the questions; it is not a substitute for the full product document.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Topic</th>
+<th>What must be preserved</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Student and account</td>
+<td>Visitors browse; registering allows previews; buying requires verifying one method: phone or email. Buying is available to all roles.</td>
+</tr>
+<tr>
+<td>Sessions</td>
+<td>One-session policy for students; signing in from a new device alerts them and ends the previous session. Multi-role accounts still need detail.</td>
+</tr>
+<tr>
+<td>Student rights</td>
+<td>Buying a course grants access with no expiry, and stopping sales or the instructor leaving does not remove access for earlier buyers.</td>
+</tr>
+<tr>
+<td>Instructor and team</td>
+<td>One dashboard per instructor; an assistant can work in several dashboards with separate permissions. The platform defines the list of permissions and the instructor grants them. Money cannot be delegated to the instructor&#39;s team.</td>
+</tr>
+<tr>
+<td>Onboarding</td>
+<td>Acceptance, a contract, and a first review; accepting the electronic contract is enough to start, and the third publication alerts the administration to decide whether to continue or require a paper contract. It is not an automatic block after the third video.</td>
+</tr>
+<tr>
+<td>Assistants</td>
+<td>A service from the first version: the instructor requests, the platform nominates, and the instructor approves and sets permissions. Offers and fees come from the dashboard, deducted only from the available balance.</td>
+</tr>
+<tr>
+<td>Assistant service cycle</td>
+<td>A payment grace period set from the dashboard; the service continues during it, then permissions stop if unpaid. Reactivation after payment needs the administration. The instructor can end the service immediately, keeping the work and settling per the offer.</td>
+</tr>
+<tr>
+<td>Earnings and withdrawal</td>
+<td>The platform&#39;s share is agreed per course and taken from what was actually paid; any available portion can be withdrawn with a minimum of 10 dollars, with approval and transfer within 24 hours. The dinar equivalent and fees are not settled.</td>
+</tr>
+<tr>
+<td>Course transfer</td>
+<td>Approval from the administration and both parties; the new agreement applies only to later sales, and earlier sales belong to the old instructor. All responsibility for students moves to the new instructor. Resetting does not erase the history or the instructor&#39;s wallet.</td>
+</tr>
+<tr>
+<td>Video and editor</td>
+<td>Viewing inside the platform with no video download and currently no watermark; the editor is for computers, beside the video, not for mobile or saving projects.</td>
+</tr>
+<tr>
+<td>Educational assessment</td>
+<td>Quiz, test, and challenge tools; automated grading with AI for code from the start. Appeals are reviewed automatically, then by the instructor when that fails. A certificate requires passing a test.</td>
+</tr>
+<tr>
+<td>Tracks and mentoring</td>
+<td>A track is sold separately from courses. Mentoring lasts for a period starting at purchase; when it ends, sending stops while the chat and the track remain. The current track policy has no refunds, and the net amount is available immediately after payment; failure to deliver the service is an open question.</td>
+</tr>
+<tr>
+<td>Student privacy</td>
+<td>Notes and bookmarks are private to the student; the reporter&#39;s identity goes to the responsible team; private chats and notes are not public search content.</td>
+</tr>
+</tbody></table></div>
+<h2 id="section-7">7. Proposed question list, in order</h2>
+<p>The order and priority are <strong>proposals to organize the team&#39;s work</strong>. H-Q is the handoff question identifier, and the last column links it to the existing logs. Other topics in O or D are not deleted just because they are grouped here. Start with H-Q01, then discuss each item as a separate question or split it into follow-up questions.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Question to settle</th>
+<th>Why we need it</th>
+<th>Reference</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>H-Q01</td>
+<td><del>When a lesson is updated, is the earlier completion kept or must the new version be completed?</del> <strong>Settled: H-D39.</strong></td>
+<td>Designing progress versions without cancelling an earlier right; the actual resume point.</td>
+<td>D-03, D-10</td>
+</tr>
+<tr>
+<td>H-Q02</td>
+<td><del>Is progress on the same lesson shared across the courses it appears in, or measured within each course?</del> <strong>Settled: H-D40.</strong></td>
+<td>Separating reuse from each course&#39;s completion and certificate.</td>
+<td>D-03, D-10</td>
+</tr>
+<tr>
+<td>H-Q03</td>
+<td><del>How is an independent add-on sold while selling single lessons and sections is not allowed?</del> <strong>Settled: H-D41.</strong></td>
+<td>Defining the limits of the paid product without assuming partial resale.</td>
+<td>O-03, D-03</td>
+</tr>
+<tr>
+<td>H-Q04</td>
+<td><del>How does the instructor define the promised content before selling an incomplete course, and what proves it was delivered?</del> <strong>Settled: H-D42, H-D43.</strong></td>
+<td>Distinguishing delivering the promise from a new add-on, and approving the release of funds.</td>
+<td>O-06, D-04</td>
+</tr>
+<tr>
+<td>H-Q05</td>
+<td>How do we calculate refunds for a course with video, text, and tests, and what lesson values are approved?</td>
+<td>The threshold, formula, deductions, rounding, and fixed values need specialists.</td>
+<td>O-04, D-05</td>
+</tr>
+<tr>
+<td>H-Q06</td>
+<td>What is the refund processing deadline, what are its stages, and when is access removed and the remainder released?</td>
+<td>Settling operations after the decision to continue the hold, including failed transfers.</td>
+<td>O-05, O-16, D-06</td>
+</tr>
+<tr>
+<td>H-Q07</td>
+<td>How is a breach by the new instructor proven, and who carries out its settlement under the transfer contract?</td>
+<td>Not confusing the owner of old sales with the party responsible for a later breach.</td>
+<td>D-02, O-22</td>
+</tr>
+<tr>
+<td>H-Q08</td>
+<td>When is a transfer executed, and how do we handle a purchase, payment, or refund that happens at the same time?</td>
+<td>Linking each transaction to the correct owner and agreement.</td>
+<td>D-02, D-07</td>
+</tr>
+<tr>
+<td>H-Q09</td>
+<td>What is the cycle for collecting assistant fees, settling the payment grace period, and paying the assistant?</td>
+<td>Avoiding assumptions about who collects, funding, or deductions that were not agreed.</td>
+<td>D-13, O-05</td>
+</tr>
+<tr>
+<td>H-Q10</td>
+<td>Who can change assistant offers and the grace period, and who does the change apply to?</td>
+<td>Defining the scope of dashboard settings and protecting existing agreements.</td>
+<td>D-13, O-15</td>
+</tr>
+<tr>
+<td>H-Q11</td>
+<td>Is there a cart combining several courses and tracks, and in which currency and with which payment rules?</td>
+<td>Orders, manual confirmation, fees, and settlement.</td>
+<td>D-07, O-16</td>
+</tr>
+<tr>
+<td>H-Q12</td>
+<td>What are the rules for a completed lesson, passing, attempts, and access to tests?</td>
+<td>Progress, certificates, and fair treatment of updates.</td>
+<td>D-10, O-12</td>
+</tr>
+<tr>
+<td>H-Q13</td>
+<td>What is the quality standard for AI grading, and what happens when it cannot decide an appeal?</td>
+<td>Escalation to the instructor, measuring accuracy, and attempt limits.</td>
+<td>O-11, D-10</td>
+</tr>
+<tr>
+<td>H-Q14</td>
+<td>What happens if the promised mentoring service is not delivered?</td>
+<td>Reconciling the no-refund policy with immediate earnings and an ongoing service.</td>
+<td>O-07, O-09, D-09</td>
+</tr>
+<tr>
+<td>H-Q15</td>
+<td>How is mentoring renewed early, and how are response time, the service provider, and track resources defined?</td>
+<td>Service periods, commitments, external resources, and their cost.</td>
+<td>O-08–O-10, D-09</td>
+</tr>
+<tr>
+<td>H-Q16</td>
+<td>What are the plan features at launch, and the rules for changing them, grace, and balance?</td>
+<td>Fixing products and the scope of admin settings before modeling subscriptions.</td>
+<td>O-01, O-17, D-08</td>
+</tr>
+<tr>
+<td>H-Q17</td>
+<td>How does the student device policy apply to an instructor account that is also learning?</td>
+<td>Preventing unintended removal of work permissions.</td>
+<td>O-15, D-01</td>
+</tr>
+<tr>
+<td>H-Q18</td>
+<td>What are the acceptance criteria for ratings, reports, and edits, and how long does review take?</td>
+<td>Moderation, the decision log, and team permissions.</td>
+<td>O-13, O-14</td>
+</tr>
+<tr>
+<td>H-Q19</td>
+<td>What data is recorded, kept, and deleted, and who can see it?</td>
+<td>Private notes, auditing, backups, and user requests.</td>
+<td>O-14, O-22, D-11</td>
+</tr>
+<tr>
+<td>H-Q20</td>
+<td>What are the search sources, and what paid content is shown?</td>
+<td>Quality of Arabic and English search, content protection, and privacy.</td>
+<td>O-19, D-12</td>
+</tr>
+<tr>
+<td>H-Q21</td>
+<td>What are the limits of the first version for mobile, rooms, the public area, and deferred features?</td>
+<td>Closing the scope before estimating implementation and cost.</td>
+<td>O-01, O-18</td>
+</tr>
+<tr>
+<td>H-Q22</td>
+<td>What is the real load, and what are the targets for speed, availability, recovery, and code execution limits?</td>
+<td>Testing technical options and estimating resources and budget.</td>
+<td>O-02, O-20, O-21, D-12</td>
+</tr>
+<tr>
+<td>H-Q23</td>
+<td>What is the architectural choice once ownership, permissions, and load are stable?</td>
+<td>Web front end, isolation, video, search, storage, and operations; a comparison and approval document.</td>
+<td>O-20, D-12</td>
+</tr>
+<tr>
+<td>H-Q24</td>
+<td>Which contracts and policies need specialist review before they are approved for publication?</td>
+<td>Clear terms for rights, fees, cancellation, and data.</td>
+<td>O-22</td>
+</tr>
+</tbody></table></div>
+<h2 id="section-8">8. Splitting work within the team — an editable proposal</h2>
+<p>No actual names or responsibilities have been assigned yet. One person can cover more than one role, and research can be split internally, with one coordinator collecting questions for the project owner.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Track</th>
+<th>Proposed owner</th>
+<th>Deliverable</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Decision coordination</td>
+<td>An analysis coordinator chosen by the team</td>
+<td>The question table, answer minutes, and tracking of conflicts and changes.</td>
+</tr>
+<tr>
+<td>Content and student experience</td>
+<td>A product analyst with an education representative</td>
+<td>Update, progress, and certificate policies, and student journeys with their edge cases.</td>
+</tr>
+<tr>
+<td>Money and agreements</td>
+<td>An analyst with the finance specialist and the project owner</td>
+<td>Worked examples for refunds, holds, transfers, and assistants, with clear inputs and outputs.</td>
+</tr>
+<tr>
+<td>Permissions and security</td>
+<td>A security representative with a data analyst</td>
+<td>An access matrix, permission revocation, data scope, auditing, and privacy.</td>
+</tr>
+<tr>
+<td>Data and architecture</td>
+<td>A data designer and an architect</td>
+<td>A logical model and technical alternatives based on the decisions, separating proposed from approved.</td>
+</tr>
+<tr>
+<td>Document and language review</td>
+<td>A requirements reviewer and a translation reviewer</td>
+<td>Matching Arabic and English, and correct links, identifiers, and acceptance criteria.</td>
+</tr>
+</tbody></table></div>
+<p>The team prepares alternatives and impacts, and the project owner settles product rules. Internal approval details for specialists are agreed with them; this file does not assume authorized names or binding delivery dates.</p>
+<h2 id="section-9">9. Template for recording an answer or decision</h2>
+<p>Copy this card for each question. <strong>The documentation date is separate from the date the answer was given.</strong> If information is not available, write &quot;not specified&quot; instead of making it up.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>What the team records</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Identifier</td>
+<td>H-Qxx, and links to related O / D / H-D items.</td>
+</tr>
+<tr>
+<td>Question asked</td>
+<td>One question with specific wording, with an example when needed.</td>
+</tr>
+<tr>
+<td>Project owner&#39;s answer</td>
+<td>The text or an exact quote; a link to the discussion or its available reference.</td>
+</tr>
+<tr>
+<td>Answer and documentation dates</td>
+<td>Each date separately, or &quot;not specified&quot; if unknown.</td>
+</tr>
+<tr>
+<td>Status</td>
+<td>Open / proposed / preliminary / agreed / deferred / superseded.</td>
+</tr>
+<tr>
+<td>Operational wording</td>
+<td>The actor, condition, action, and result, without adding assumptions.</td>
+</tr>
+<tr>
+<td>Earlier decision affected</td>
+<td>Its identifier and the part cancelled or restricted; &quot;none&quot; if nothing is affected.</td>
+</tr>
+<tr>
+<td>Exceptions and open points</td>
+<td>Limits of the decision and necessary follow-up questions.</td>
+</tr>
+<tr>
+<td>Data, permissions and money impact</td>
+<td>Fields or states that need modeling, as proposals until approved.</td>
+</tr>
+<tr>
+<td>Acceptance example</td>
+<td>&quot;When ... and if ... the result is ...&quot;; describes required behavior, not an implemented test.</td>
+</tr>
+<tr>
+<td>Review</td>
+<td>The card&#39;s author, the reviewer, and who actually approved the decision; do not fill in names that were not agreed.</td>
+</tr>
+<tr>
+<td>Places to update</td>
+<td>Files, sections, and acceptance criteria affected, in both languages.</td>
+</tr>
+</tbody></table></div>
+<p>Settled example: a refund request submitted on day six stays unprocessed until day eight. <strong>Required result:</strong> it is not rejected because of administrative delay, and the funds for this transaction are not released before it is decided. <strong>What we do not conclude:</strong> that the refund is automatically accepted, or that a specific review deadline was approved.</p>
+<h2 id="section-10">10. Next batch deliverables and readiness criteria</h2>
+<p>The next batch is not &quot;answer everything&quot;. Choose a related group; a good start is content and progress, then refunds and transfers, while keeping the list of remaining questions.</p>
+<ol>
+<li><strong>Reconcile version 0.2:</strong> merge the section 4 decisions and handle every item in section 5; give the next version its number and date when it is actually complete.</li>
+<li><strong>Answer log:</strong> a card for each new decision, linking superseded decisions to their replacements and open questions to their follow-up point.</li>
+<li><strong>Updated permissions matrix:</strong> before and after ownership transfer, and during, suspension, and termination of the assistant service, with the scope of each dashboard.</li>
+<li><strong>Acceptance scenarios:</strong> a whole-course purchase with no discount for shared content, a free update, a moved lesson with a preserved right, a refund request processed late, and a transfer during a hold.</li>
+<li><strong>Proposed data impact:</strong> relationships, states, financial history, and progress; no final SQL or migrations before the model is approved.</li>
+<li><strong>Two matching versions:</strong> review Arabic and English, then generate HTML and check links and the table of contents, then push a documented batch to the planning branches.</li>
+</ol>
+<p>A batch is ready for review when its active rules do not conflict, every decision has a source, status, and impact, and every unanswered question is clearly visible. Closing future features is not required to approve a stable scope, and it is not acceptable to declare that all database planning is complete while impactful questions are still open.</p>
+<h2 id="section-11">11. Working with the repository and handing over between team members</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Branch</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>plan</td>
+<td>The permanent original Arabic reference for plans.</td>
+</tr>
+<tr>
+<td>plan-ar</td>
+<td>An Arabic copy matching plan when a batch is published, at the same commit.</td>
+</tr>
+<tr>
+<td>plan-en</td>
+<td>A full English translation of the same batch; decisions and identifiers match, but the file language does not.</td>
+</tr>
+<tr>
+<td>docs</td>
+<td>Official documentation after review and approval, not an automatic copy of planning drafts.</td>
+</tr>
+<tr>
+<td>develop / staging / main</td>
+<td>Development, testing, and production; planning drafts are not moved into them wholesale.</td>
+</tr>
+</tbody></table></div>
+<p>Agreed working rule: no deleting permanent branches and no force push. No direct merge between the language branches that replaces one language with the other. Synchronizing the two languages is review and translation, not an automated process.</p>
+<p><strong>Proposed collaboration style:</strong> each topic starts from the latest plan in a temporary task branch such as <code>planning/content-progress</code>, and its material is reviewed through a merge request into plan. The team decides who coordinates updating plan-ar and translating into plan-en; several people do not edit the same section without coordination. This is a proposal for organizing the team, not a claim that a new protection rule was added on GitHub.</p>
+<p>At each internal handover: state the last question and its answer, the next question, the files changed, what was not pushed, and the reference of the Arabic version that was translated. If translation is incomplete, say so clearly and do not describe the branches as synchronized.</p>
+<h2 id="section-12">12. Status of this handoff and the team&#39;s first step</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Status when this file was prepared</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Planning baseline read</td>
+<td>Version 0.2; local Arabic reference 370651b.</td>
+</tr>
+<tr>
+<td>Latest decisions</td>
+<td>Documented in section 4 of this file from the discussion; not claimed to be merged into the product and data documents.</td>
+</tr>
+<tr>
+<td>Conflicts with the old version</td>
+<td>Listed as a work list in section 5.</td>
+</tr>
+<tr>
+<td>Resume question</td>
+<td>H-Q05: refund calculation and lesson values. H-Q01 to H-Q04 were settled on 29 October 2026.</td>
+</tr>
+<tr>
+<td>Model and API approval</td>
+<td>Not complete; product implementation does not start with this handoff.</td>
+</tr>
+<tr>
+<td>This file</td>
+<td>English translation of the Arabic handoff <code>TEAM-HANDOFF.ar.md</code> at plan commit 69dd9da, with an HTML reading version.</td>
+</tr>
+</tbody></table></div>
+<p><strong>Team&#39;s next step:</strong> the coordinator reads sections 4 and 5, then asks the project owner H-Q05, and records the answer using the section 9 card. After a suitable group of answers, the team reviews the changes and updates the core documents in both languages.</p>
+<p><strong>Version log — 0.1, 8 October 2026:</strong> first handoff file for completing the questions, including the latest discussion decisions, superseded decisions, a document repair map, a proposed question log, and collaboration roles with approval and handover templates. The work order and roles are proposals; only the project owner&#39;s answers are recorded as approved decisions.</p>
+<p><strong>Version log — 0.2, 29 October 2026:</strong> settled H-Q01 (H-D39), H-Q02 (H-D40), H-Q03 (H-D41), and H-Q04 (H-D42, H-D43); superseded H-D09; moved the resume point to H-Q05; added decision cards.</p>
+</article>
+<footer>Crow Station · Planning document for review · Source: TEAM-HANDOFF.en.md</footer>
+</main></div>
+<script>
+const links = Array.from(document.querySelectorAll('nav a'));
+const observer = new IntersectionObserver(entries => {
+  for (const entry of entries) if (entry.isIntersecting) {
+    for (const link of links) link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
+  }
+}, {rootMargin:'0px 0px -65% 0px',threshold:0});
+document.querySelectorAll('article h2').forEach(section => observer.observe(section));
+</script>
+</body></html>
