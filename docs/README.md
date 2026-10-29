@@ -4,6 +4,7 @@ This directory is a reference for product analysis and planning, not a software 
 
 - **Product document:** [Formatted reading version](PROJECT-BRIEF.en.html) · [Editable source](PROJECT-BRIEF.en.md).
 - **Data planning:** [Formatted reading version](DATA-PLANNING.en.html) · [Editable source](DATA-PLANNING.en.md).
+- **Decision cards:** [The project owner's answers, one question at a time](DECISION-CARDS.en.md), starting 29 October 2026. Latest: H-Q01 (H-D39) and H-Q02 (H-D40, superseding H-D09). Next question: H-Q03.
 - **To begin reviewing:** Read vision and scope (2–3), the rules for your area of interest, then the open questions (17).
 - **For next steps:** See the documentation completion plan (20). System architecture, data model, and API details are not yet approved.
 
