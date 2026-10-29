@@ -1,0 +1,23 @@
+{
+  "editor.formatOnSave": true,
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "[csharp]": {
+    "editor.defaultFormatter": "ms-dotnettools.csharp"
+  },
+  "[typescript][typescriptreact][javascript][json][jsonc][css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    }
+  },
+  "eslint.workingDirectories": ["frontend/web"],
+  "prettier.prettierPath": "frontend/web/node_modules/prettier",
+  "typescript.tsdk": "frontend/web/node_modules/typescript/lib",
+  "dotnet.defaultSolution": "backend/CrowStation.slnx",
+  "files.exclude": {
+    "**/bin": true,
+    "**/obj": true,
+    "**/.next": true
+  }
+}
