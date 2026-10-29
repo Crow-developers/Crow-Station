@@ -302,9 +302,11 @@ jobs:
           docker run --rm -v "$PWD:/repo" zricethezav/gitleaks:v8.30.1
           git /repo --redact --verbose --config /repo/.gitleaks.toml
 
+  # Needs the repository's Dependency graph (Settings > Code security). After enabling it, set the
+  # repository variable DEPENDENCY_REVIEW_ENABLED=true to turn this check on.
   dependency-review:
     name: Dependency review
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' && vars.DEPENDENCY_REVIEW_ENABLED == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     permissions:

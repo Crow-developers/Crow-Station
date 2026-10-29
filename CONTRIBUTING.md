@@ -73,7 +73,7 @@ make setup
 
 1. **حماية الفروع:** إضافة `ci-success` كفحص مطلوب على `develop` و`staging` و`main` في قاعدة الحماية الموجودة.
 2. **Code scanning:** تفعيل GitHub Advanced Security / Code scanning (مجاني للمستودعات العامة) حتى تظهر نتائج CodeQL وTrivy.
-3. **Dependabot:** تفعيل Dependabot alerts وsecurity updates. ملف `.github/dependabot.yml` يوجّه التحديثات إلى `develop`.
+3. **Dependabot وDependency graph:** تفعيل Dependency graph وDependabot alerts وsecurity updates من Settings ← Code security. ملف `.github/dependabot.yml` يوجّه التحديثات إلى `develop`. بعد تفعيل Dependency graph أضف متغير المستودع `DEPENDENCY_REVIEW_ENABLED=true` (Settings ← Secrets and variables ← Actions ← Variables) ليعمل فحص Dependency review على كل Pull Request.
 4. **الحزم:** صور Docker تُنشر إلى `ghcr.io/crow-developers/crow-station-api` و`-web`. اجعلها خاصة أو عامة حسب قرار الفريق.
 5. **النشر (لاحقاً):** إنشاء بيئات `development` و`staging` و`production` (مع مراجعين إلزاميين للإنتاج)، ثم ضبط المتغير `DEPLOY_ENABLED=true` واستبدال خطوة النشر في `cd.yml`.
 6. **CODEOWNERS:** إضافة `.github/CODEOWNERS` بأسماء حسابات الفريق عند تحديدها.
