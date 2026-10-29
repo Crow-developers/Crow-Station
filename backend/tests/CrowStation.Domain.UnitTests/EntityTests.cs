@@ -9,6 +9,8 @@ public sealed class EntityTests
         public void Touch() => Raise(new Touched(DateTimeOffset.UnixEpoch));
     }
 
+    private sealed class OtherSample(Guid id) : AggregateRoot<Guid>(id);
+
     private sealed record Touched(DateTimeOffset OccurredAt) : IDomainEvent;
 
     [Fact]
@@ -23,6 +25,17 @@ public sealed class EntityTests
         first.Should().Be(sameId);
         (first != otherId).Should().BeTrue();
         first.Should().NotBe(otherId);
+    }
+
+    [Fact]
+    public void Entities_of_different_types_are_not_equal_even_with_the_same_id()
+    {
+        var id = Guid.NewGuid();
+        object sample = new Sample(id);
+        object other = new OtherSample(id);
+
+        sample.Equals(other).Should().BeFalse();
+        other.Equals(sample).Should().BeFalse();
     }
 
     [Fact]
