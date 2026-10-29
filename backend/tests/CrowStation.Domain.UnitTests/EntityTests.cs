@@ -15,9 +15,14 @@ public sealed class EntityTests
     public void Entities_with_the_same_id_are_equal()
     {
         var id = Guid.NewGuid();
+        var first = new Sample(id);
+        var sameId = new Sample(id);
+        var otherId = new Sample(Guid.NewGuid());
 
-        (new Sample(id) == new Sample(id)).Should().BeTrue();
-        new Sample(id).Should().NotBe(new Sample(Guid.NewGuid()));
+        (first == sameId).Should().BeTrue();
+        first.Should().Be(sameId);
+        (first != otherId).Should().BeTrue();
+        first.Should().NotBe(otherId);
     }
 
     [Fact]
