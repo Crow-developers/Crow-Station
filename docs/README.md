@@ -1,8 +1,8 @@
 # Crow Station Documentation
 
-**Latest changes — 31 October 2026:** H-Q05 and H-Q06 (refund calculation and processing) settled with decisions H-D46–H-D54 in the [handoff](TEAM-HANDOFF.en.md) and the [decision cards](DECISION-CARDS.en.md). Resume point: H-Q07. Previous handoff: [29 October session](SESSION-HANDOFF-2026-10-29.en.md).
+**Latest changes — 31 October 2026:** [today's session handoff](SESSION-HANDOFF-2026-10-31.en.md): H-Q05, H-Q06, and the first part of H-Q07 settled with decisions H-D46–H-D55 in the [handoff](TEAM-HANDOFF.en.md) and the [decision cards](DECISION-CARDS.en.md). Resume point: the rest of H-Q07. Previous handoff: [29 October session](SESSION-HANDOFF-2026-10-29.en.md).
 
-**For the team — start here:** [Formatted handoff](TEAM-HANDOFF.en.html) · [Editable handoff source](TEAM-HANDOFF.en.md), version 0.4, 31 October 2026. Decisions H-D46–H-D54 are newer than version 0.3 of the documents below. Current resume point: **H-Q07** (proving and settling a breach by the new instructor). The full exploratory session log is in [PLATFORM-DECISIONS-LOG.en.md](PLATFORM-DECISIONS-LOG.en.md).
+**For the team — start here:** [Formatted handoff](TEAM-HANDOFF.en.html) · [Editable handoff source](TEAM-HANDOFF.en.md), version 0.4, 31 October 2026. Decisions H-D46–H-D55 are newer than version 0.3 of the documents below. Current resume point: **the rest of H-Q07** (settling a proven breach by the new instructor). The full exploratory session log is in [PLATFORM-DECISIONS-LOG.en.md](PLATFORM-DECISIONS-LOG.en.md).
 
 This directory is a reference for product analysis and planning, not a software implementation.
 

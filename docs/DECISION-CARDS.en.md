@@ -107,3 +107,20 @@ One card is added for each question that is settled. Old cards are never deleted
 | Acceptance example | When a request is submitted on Sunday, access stops immediately; if it is not decided by the end of the third working day, the administration gets an alert; on acceptance with a failed transfer to Zain Cash, the amount appears in the student's wallet. |
 | Review | Card prepared by Claude at the project owner's request. No reviewer assigned. Decision approved by the project owner. |
 | Places to update | Handoff 1, 4.4, 7 and 12; product document 9.2, 9.3 and O-05 (next version); data planning D-06; Arabic version. |
+
+## H-Q07 (first part) — Who decides a breach by the new instructor
+
+| Field | Value |
+| --- | --- |
+| Identifier | H-Q07 → decision H-D55. Related: H-D01, H-D02, H-D05, D-02, O-22. |
+| Question asked | Instructor Ahmed transferred his course to instructor Ali. After the transfer, Ali deleted lessons or stopped completing the course, and students complained. Who decides that Ali breached his obligations? Options: the platform team; automatic rules; the transfer contract. |
+| Project owner's answer | "The platform team (recommended)". |
+| Answer and documentation dates | Answer: 31 October 2026. Documented: 31 October 2026. |
+| Status | Partly agreed; settlement is still open. |
+| Operational wording | When students complain after a transfer, the platform team reviews the complaints and the course change log, hears from the new instructor, then decides whether a breach happened. The log separates what happened before the transfer from what happened after it. |
+| Earlier decision affected | Completes H-D01 and H-D05: the previous instructor is not responsible for changes made after the transfer. |
+| Exceptions and open points | What students get after a proven breach and from which money; the effect on the new instructor; the review deadline; the right to appeal. |
+| Data, permissions and money impact | Proposal: a course change log that is never deleted (change, time, actor); a complaint record linked to the course; a breach decision recorded by the platform team with its reason. |
+| Acceptance example | When a lesson is deleted after the transfer date and students complain, the log shows the new instructor deleted it after the transfer, and the platform team decides after hearing from him; the previous instructor is not held responsible. |
+| Review | Card prepared by Claude at the project owner's request. No reviewer assigned. Decision approved by the project owner. |
+| Places to update | Handoff 1, 4.4, 7 and 12; product document 6.4 (next version); data planning 4.5 and D-02; Arabic version. |

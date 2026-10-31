@@ -35,15 +35,15 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 <main>
 <div class="tools"><span>Planning reference · 30 September 2026</span><button onclick="window.print()">Print document</button></div>
 <header class="hero"><div class="eyebrow">CROW STATION · Version 0.4</div><h1>Team guide<br>to completing project decisions</h1><p>A clear starting point for the team: the latest decisions, what changed from earlier documents, the remaining questions, and how answers are recorded, reviewed, and handed over.</p><div class="tags"><span>Analysis and planning only</span><span>Changes after version 0.2</span><span>One question at a time</span></div></header>
-<div class="summary"><div><strong>54 decisions</strong><span>H-D01 to H-D54</span></div><div><strong>24 questions</strong><span>Proposed discussion map</span></div><div><strong>H-Q07</strong><span>Current resume point</span></div></div>
+<div class="summary"><div><strong>55 decisions</strong><span>H-D01 to H-D55</span></div><div><strong>24 questions</strong><span>Proposed discussion map</span></div><div><strong>H-Q07</strong><span>Current resume point</span></div></div>
 <article>
 <blockquote>
 <p>Version 0.4 · 31 October 2026 · Reference for completing questions and decisions · Analysis phase only</p>
 </blockquote>
 <h2 id="section-1">1. Start here</h2>
 <p><strong>What the team is asked to do:</strong> help the project owner complete the business rules and open questions, and turn the answers into clear, reviewable requirements before designing the database, the API, and the implementation plan. This handoff does not start programming, and it does not turn proposals into approved decisions.</p>
-<p><strong>Exact resume point — H-Q07:</strong> How is a breach by the new instructor after a course transfer proven, and who carries out its settlement under the transfer contract? H-Q01 to H-Q04 were settled on 29 October 2026, and H-Q05 and H-Q06 on 31 October 2026; see sections 4.3 and 4.4 and the <a href="DECISION-CARDS.en.md">decision cards</a>.</p>
-<p><strong>Current reference:</strong> the product and data planning documents are at version 0.3, dated 31 October 2026, and include decisions H-D01 to H-D45 and the section 5 changes. Decisions H-D46 to H-D54 (section 4.4) are newer than both documents and not yet merged into them. If a conflict appears, section 4 of this file takes precedence until the documents are updated.</p>
+<p><strong>Exact resume point — H-Q07 (remaining part):</strong> after the platform team decides that the new instructor breached their obligations (H-D55), how is the case settled: what do students get, from which money, and what is the effect on the new instructor? H-Q01 to H-Q04 were settled on 29 October 2026, and H-Q05, H-Q06, and the first part of H-Q07 on 31 October 2026; see sections 4.3 and 4.4 and the <a href="DECISION-CARDS.en.md">decision cards</a>.</p>
+<p><strong>Current reference:</strong> the product and data planning documents are at version 0.3, dated 31 October 2026, and include decisions H-D01 to H-D45 and the section 5 changes. Decisions H-D46 to H-D55 (section 4.4) are newer than both documents and not yet merged into them. If a conflict appears, section 4 of this file takes precedence until the documents are updated.</p>
 <p>Read in this order:</p>
 <ol>
 <li>This file, especially the latest decisions and the resume point.</li>
@@ -398,8 +398,8 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 <td>The production storage and hosting provider and the isolation approach are open (H-Q23).</td>
 </tr>
 </tbody></table></div>
-<h4>4.4 Decisions from the 31 October 2026 session — refund calculation and processing</h4>
-<p>The project owner answered H-Q05 and H-Q06 in a written session on 31 October 2026. The full cards are in the <a href="DECISION-CARDS.en.md">decision cards</a>. <strong>These decisions take precedence over section 9.3 of product document 0.3 until it is updated.</strong></p>
+<h4>4.4 Decisions from the 31 October 2026 session — refunds and instructor breach after transfer</h4>
+<p>The project owner answered H-Q05, H-Q06, and the first part of H-Q07 in a written session on 31 October 2026. The full cards are in the <a href="DECISION-CARDS.en.md">decision cards</a>. <strong>These decisions take precedence over section 9.3 of product document 0.3 until it is updated.</strong></p>
 <div class="table-wrap"><table>
 <thead>
 <tr>
@@ -452,6 +452,11 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 <td>H-D54</td>
 <td>After a partial refund, the instructor&#39;s share of the remainder is released <strong>as soon as the refund is executed</strong>, if the other hold conditions are met (for example course completion, H-D03).</td>
 <td>Does not change the hold on an incomplete course.</td>
+</tr>
+<tr>
+<td>H-D55</td>
+<td>If students complain about the new instructor after a course transfer (for example deleted lessons or stopping work on the course), <strong>the platform team decides</strong> whether a breach happened. It reviews the complaints and the course change log (what changed, when, and who changed it), hears from the new instructor, then decides. The log shows the change happened after the transfer, so the previous instructor is not held responsible.</td>
+<td>Settlement after a proven breach (what students get, from which money, and the effect on the new instructor), the review deadline, and the right to appeal are open (rest of H-Q07).</td>
 </tr>
 </tbody></table></div>
 <h2 id="section-5">5. Reconciling older documents before building any design on them</h2>
@@ -682,7 +687,7 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 </tr>
 <tr>
 <td>H-Q07</td>
-<td>How is a breach by the new instructor proven, and who carries out its settlement under the transfer contract?</td>
+<td>How is a breach by the new instructor proven, and who carries out its settlement under the transfer contract? <strong>Partly settled: H-D55</strong> (the platform team decides the breach). Remaining: settlement.</td>
 <td>Not confusing the owner of old sales with the party responsible for a later breach.</td>
 <td>D-02, O-22</td>
 </tr>
@@ -947,7 +952,7 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 </tr>
 <tr>
 <td>Latest decisions</td>
-<td>H-D01 to H-D45 merged into version 0.3 of both documents; H-D46 to H-D54 in section 4.4, not yet merged.</td>
+<td>H-D01 to H-D45 merged into version 0.3 of both documents; H-D46 to H-D55 in section 4.4, not yet merged.</td>
 </tr>
 <tr>
 <td>Conflicts with the old version</td>
@@ -955,7 +960,7 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 </tr>
 <tr>
 <td>Resume question</td>
-<td>H-Q07: proving and settling a breach by the new instructor after a transfer. H-Q01 to H-Q06 are settled.</td>
+<td>H-Q07 (remaining part): settling a proven breach by the new instructor. H-Q01 to H-Q06 and the first part of H-Q07 are settled.</td>
 </tr>
 <tr>
 <td>Model and API approval</td>
@@ -966,11 +971,11 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 <td>English translation of the Arabic handoff <code>TEAM-HANDOFF.ar.md</code> at plan commit 69dd9da, with an HTML reading version.</td>
 </tr>
 </tbody></table></div>
-<p><strong>Team&#39;s next step:</strong> the coordinator reads sections 4 and 5, then asks the project owner H-Q07, and records the answer using the section 9 card. After a suitable group of answers, the team reviews the changes and updates the core documents in both languages.</p>
+<p><strong>Team&#39;s next step:</strong> the coordinator reads sections 4 and 5, then asks the project owner the rest of H-Q07, and records the answer using the section 9 card. After a suitable group of answers, the team reviews the changes and updates the core documents in both languages.</p>
 <p><strong>Version log — 0.1, 8 October 2026:</strong> first handoff file for completing the questions, including the latest discussion decisions, superseded decisions, a document repair map, a proposed question log, and collaboration roles with approval and handover templates. The work order and roles are proposals; only the project owner&#39;s answers are recorded as approved decisions.</p>
 <p><strong>Version log — 0.2, 29 October 2026:</strong> settled H-Q01 (H-D39), H-Q02 (H-D40), H-Q03 (H-D41), and H-Q04 (H-D42, H-D43); superseded H-D09; moved the resume point to H-Q05; added decision cards.</p>
 <p><strong>Version log — 0.3, 31 October 2026:</strong> added H-D44 (Next.js) and H-D45 (local environment), corrected the sessions row to follow H-D14, and recorded that section 5 was applied in version 0.3 of the product and data documents.</p>
-<p><strong>Version log — 0.4, 31 October 2026:</strong> settled H-Q05 with decisions H-D46 to H-D50: what &quot;used&quot; means for each lesson type, the course price as one total value, the refund formula by share of lessons, the late-course refund, and the payment fee. Settled H-Q06 with decisions H-D51 to H-D54: a 3-working-day response deadline, access stopped on request, refunds to the same payment method, and release of the remainder on execution. Moved the resume point to H-Q07.</p>
+<p><strong>Version log — 0.4, 31 October 2026:</strong> settled H-Q05 with decisions H-D46 to H-D50: what &quot;used&quot; means for each lesson type, the course price as one total value, the refund formula by share of lessons, the late-course refund, and the payment fee. Settled H-Q06 with decisions H-D51 to H-D54: a 3-working-day response deadline, access stopped on request, refunds to the same payment method, and release of the remainder on execution. Settled the first part of H-Q07 with decision H-D55: the platform team decides a breach by the new instructor. Resume point: the rest of H-Q07.</p>
 </article>
 <footer>Crow Station · Planning document for review · Source: TEAM-HANDOFF.en.md</footer>
 </main></div>

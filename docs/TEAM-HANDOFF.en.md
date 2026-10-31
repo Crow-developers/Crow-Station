@@ -6,9 +6,9 @@
 
 **What the team is asked to do:** help the project owner complete the business rules and open questions, and turn the answers into clear, reviewable requirements before designing the database, the API, and the implementation plan. This handoff does not start programming, and it does not turn proposals into approved decisions.
 
-**Exact resume point — H-Q07:** How is a breach by the new instructor after a course transfer proven, and who carries out its settlement under the transfer contract? H-Q01 to H-Q04 were settled on 29 October 2026, and H-Q05 and H-Q06 on 31 October 2026; see sections 4.3 and 4.4 and the [decision cards](DECISION-CARDS.en.md).
+**Exact resume point — H-Q07 (remaining part):** after the platform team decides that the new instructor breached their obligations (H-D55), how is the case settled: what do students get, from which money, and what is the effect on the new instructor? H-Q01 to H-Q04 were settled on 29 October 2026, and H-Q05, H-Q06, and the first part of H-Q07 on 31 October 2026; see sections 4.3 and 4.4 and the [decision cards](DECISION-CARDS.en.md).
 
-**Current reference:** the product and data planning documents are at version 0.3, dated 31 October 2026, and include decisions H-D01 to H-D45 and the section 5 changes. Decisions H-D46 to H-D54 (section 4.4) are newer than both documents and not yet merged into them. If a conflict appears, section 4 of this file takes precedence until the documents are updated.
+**Current reference:** the product and data planning documents are at version 0.3, dated 31 October 2026, and include decisions H-D01 to H-D45 and the section 5 changes. Decisions H-D46 to H-D55 (section 4.4) are newer than both documents and not yet merged into them. If a conflict appears, section 4 of this file takes precedence until the documents are updated.
 
 Read in this order:
 
@@ -126,9 +126,9 @@ The project owner answered H-Q01 to H-Q04 in a written session on 29 October 202
 | H-D44 | The web front end is Next.js with TypeScript, chosen by the project owner when building the code foundation on the develop branch. | The mobile app stays Flutter and is built later; English support in the web app is not designed yet. |
 | H-D45 | Local environment: PostgreSQL, Redis for caching, and S3-compatible file storage through RustFS instead of MinIO, because official MinIO images are no longer published. | The production storage and hosting provider and the isolation approach are open (H-Q23). |
 
-#### 4.4 Decisions from the 31 October 2026 session — refund calculation and processing
+#### 4.4 Decisions from the 31 October 2026 session — refunds and instructor breach after transfer
 
-The project owner answered H-Q05 and H-Q06 in a written session on 31 October 2026. The full cards are in the [decision cards](DECISION-CARDS.en.md). **These decisions take precedence over section 9.3 of product document 0.3 until it is updated.**
+The project owner answered H-Q05, H-Q06, and the first part of H-Q07 in a written session on 31 October 2026. The full cards are in the [decision cards](DECISION-CARDS.en.md). **These decisions take precedence over section 9.3 of product document 0.3 until it is updated.**
 
 | ID | Current decision | What remains open or what the decision does not mean |
 | --- | --- | --- |
@@ -141,6 +141,7 @@ The project owner answered H-Q05 and H-Q06 in a written session on 31 October 20
 | H-D52 | The student's access to the course stops **as soon as the refund request is submitted**, and the amount is calculated from what was used at that moment. If the request is rejected, access returns immediately. | The effect on the chat, paid add-ons, and the certificate is open. |
 | H-D53 | The amount is refunded to the **same payment method** used for the purchase. If the transfer fails, the amount goes to the student's platform wallet and can be withdrawn. | Manual payments and the retry period before moving to the wallet are open. |
 | H-D54 | After a partial refund, the instructor's share of the remainder is released **as soon as the refund is executed**, if the other hold conditions are met (for example course completion, H-D03). | Does not change the hold on an incomplete course. |
+| H-D55 | If students complain about the new instructor after a course transfer (for example deleted lessons or stopping work on the course), **the platform team decides** whether a breach happened. It reviews the complaints and the course change log (what changed, when, and who changed it), hears from the new instructor, then decides. The log shows the change happened after the transfer, so the previous instructor is not held responsible. | Settlement after a proven breach (what students get, from which money, and the effect on the new instructor), the review deadline, and the right to appeal are open (rest of H-Q07). |
 
 ## 5. Reconciling older documents before building any design on them
 
@@ -204,7 +205,7 @@ The order and priority are **proposals to organize the team's work**. H-Q is the
 | H-Q04 | ~~How does the instructor define the promised content before selling an incomplete course, and what proves it was delivered?~~ **Settled: H-D42, H-D43.** | Distinguishing delivering the promise from a new add-on, and approving the release of funds. | O-06, D-04 |
 | H-Q05 | ~~How do we calculate refunds for a course with video, text, and tests, and what lesson values are approved?~~ **Settled: H-D46 to H-D50.** | The threshold, formula, and deductions; rounding and specialist review are still open. | O-04, D-05 |
 | H-Q06 | ~~What is the refund processing deadline, what are its stages, and when is access removed and the remainder released?~~ **Settled: H-D51 to H-D54.** | Settling operations after the decision to continue the hold, including failed transfers. | O-05, O-16, D-06 |
-| H-Q07 | How is a breach by the new instructor proven, and who carries out its settlement under the transfer contract? | Not confusing the owner of old sales with the party responsible for a later breach. | D-02, O-22 |
+| H-Q07 | How is a breach by the new instructor proven, and who carries out its settlement under the transfer contract? **Partly settled: H-D55** (the platform team decides the breach). Remaining: settlement. | Not confusing the owner of old sales with the party responsible for a later breach. | D-02, O-22 |
 | H-Q08 | When is a transfer executed, and how do we handle a purchase, payment, or refund that happens at the same time? | Linking each transaction to the correct owner and agreement. | D-02, D-07 |
 | H-Q09 | What is the cycle for collecting assistant fees, settling the payment grace period, and paying the assistant? | Avoiding assumptions about who collects, funding, or deductions that were not agreed. | D-13, O-05 |
 | H-Q10 | Who can change assistant offers and the grace period, and who does the change apply to? | Defining the scope of dashboard settings and protecting existing agreements. | D-13, O-15 |
@@ -293,13 +294,13 @@ At each internal handover: state the last question and its answer, the next ques
 | Item | Status when this file was prepared |
 | --- | --- |
 | Planning baseline read | Product and data documents at version 0.3. |
-| Latest decisions | H-D01 to H-D45 merged into version 0.3 of both documents; H-D46 to H-D54 in section 4.4, not yet merged. |
+| Latest decisions | H-D01 to H-D45 merged into version 0.3 of both documents; H-D46 to H-D55 in section 4.4, not yet merged. |
 | Conflicts with the old version | Resolved in version 0.3; section 5 is now a historical record. |
-| Resume question | H-Q07: proving and settling a breach by the new instructor after a transfer. H-Q01 to H-Q06 are settled. |
+| Resume question | H-Q07 (remaining part): settling a proven breach by the new instructor. H-Q01 to H-Q06 and the first part of H-Q07 are settled. |
 | Model and API approval | Not complete; product implementation does not start with this handoff. |
 | This file | English translation of the Arabic handoff `TEAM-HANDOFF.ar.md` at plan commit 69dd9da, with an HTML reading version. |
 
-**Team's next step:** the coordinator reads sections 4 and 5, then asks the project owner H-Q07, and records the answer using the section 9 card. After a suitable group of answers, the team reviews the changes and updates the core documents in both languages.
+**Team's next step:** the coordinator reads sections 4 and 5, then asks the project owner the rest of H-Q07, and records the answer using the section 9 card. After a suitable group of answers, the team reviews the changes and updates the core documents in both languages.
 
 **Version log — 0.1, 8 October 2026:** first handoff file for completing the questions, including the latest discussion decisions, superseded decisions, a document repair map, a proposed question log, and collaboration roles with approval and handover templates. The work order and roles are proposals; only the project owner's answers are recorded as approved decisions.
 
@@ -308,4 +309,4 @@ At each internal handover: state the last question and its answer, the next ques
 
 **Version log — 0.3, 31 October 2026:** added H-D44 (Next.js) and H-D45 (local environment), corrected the sessions row to follow H-D14, and recorded that section 5 was applied in version 0.3 of the product and data documents.
 
-**Version log — 0.4, 31 October 2026:** settled H-Q05 with decisions H-D46 to H-D50: what "used" means for each lesson type, the course price as one total value, the refund formula by share of lessons, the late-course refund, and the payment fee. Settled H-Q06 with decisions H-D51 to H-D54: a 3-working-day response deadline, access stopped on request, refunds to the same payment method, and release of the remainder on execution. Moved the resume point to H-Q07.
+**Version log — 0.4, 31 October 2026:** settled H-Q05 with decisions H-D46 to H-D50: what "used" means for each lesson type, the course price as one total value, the refund formula by share of lessons, the late-course refund, and the payment fee. Settled H-Q06 with decisions H-D51 to H-D54: a 3-working-day response deadline, access stopped on request, refunds to the same payment method, and release of the remainder on execution. Settled the first part of H-Q07 with decision H-D55: the platform team decides a breach by the new instructor. Resume point: the rest of H-Q07.
