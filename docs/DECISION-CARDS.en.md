@@ -73,3 +73,20 @@ One card is added for each question that is settled. Old cards are never deleted
 | Acceptance example | When the instructor declares completion by 1 December, extends once to 15 December, and 15 December passes without all lessons published, the result is: sales of the course stop, and the student can request a refund from the held amount. |
 | Review | Card prepared by Claude at the project owner's request. No reviewer assigned. Decision approved by the project owner. |
 | Places to update | Handoff 4.3, 5, 7 and 12; product document 6.2 and 9.2; data planning D-04; Arabic version. |
+
+## H-Q05 — Refund calculation
+
+| Field | Value |
+| --- | --- |
+| Identifier | H-Q05 → decisions H-D46 to H-D50. Related: H-D10, H-D13, H-D43, O-04, D-05. |
+| Question asked | (1) When does a text lesson or a test count as used? Options: open / start; reading time / test submission; video only. (2) If the instructor changes lesson values after purchase, which values apply? (3) Since the price is one value, how is the amount calculated? Options: share of lessons; all or nothing with a threshold; fixed bands. (4) How is a late course refunded? Options: same formula on the declared syllabus; full refund; share of unpublished lessons only. (5) Who bears the payment gateway fee? Options: the student; the instructor; the platform. |
+| Project owner's answer | (1) "Open and start (recommended)". (2) "The course price is not calculated by the number of videos; it is a total value for the course." (3) "Share of lessons used (recommended)". (4) "Same formula on the declared syllabus (recommended)". (5) "Deducted from the student (recommended)"; the option included the late-course exception. |
+| Answer and documentation dates | Answer: 31 October 2026. Documented: 31 October 2026. |
+| Status | Agreed. |
+| Operational wording | A video is used after 10% of its duration, a text lesson when opened, a test when started. The course price is one value. Refund = price × (lessons not used ÷ lessons in the course at purchase), or ÷ lessons in the declared syllabus for a late course. A non-refundable payment fee is deducted from the student, except for a late course, where the instructor's share bears it. |
+| Earlier decision affected | Cancels the rule that the instructor splits the value across lessons and the proposal to fix values at purchase (product document 9.3). Defines the refund method left open in H-D43. |
+| Exceptions and open points | Rounding; whether preview lessons count in the lesson total; paid add-on refunds; manual payments; specialist review of the 10% threshold and the policy (O-04, O-22). |
+| Data, permissions and money impact | Proposal: store the course's lesson count (or the declared syllabus count) at purchase on the purchase record; a usage record per lesson (first text open, first test start, video reaching 10%); store the gateway fee per payment. No per-lesson value field. |
+| Acceptance example | When a student buys a 100,000 IQD course with 20 lessons, the gateway fee is 2,000, and the student uses 4 lessons and requests a refund within 7 days, the result is 80,000 − 2,000 = 78,000 IQD. For a late course with a 20-lesson syllabus, 8 published and all used: 60,000 IQD with no fee deducted. |
+| Review | Card prepared by Claude at the project owner's request. No reviewer assigned. Decision approved by the project owner. |
+| Places to update | Handoff 1, 4.4, 5, 7 and 12; product document 2.2, 9.3, O-04 and AC-08 (next version); data planning D-05; Arabic version. |

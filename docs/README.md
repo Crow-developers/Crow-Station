@@ -1,8 +1,8 @@
 # Crow Station Documentation
 
-**Latest changes — 29 October 2026:** [today's session handoff](SESSION-HANDOFF-2026-10-29.en.md): H-Q01–H-Q04 settled (decisions H-D39–H-D43), H-D09 superseded, English translation completed. Resume point: H-Q05.
+**Latest changes — 31 October 2026:** H-Q05 (refund calculation) settled with decisions H-D46–H-D50 in the [handoff](TEAM-HANDOFF.en.md) and the [decision cards](DECISION-CARDS.en.md). Resume point: H-Q06. Previous handoff: [29 October session](SESSION-HANDOFF-2026-10-29.en.md).
 
-**For the team — start here:** [Formatted handoff](TEAM-HANDOFF.en.html) · [Editable handoff source](TEAM-HANDOFF.en.md), version 0.2, 29 October 2026. It contains decisions newer than version 0.2 of the documents below, and the current resume point: **H-Q05** (refund calculation and lesson values). The full exploratory session log is in [PLATFORM-DECISIONS-LOG.en.md](PLATFORM-DECISIONS-LOG.en.md).
+**For the team — start here:** [Formatted handoff](TEAM-HANDOFF.en.html) · [Editable handoff source](TEAM-HANDOFF.en.md), version 0.4, 31 October 2026. Decisions H-D46–H-D50 are newer than version 0.3 of the documents below. Current resume point: **H-Q06** (refund processing deadline and execution). The full exploratory session log is in [PLATFORM-DECISIONS-LOG.en.md](PLATFORM-DECISIONS-LOG.en.md).
 
 This directory is a reference for product analysis and planning, not a software implementation.
 
