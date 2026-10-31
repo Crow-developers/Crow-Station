@@ -35,7 +35,7 @@ jobs:
           - image: web
             context: frontend/web
     outputs:
-      version: ${{ steps.meta.outputs.version }}
+      version: ${{ steps.version.outputs.version }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -44,6 +44,22 @@ jobs:
       - name: Image name (registries require lowercase)
         id: name
         run: echo "image=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/crow-station-${{ matrix.image }}" >> "$GITHUB_OUTPUT"
+
+      # The image tag can be a branch name, but .NET needs a SemVer version: tags v1.2.3 -> 1.2.3,
+      # branches -> 0.0.0-<branch>.<run number>.
+      - name: Version
+        id: version
+        env:
+          REF_TYPE: ${{ github.ref_type }}
+          REF_NAME: ${{ github.ref_name }}
+          RUN_NUMBER: ${{ github.run_number }}
+        run: |
+          if [[ "$REF_TYPE" == "tag" ]]; then
+            version="${REF_NAME#v}"
+          else
+            version="0.0.0-${REF_NAME//[^0-9A-Za-z-]/-}.${RUN_NUMBER}"
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
 
       - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
 
@@ -76,7 +92,7 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          build-args: VERSION=${{ steps.meta.outputs.version }}
+          build-args: VERSION=${{ steps.version.outputs.version }}
           sbom: true
           provenance: mode=max
           cache-from: type=gha,scope=${{ matrix.image }}
