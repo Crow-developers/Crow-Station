@@ -1,0 +1,15 @@
+# Secret scanning configuration. Extends the default gitleaks rules.
+title = "Crow Station gitleaks config"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Local development defaults that are intentionally public"
+paths = [
+  '''\.env\.example$''',
+  '''backend/src/CrowStation\.Api/appsettings\.Development\.json$''',
+]
+regexes = [
+  '''crow_(dev|test)_password''',
+]

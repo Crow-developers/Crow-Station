@@ -6,3 +6,17 @@
 *.yml text eol=lf
 *.png binary
 *.pdf binary
+*.cs text eol=lf
+*.csproj text eol=lf
+*.props text eol=lf
+*.slnx text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.mts text eol=lf
+*.css text eol=lf
+*.yaml text eol=lf
+*.sh text eol=lf
+Makefile text eol=lf
+Dockerfile text eol=lf
+.githooks/* text eol=lf
+*.ico binary

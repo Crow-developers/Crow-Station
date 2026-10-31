@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+# Fast checks on staged files only. CI runs the full suite; this catches the common misses early.
+# Skip once with: git commit --no-verify
+set -euo pipefail
+
+staged=$(git diff --cached --name-only --diff-filter=ACMR)
+
+if grep -qE '^backend/.*\.(cs|csproj|props)$' <<<"$staged"; then
+  echo "pre-commit: checking .NET formatting..."
+  files=$(grep -E '^backend/.*\.cs$' <<<"$staged" | sed 's|^backend/||' | tr '\n' ' ' || true)
+  if [[ -n "$files" ]]; then
+    (cd backend && dotnet format CrowStation.slnx --verify-no-changes --include $files) || {
+      echo "pre-commit: run 'make backend-format' and stage the changes." >&2
+      exit 1
+    }
+  fi
+fi
+
+if grep -qE '^frontend/web/' <<<"$staged"; then
+  echo "pre-commit: checking web formatting and lint..."
+  files=$(grep -E '^frontend/web/.*\.(ts|tsx|mts|mjs|js|json|css|md)$' <<<"$staged" | sed 's|^frontend/web/||' || true)
+  if [[ -n "$files" ]]; then
+    (cd frontend/web && npx --no-install prettier --check $files && npx --no-install eslint --max-warnings=0 \
+      $(grep -E '\.(ts|tsx|mts|mjs|js)$' <<<"$files" || true)) || {
+      echo "pre-commit: run 'make web-format' and fix lint errors." >&2
+      exit 1
+    }
+  fi
+fi
+
+if git diff --cached -U0 | grep -qiE '^\+.*(BEGIN (RSA|OPENSSH|EC) PRIVATE KEY|AKIA[0-9A-Z]{16})'; then
+  echo "pre-commit: a private key or cloud access key appears in the staged changes." >&2
+  exit 1
+fi

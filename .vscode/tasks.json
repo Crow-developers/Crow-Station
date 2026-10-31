@@ -1,0 +1,18 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build api",
+      "type": "process",
+      "command": "dotnet",
+      "args": ["build", "${workspaceFolder}/backend/src/CrowStation.Api/CrowStation.Api.csproj"],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "infra up",
+      "type": "shell",
+      "command": "make infra",
+      "problemMatcher": []
+    }
+  ]
+}

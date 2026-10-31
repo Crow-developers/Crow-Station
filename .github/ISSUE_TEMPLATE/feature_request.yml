@@ -1,0 +1,20 @@
+name: Feature request
+description: Propose a change. Product rules must first be approved on the plan branch.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: Who needs this and why?
+    validations:
+      required: true
+  - type: input
+    id: decision
+    attributes:
+      label: Approved decision or spec
+      description: For example H-D41 or a link to the docs branch.
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution

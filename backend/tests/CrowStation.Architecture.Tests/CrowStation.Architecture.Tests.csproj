@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\CrowStation.Api\CrowStation.Api.csproj" />
+    <PackageReference Include="NetArchTest.Rules" />
+  </ItemGroup>
+</Project>

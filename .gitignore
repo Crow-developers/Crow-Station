@@ -18,3 +18,14 @@ Thumbs.db
 **/obj/
 **/.dart_tool/
 **/build/
+
+# Test and coverage outputs
+**/TestResults/
+**/coverage/
+**/test-results/
+
+# Next.js
+**/.next/
+**/out/
+*.tsbuildinfo
+next-env.d.ts

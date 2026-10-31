@@ -1,0 +1,31 @@
+{
+  "name": "Crow Station",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+  "features": {
+    "ghcr.io/devcontainers/features/dotnet:2": { "version": "10.0" },
+    "ghcr.io/devcontainers/features/node:1": { "version": "22" },
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "forwardPorts": [3000, 8080, 5432, 6379, 9000, 9001],
+  "portsAttributes": {
+    "3000": { "label": "web" },
+    "8080": { "label": "api" },
+    "9001": { "label": "storage console" }
+  },
+  "postCreateCommand": "make setup",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-dotnettools.csdevkit",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "bradlc.vscode-tailwindcss",
+        "ms-azuretools.vscode-docker",
+        "editorconfig.editorconfig",
+        "humao.rest-client",
+        "github.vscode-github-actions"
+      ]
+    }
+  }
+}

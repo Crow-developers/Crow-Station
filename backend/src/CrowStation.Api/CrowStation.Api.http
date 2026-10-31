@@ -1,0 +1,17 @@
+# Quick requests against a local API (`make infra` + `make api`, or `make up`).
+# Works with the VS Code REST Client extension, Visual Studio and JetBrains Rider.
+
+@baseUrl = http://localhost:8080
+
+### Liveness: the process is running
+GET {{baseUrl}}/health/live
+
+### Readiness: database, cache and storage are reachable
+GET {{baseUrl}}/health/ready
+
+### Example use case
+GET {{baseUrl}}/api/v1/diagnostics/time
+Accept: application/json
+
+### OpenAPI document (Development only). Interactive docs: {{baseUrl}}/scalar
+GET {{baseUrl}}/openapi/v1.json

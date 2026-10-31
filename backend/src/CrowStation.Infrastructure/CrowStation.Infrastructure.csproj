@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\CrowStation.Application\CrowStation.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" />
+    <PackageReference Include="StackExchange.Redis" />
+    <PackageReference Include="AWSSDK.S3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="CrowStation.Api.IntegrationTests" />
+  </ItemGroup>
+</Project>
