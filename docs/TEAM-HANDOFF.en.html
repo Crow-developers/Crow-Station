@@ -34,16 +34,16 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 <a href="#section-12">12. Status of this handoff and the team&#39;s first step</a></nav></aside>
 <main>
 <div class="tools"><span>Planning reference · 30 September 2026</span><button onclick="window.print()">Print document</button></div>
-<header class="hero"><div class="eyebrow">CROW STATION · Version 0.2</div><h1>Team guide<br>to completing project decisions</h1><p>A clear starting point for the team: the latest decisions, what changed from earlier documents, the remaining questions, and how answers are recorded, reviewed, and handed over.</p><div class="tags"><span>Analysis and planning only</span><span>Changes after version 0.2</span><span>One question at a time</span></div></header>
-<div class="summary"><div><strong>43 decisions</strong><span>H-D01 to H-D43</span></div><div><strong>24 questions</strong><span>Proposed discussion map</span></div><div><strong>H-Q05</strong><span>Current resume point</span></div></div>
+<header class="hero"><div class="eyebrow">CROW STATION · Version 0.3</div><h1>Team guide<br>to completing project decisions</h1><p>A clear starting point for the team: the latest decisions, what changed from earlier documents, the remaining questions, and how answers are recorded, reviewed, and handed over.</p><div class="tags"><span>Analysis and planning only</span><span>Changes after version 0.2</span><span>One question at a time</span></div></header>
+<div class="summary"><div><strong>45 decisions</strong><span>H-D01 to H-D45</span></div><div><strong>24 questions</strong><span>Proposed discussion map</span></div><div><strong>H-Q05</strong><span>Current resume point</span></div></div>
 <article>
 <blockquote>
-<p>Version 0.2 · 29 October 2026 · Reference for completing questions and decisions · Analysis phase only</p>
+<p>Version 0.3 · 31 October 2026 · Reference for completing questions and decisions · Analysis phase only</p>
 </blockquote>
 <h2 id="section-1">1. Start here</h2>
 <p><strong>What the team is asked to do:</strong> help the project owner complete the business rules and open questions, and turn the answers into clear, reviewable requirements before designing the database, the API, and the implementation plan. This handoff does not start programming, and it does not turn proposals into approved decisions.</p>
 <p><strong>Exact resume point — H-Q05:</strong> How do we calculate refunds for a course that mixes video, text, and tests, and what lesson values are approved? H-Q01 to H-Q04 were settled on 29 October 2026; see section 4.3 and the <a href="DECISION-CARDS.en.md">decision cards</a>.</p>
-<p><strong>Note on the current reference:</strong> the product document and the data planning document in the repository are at version 0.2, dated 30 September 2026. Later answers from the discussion have not yet been merged into them, including the removal of partial sales and the independent price of each course. Section 4 collects these decisions, and section 5 lists the places that need updating. Do not use older conflicting text as current policy.</p>
+<p><strong>Current reference:</strong> the product and data planning documents are at version 0.3, dated 31 October 2026, and include decisions H-D01 to H-D45 and the section 5 changes. If a new conflict appears, section 4 of this file takes precedence until the documents are updated.</p>
 <p>Read in this order:</p>
 <ol>
 <li>This file, especially the latest decisions and the resume point.</li>
@@ -352,7 +352,7 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 </tbody></table></div>
 <p><strong>Note:</strong> the decisions in this section expand the platform&#39;s feature scope and do not change the financial rules (refunds, holds, ownership transfer) in 4.1, and they do not close questions in the O, D, and H-Q logs. The list of required updates in section 5 is extended when these decisions are merged into the product and data planning documents in a later documentation batch.</p>
 <p><strong>Important sequence:</strong> the project owner first agreed to count a shared lesson once, then explicitly changed this to paying for each course separately. The decision in force is H-D10. Similarly, the decision that lesson updates are free limits the instructor&#39;s earlier freedom to price each update.</p>
-<h4>4.3 Decisions from the 29 October 2026 session — updates, progress, and sales</h4>
+<h4>4.3 Decisions from the 29 October 2026 session — updates, progress, sales, and technical foundation</h4>
 <p>The project owner answered H-Q01 to H-Q04 in a written session on 29 October 2026. The full cards, using the section 9 template, are in the <a href="DECISION-CARDS.en.md">decision cards</a>.</p>
 <div class="table-wrap"><table>
 <thead>
@@ -387,9 +387,19 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 <td>If the declared completion date is missed, the instructor is entitled to one justified extension, and students are notified. If still late after the extension, the student may request a refund from the held amount, and sales of the course stop.</td>
 <td>The maximum extension length, the refund request window, whether the refund is full or partial depending on what was published (H-Q05), and resuming sales after completion are open.</td>
 </tr>
+<tr>
+<td>H-D44</td>
+<td>The web front end is Next.js with TypeScript, chosen by the project owner when building the code foundation on the develop branch.</td>
+<td>The mobile app stays Flutter and is built later; English support in the web app is not designed yet.</td>
+</tr>
+<tr>
+<td>H-D45</td>
+<td>Local environment: PostgreSQL, Redis for caching, and S3-compatible file storage through RustFS instead of MinIO, because official MinIO images are no longer published.</td>
+<td>The production storage and hosting provider and the isolation approach are open (H-Q23).</td>
+</tr>
 </tbody></table></div>
 <h2 id="section-5">5. Reconciling older documents before building any design on them</h2>
-<p>This is a <strong>list of required updates</strong>; its existence does not mean the version 0.2 documents have already been changed. The handoff file collects the latest answers so the team can merge them in a consistent documentation batch.</p>
+<p><strong>This list was applied in version 0.3 of the product and data documents (31 October 2026).</strong> The table remains as a record of what changed and why.</p>
 <div class="table-wrap"><table>
 <thead>
 <tr>
@@ -520,7 +530,7 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 </tr>
 <tr>
 <td>Sessions</td>
-<td>One-session policy for students; signing in from a new device alerts them and ends the previous session. Multi-role accounts still need detail.</td>
+<td>At most two concurrent devices per account, a phone and a computer (H-D14), replacing the earlier one-device policy. Behavior for an additional device and multi-role accounts needs detail (H-Q17).</td>
 </tr>
 <tr>
 <td>Student rights</td>
@@ -877,15 +887,15 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 </thead>
 <tbody><tr>
 <td>Planning baseline read</td>
-<td>Version 0.2; local Arabic reference 370651b.</td>
+<td>Product and data documents at version 0.3.</td>
 </tr>
 <tr>
 <td>Latest decisions</td>
-<td>Documented in section 4 of this file from the discussion; not claimed to be merged into the product and data documents.</td>
+<td>H-D01 to H-D45 in section 4, merged into version 0.3 of both documents.</td>
 </tr>
 <tr>
 <td>Conflicts with the old version</td>
-<td>Listed as a work list in section 5.</td>
+<td>Resolved in version 0.3; section 5 is now a historical record.</td>
 </tr>
 <tr>
 <td>Resume question</td>
@@ -903,6 +913,7 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 <p><strong>Team&#39;s next step:</strong> the coordinator reads sections 4 and 5, then asks the project owner H-Q05, and records the answer using the section 9 card. After a suitable group of answers, the team reviews the changes and updates the core documents in both languages.</p>
 <p><strong>Version log — 0.1, 8 October 2026:</strong> first handoff file for completing the questions, including the latest discussion decisions, superseded decisions, a document repair map, a proposed question log, and collaboration roles with approval and handover templates. The work order and roles are proposals; only the project owner&#39;s answers are recorded as approved decisions.</p>
 <p><strong>Version log — 0.2, 29 October 2026:</strong> settled H-Q01 (H-D39), H-Q02 (H-D40), H-Q03 (H-D41), and H-Q04 (H-D42, H-D43); superseded H-D09; moved the resume point to H-Q05; added decision cards.</p>
+<p><strong>Version log — 0.3, 31 October 2026:</strong> added H-D44 (Next.js) and H-D45 (local environment), corrected the sessions row to follow H-D14, and recorded that section 5 was applied in version 0.3 of the product and data documents.</p>
 </article>
 <footer>Crow Station · Planning document for review · Source: TEAM-HANDOFF.en.md</footer>
 </main></div>

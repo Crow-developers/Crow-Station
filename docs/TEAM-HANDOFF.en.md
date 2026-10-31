@@ -1,6 +1,6 @@
 # Crow Station — Analysis and Planning Handoff for the Team
 
-> Version 0.2 · 29 October 2026 · Reference for completing questions and decisions · Analysis phase only
+> Version 0.3 · 31 October 2026 · Reference for completing questions and decisions · Analysis phase only
 
 ## 1. Start here
 
@@ -8,7 +8,7 @@
 
 **Exact resume point — H-Q05:** How do we calculate refunds for a course that mixes video, text, and tests, and what lesson values are approved? H-Q01 to H-Q04 were settled on 29 October 2026; see section 4.3 and the [decision cards](DECISION-CARDS.en.md).
 
-**Note on the current reference:** the product document and the data planning document in the repository are at version 0.2, dated 30 September 2026. Later answers from the discussion have not yet been merged into them, including the removal of partial sales and the independent price of each course. Section 4 collects these decisions, and section 5 lists the places that need updating. Do not use older conflicting text as current policy.
+**Current reference:** the product and data planning documents are at version 0.3, dated 31 October 2026, and include decisions H-D01 to H-D45 and the section 5 changes. If a new conflict appears, section 4 of this file takes precedence until the documents are updated.
 
 Read in this order:
 
@@ -112,7 +112,7 @@ This section comes from the full exploratory session log with the project owner:
 
 **Important sequence:** the project owner first agreed to count a shared lesson once, then explicitly changed this to paying for each course separately. The decision in force is H-D10. Similarly, the decision that lesson updates are free limits the instructor's earlier freedom to price each update.
 
-#### 4.3 Decisions from the 29 October 2026 session — updates, progress, and sales
+#### 4.3 Decisions from the 29 October 2026 session — updates, progress, sales, and technical foundation
 
 The project owner answered H-Q01 to H-Q04 in a written session on 29 October 2026. The full cards, using the section 9 template, are in the [decision cards](DECISION-CARDS.en.md).
 
@@ -123,10 +123,12 @@ The project owner answered H-Q01 to H-Q04 in a written session on 29 October 202
 | H-D41 | A paid add-on (H-D07) is shown on the course page as an optional extra with a separate price, and only students who own the course can buy it. It is not sold on its own to non-buyers. | Whether it can be bought together with the course in one transaction, its refund rules, and whether it moves with a course ownership transfer are open. |
 | H-D42 | An incomplete course can only be sold with a declared syllabus: the list of upcoming lessons and an expected completion date, shown to the student before purchase. The course is complete when the whole list is published and approved by the platform, at which point the earnings release rule (H-D03) applies. | Limits on changing the declared syllabus after sale, who in the platform approves completion, and the review time are open. |
 | H-D43 | If the declared completion date is missed, the instructor is entitled to one justified extension, and students are notified. If still late after the extension, the student may request a refund from the held amount, and sales of the course stop. | The maximum extension length, the refund request window, whether the refund is full or partial depending on what was published (H-Q05), and resuming sales after completion are open. |
+| H-D44 | The web front end is Next.js with TypeScript, chosen by the project owner when building the code foundation on the develop branch. | The mobile app stays Flutter and is built later; English support in the web app is not designed yet. |
+| H-D45 | Local environment: PostgreSQL, Redis for caching, and S3-compatible file storage through RustFS instead of MinIO, because official MinIO images are no longer published. | The production storage and hosting provider and the isolation approach are open (H-Q23). |
 
 ## 5. Reconciling older documents before building any design on them
 
-This is a **list of required updates**; its existence does not mean the version 0.2 documents have already been changed. The handoff file collects the latest answers so the team can merge them in a consistent documentation batch.
+**This list was applied in version 0.3 of the product and data documents (31 October 2026).** The table remains as a record of what changed and why.
 
 | Location | Required correction | Decision reference |
 | --- | --- | --- |
@@ -161,7 +163,7 @@ This is an operational summary to help follow the questions; it is not a substit
 | Topic | What must be preserved |
 | --- | --- |
 | Student and account | Visitors browse; registering allows previews; buying requires verifying one method: phone or email. Buying is available to all roles. |
-| Sessions | One-session policy for students; signing in from a new device alerts them and ends the previous session. Multi-role accounts still need detail. |
+| Sessions | At most two concurrent devices per account, a phone and a computer (H-D14), replacing the earlier one-device policy. Behavior for an additional device and multi-role accounts needs detail (H-Q17). |
 | Student rights | Buying a course grants access with no expiry, and stopping sales or the instructor leaving does not remove access for earlier buyers. |
 | Instructor and team | One dashboard per instructor; an assistant can work in several dashboards with separate permissions. The platform defines the list of permissions and the instructor grants them. Money cannot be delegated to the instructor's team. |
 | Onboarding | Acceptance, a contract, and a first review; accepting the electronic contract is enough to start, and the third publication alerts the administration to decide whether to continue or require a paper contract. It is not an automatic block after the third video. |
@@ -274,9 +276,9 @@ At each internal handover: state the last question and its answer, the next ques
 
 | Item | Status when this file was prepared |
 | --- | --- |
-| Planning baseline read | Version 0.2; local Arabic reference 370651b. |
-| Latest decisions | Documented in section 4 of this file from the discussion; not claimed to be merged into the product and data documents. |
-| Conflicts with the old version | Listed as a work list in section 5. |
+| Planning baseline read | Product and data documents at version 0.3. |
+| Latest decisions | H-D01 to H-D45 in section 4, merged into version 0.3 of both documents. |
+| Conflicts with the old version | Resolved in version 0.3; section 5 is now a historical record. |
 | Resume question | H-Q05: refund calculation and lesson values. H-Q01 to H-Q04 were settled on 29 October 2026. |
 | Model and API approval | Not complete; product implementation does not start with this handoff. |
 | This file | English translation of the Arabic handoff `TEAM-HANDOFF.ar.md` at plan commit 69dd9da, with an HTML reading version. |
@@ -286,3 +288,6 @@ At each internal handover: state the last question and its answer, the next ques
 **Version log — 0.1, 8 October 2026:** first handoff file for completing the questions, including the latest discussion decisions, superseded decisions, a document repair map, a proposed question log, and collaboration roles with approval and handover templates. The work order and roles are proposals; only the project owner's answers are recorded as approved decisions.
 
 **Version log — 0.2, 29 October 2026:** settled H-Q01 (H-D39), H-Q02 (H-D40), H-Q03 (H-D41), and H-Q04 (H-D42, H-D43); superseded H-D09; moved the resume point to H-Q05; added decision cards.
+
+
+**Version log — 0.3, 31 October 2026:** added H-D44 (Next.js) and H-D45 (local environment), corrected the sessions row to follow H-D14, and recorded that section 5 was applied in version 0.3 of the product and data documents.

@@ -1,6 +1,6 @@
 # Crow Station — Product Brief and Planning Decisions
 
-> Version 0.2 · 30 September 2026 · Reference draft for review · Does not authorize implementation
+> Version 0.3 · 31 October 2026 · Reference draft for review · Does not authorize implementing product features
 
 ## 1. How to use this document
 
@@ -9,6 +9,8 @@ This document consolidates the project discussion into one reference to organize
 Companion document: [Data Planning and Design Decisions](DATA-PLANNING.en.md). It begins analyzing proposed entities and relationships; it does not approve tables or a database count. Both documents are updated together as decisions are resolved.
 
 The source is `Project_Features.pdf`, read in full at the start of the discussion, followed by the project owner's answers and subsequent corrections. Where statements differ, this document uses the latest explicit decision and retains unresolved matters as open questions. The original file was not present in the project directory when this version was prepared; unchanged images of its two pages are preserved in `docs/sources` to keep the available source with the plans.
+
+**Source of version 0.3:** it merges decisions H-D01 to H-D45 from the [team handoff](TEAM-HANDOFF.en.md) and the [decision cards](DECISION-CARDS.en.md), and shows each decision's ID next to its rule. Where older text conflicts with an H-D decision, the decision applies.
 
 | Status | Meaning |
 | --- | --- |
@@ -33,9 +35,9 @@ Crow Station is a unified learning platform for publishing and purchasing course
 - **Crow Station** is the preliminary name and may change if a better name is selected.
 - The platform includes **B2B institutional training** solutions for companies with dedicated reporting dashboards, and partnerships with Iraqi and Arab universities.
 - Supports **live events** such as free webinars and live Q&A sessions where the schedule is set by the course presenter.
-- Hosts **periodic competitions** for programming and cybersecurity (CTFs) with prizes and sponsorship partnerships.
+- Hosts **periodic competitions** for programming and cybersecurity (CTFs) (H-D28); prize funding and sponsorship are open.
 - Provides **open resources** for students (free tools, ready project templates) to encourage hands-on learning.
-- Supports a **project marketplace** where students can sell their projects and templates with multiple licenses.
+- Supports a **marketplace for projects and templates** with review before publishing, ratings, and multiple licenses (H-D33); the commission rate is open.
 
 ### 2.1 Planning assumptions
 
@@ -52,15 +54,25 @@ Crow Station is a unified learning platform for publishing and purchasing course
 
 | Term | Meaning |
 | --- | --- |
-| Course purchase | An entitlement to the content covered by the purchase, without an expiry date. |
+| Course purchase | Buying the whole course only, not sections or single lessons (H-D10); an entitlement without expiry that includes lesson updates at no charge (H-D06). |
+| Paid add-on | Optional content outside the promised content, sold at a separate price on the course page, and only to students who own the course (H-D07, H-D41). |
 | Platform subscription | A time-limited package unlocking additional features; it does not automatically grant courses. |
-| Free preview | One or more pre-purchase videos selected by the instructor and platform; an account is required. |
+| Free preview | The first three videos of a course before purchase; an account is required (H-D36). |
 | Refund request window | The first 7 days after a purchase, during which an exceptional refund may be requested; not a free trial or a guarantee of approval. |
 | Learning path | An independent product with a plan, instructions, and mentoring; not simply a course bundle. |
 | Room | A hands-on learning lab inspired by TryHackMe, not the course chat. |
 | Course chat | A text group discussion restricted to purchasers. |
 | Mentoring conversation | A private conversation tied to the paid mentoring service and its duration. |
 | Instructor wallet | Available or held earnings; not a decision to create a general student payment wallet. |
+
+### 2.3 B2B institutional training and partnerships
+
+- **Institutional solutions (H-D25):** company dashboards for employee training, with progress and achievement reports.
+- **Employment access (H-D25):** employers can access top performers' records; the student consent mechanism and access scope are open.
+- **University partnerships (H-D25):** partnerships with Iraqi and Arab universities; their scope is not defined.
+- **Student discounts (H-D25):** discounts for university students; how eligibility is verified is open (section 10.2).
+- **Continuing education hours (H-D29):** pursue professional accreditation and CEUs/CPEs; the timeline and choice of partners are deferred.
+- Pricing of institutional contracts is open (O-22).
 
 ## 3. Initial release scope and later phases
 
@@ -71,7 +83,7 @@ Crow Station is a unified learning platform for publishing and purchasing course
 - Responsive website and mobile apps, with Arabic and English interfaces.
 - Accounts, verification at purchase, and administrator, instructor, and staff permissions.
 - Instructor admission, contracts, initial review, and course and content management.
-- Full and partial purchases, electronic and manual payments, refunds, wallets, and withdrawals.
+- Whole-course purchases with their linked paid add-ons (H-D10, H-D41), electronic and manual payments, refunds, wallets, and withdrawals.
 - Subscription packages, promotions, and their administration settings; exact benefits remain to be resolved.
 - Protected video, synchronized viewing progress, student dashboard, playlists, and notes.
 - A desktop code editor supporting writing, editing, and execution.
@@ -113,6 +125,7 @@ No Flutter Web, no student downloads of course videos, no watermark in the curre
 2. After registration, preview videos are available without phone or email verification.
 3. At purchase, verifying **one** of the two is sufficient: phone or email.
 4. All account types may purchase courses; an instructor or employee does not need a separate student account.
+5. Accounts can be linked to GitHub/GitLab, MFA is mandatory for instructors and administrators, and account recovery uses both security questions and identity verification (H-D14). Details are in section 15.
 
 ### 4.2 Functional roles
 
@@ -143,7 +156,9 @@ These are functional roles, not final database Role names. Access boundaries for
 
 ### 4.4 Student sessions
 
-The initial policy permits one signed-in session on one device per student. Signing into the same account on a new device warns the student and signs out the previous device. This is broader than preventing two videos from playing at once and does not apply to instructors. Account-sharing controls may become stricter later. The behavior of an account combining instructor and student roles remains unresolved.
+**Agreed — H-D14 (replaces the one-device policy of version 0.2):** at most two concurrent devices per account, a phone and a computer. The goal is to prevent account sharing, not only two videos playing at once, and the policy may become stricter later.
+
+**Open:** what happens when signing in on an additional device, the idle sign-out policy, and whether the limit applies to instructors and to accounts that are both instructor and student (H-Q17).
 
 ### 4.5 Assistants from the platform's staff
 
@@ -184,25 +199,29 @@ Electronic signing details, paper-copy storage, sanction levels, and exactly wha
 ### 6.1 Publication and sales
 
 - The instructor sets the price.
-- Publication settings allow full-course sales, separate sections or lessons, or both.
+- **Whole-course purchase only (H-D10):** no sales of sections or single lessons, and no "complete the course" price. Each course has its own price even if its content resembles a course the student owns, and no special notice says so (H-D11).
+- **Each lesson belongs to exactly one course (H-D40):** the instructor may copy a lesson to another course; the copy is an independent lesson with its own progress and updates, and editing one copy does not change the other. Supersedes H-D09.
+- A course sequence may include video lessons, text lessons, and standalone tests (H-D13).
 - Purchased content remains accessible without expiry or another payment for the same content.
-- The instructor decides how new lessons and updates are offered to existing purchasers, whether within the course or as related additions.
-- When completing a course purchase, students buy only what they do not own. The instructor determines completion pricing without charging again for owned content.
+- **Updates are free (H-D06):** correcting, updating, or replacing a purchased lesson gives earlier buyers the new version at no charge, and they do not lose the purchased content. This limits the instructor's earlier freedom to price updates.
+- **Progress after an update (H-D39):** the lesson stays complete for students who completed it, they see a notice that it was updated, and reviewing the new version is optional. Certificates issued before the update stay valid.
+- **Paid add-ons (H-D07, H-D41):** an optional add-on outside the promised content may be priced, provided it does not reduce the original course. It is shown on the course page at a separate price, and only students who own the course can buy it.
+- **Moving a lesson to another course (H-D08):** it does not remove access for those who owned it or erase their progress, does not require them to buy the other course, and does not grant them its other lessons or services.
 - The instructor may impose a learning sequence, such as completing a lesson or passing a test before unlocking the next item.
 - Publication may be immediate, on a specified date, or gradual based on time since purchase.
-- Preview content consists of one or more videos selected by the instructor and platform. Approval details are unresolved.
+- **Preview (H-D36):** the first three videos are free for registered accounts and the rest is paid; this does not break the whole-course purchase rule.
 
-**Open:** How do we preserve the original purchased content when it is replaced by a paid update? What defines “completion” for a course with scheduled lessons? We do not assume deletion of the original version or withdrawal of access to it.
+**Open:** keeping every old version as a visible archive (not approved), the form of the update notice, the effect of an update on a lesson not yet completed, buying an add-on together with the course and its refund rules, who owns copied lessons after an ownership transfer, and how a moved lesson appears in the student's library.
 
 ### 6.2 Selling before course completion
 
-- Allowed, with guarantees that promised content will be delivered.
-- Publication dates and the completion deadline are defined in the contract and clearly shown before purchase.
-- All instructor earnings from the course remain held until completion, **including separate sales of an already-published lesson**.
-- The instructor must declare completion, and the platform team must verify and approve delivery before earnings are released.
-- Delays require administrative approval and notification of revised dates to students.
-- If delivery fails or a delay does not suit the student, the student may choose a refund for undelivered content or the offered compensation, even after 7 days.
-- Administrative approval of a delay does not remove this right.
+- **Declared syllabus (H-D42):** an incomplete course can only be sold with the list of upcoming lessons and an expected completion date, both shown before purchase and fixed in the contract.
+- All instructor earnings from the course remain held until completion (H-D03).
+- The course is complete when the whole declared list is published; the instructor declares it and the platform team approves it before earnings are released.
+- **Delays (H-D43):** if the date is missed, the instructor is entitled to one justified extension, and students are notified. If still late after the extension, students may request a refund from the held amount, and sales of the course stop. This replaces the version 0.2 rule that delays need administrative approval.
+- A student's right to a refund for undelivered content does not end after the 7-day window.
+
+**Open:** limits on changing the declared syllabus after sale, who in the platform approves completion and the review time, the maximum extension length, the refund request window, whether the refund is full or partial depending on what was published (H-Q05), and resuming sales after completion.
 
 ### 6.3 Stopping sales and instructor departure
 
@@ -220,8 +239,10 @@ Electronic signing details, paper-copy storage, sanction levels, and exactly wha
 - Resetting means starting independent financial accounting for this course under the new instructor; it does not erase earlier records or earnings or reset either instructor's entire balance.
 - Existing students retain purchases and access; transfer does not require them to buy the course again.
 - Responsibility for the course and all existing students passes to the new instructor, including assessments, appeals, and conversations.
-- **Open — next question:** Is the previous instructor's and their team's management access revoked immediately after transfer, while the previous instructor retains access only to historical financial records? The project owner has not answered this question.
-- **Open:** Transfer approval mechanics and effective time, concurrent transactions, and who bears refunds or incomplete-course commitments arising from pre-transfer sales.
+- **Agreed — H-D01:** the previous instructor's and their team's access to the transferred course is removed immediately, while their account, records, expenses, and balance are kept and their other courses are not affected. The limits on viewing data of past students need defining.
+- **Refunds and transfer (H-D02, H-D05):** a refund follows the original purchase and the shares of its parties: pre-transfer sales use the old agreement, later sales the new one. A course may be transferred while a refund is pending; the amount stays linked to the instructor the student bought from. An approved refund is paid from the held amount; otherwise the earnings return to the first instructor once the other release conditions are met.
+- Responsibility of the new instructor for breaching an obligation transferred to them is defined in the transfer agreement.
+- **Open:** how a breach is proven and settled (H-Q07), and when a transfer takes effect and how concurrent transactions are handled (H-Q08).
 
 ## 7. Student experience, video, and code editor
 
@@ -251,7 +272,7 @@ A professional dashboard brings together courses, purchases, progress, assessmen
 - Unlocks after purchasing any course and remains available without a recurring subscription.
 - If refunded purchases leave the student owning no courses, the editor locks until another course is purchased.
 
-**Open:** Does purchasing a single lesson unlock the editor? How are code execution sessions isolated and their resources and duration limited?
+**Open:** How are code execution sessions isolated and their resources and duration limited? The question of unlocking the editor by buying a single lesson no longer applies, since partial sales are cancelled (H-D10).
 
 ## 8. Assessments, grading, and certificates
 
@@ -264,6 +285,7 @@ A professional dashboard brings together courses, purchases, progress, assessmen
 - Coding answers are graded by AI according to the owner's decision; this is an exception to deferring general AI features.
 - The platform has fixed standards, with question-specific criteria possible within them; the exact boundaries remain open.
 - **Automated Proctoring:** Adopted for critical assessments (such as final certificates) to ensure integrity, with advanced anti-cheating mechanisms (randomized questions, time pressure, browser lockdown). Technical details deferred to design phase.
+
 ### 8.2 Appeals
 
 1. The student submits a grading appeal.
@@ -299,14 +321,15 @@ A professional dashboard brings together courses, purchases, progress, assessmen
 | Earnings type | Availability rule |
 | --- | --- |
 | Completed course sale | Each new purchase amount remains held until 7 days have passed since that purchase; this is not the first 7 days of the instructor account. |
-| Incomplete course or part of one | Held until course completion, the instructor's declaration, and team approval; the purchase window still matters for recent purchases. |
+| Incomplete course | Held until course completion, the instructor's declaration, and team approval. These conditions stack with the 7-day window, and the end of the window alone does not release the earnings (H-D03). |
 | Learning path sale | Net earnings are available immediately upon payment confirmation because the current agreed policy does not allow path refunds. |
 
 - Any portion of the available balance may be withdrawn.
 - The minimum withdrawal is 10 dollars; its dinar equivalent and conversion rate need a decision.
 - Processing and, upon approval, transferring funds must both occur within 24 hours of the request; this is not merely a response deadline.
 - Money, financial reports, and withdrawals belong exclusively to the responsible instructor on the instructor-team side.
-- Handling pending refund requests and appeals before releasing balances is not fully defined.
+- **A refund request within the window (H-D04):** it is not rejected because of administrative delay, and the purchase amount stays held until it is decided. This does not mean automatic approval; review time and execution are open (H-Q06).
+- **No platform funding (H-D12):** the platform paying refunds from its own money and recording a debt on the instructor was not approved; protection comes from holding amounts while refund eligibility lasts. Any exceptional case outside the hold needs a separate decision.
 
 ### 9.3 Course refunds
 
@@ -314,17 +337,20 @@ A professional dashboard brings together courses, purchases, progress, assessmen
 - An ordinary exceptional request must be made within 7 days of purchase; submission does not guarantee approval.
 - Refunds are partial based on benefit received and calculated using the **number and value of watched lessons**.
 - Watching 10% of a lesson's duration is a **preliminary, reviewable** threshold for counting it as watched. Merely opening it is insufficient under this proposal.
+- Lesson-based refund rules are not cancelled just because single-lesson sales are; a lesson is still a unit for calculating benefit within the course.
+- Benefit means different things for video, text, and tests (H-D13); the video watch threshold does not automatically apply to the others (H-Q05).
 - Free preview lessons are excluded from deductions.
 - Instructors choose equal content-value allocation or different lesson values.
 - **Fixing the value allocation at purchase remains a non-final proposal**, following the owner's request to discuss it with specialists.
 - When a refund is executed, access to the relevant content is revoked automatically or manually.
-- Failure to deliver content on time is a separate exception allowing a refund or compensation beyond the window, at the student's choice.
+- Failure to deliver content on time is a separate exception (H-D43): after the single extension ends, the student may request a refund from the held amount, even after the 7-day window.
 - No final financial formula yet covers rounding, allocating discounts to lessons, payment fees, or reversing each party's share.
 
 ## 10. Packages, promotions, and approvals
 
 ### 10.1 Subscriptions
 
+- **Freemium model (H-D36):** adopted; no family memberships. Unlimited annual subscriptions and pay-what-you-want are open.
 - Multiple packages, each with its own price and benefits. Details are deferred until the associated services are settled.
 - Prices, benefits, grace-period length, and benefits during grace are managed per package in the administration dashboard.
 - Package changes preserve the subscriber's current terms until renewal, when the changes take effect.
@@ -341,6 +367,7 @@ A professional dashboard brings together courses, purchases, progress, assessmen
 - Offers are not limited to school and university students; administration defines audience categories and conditions in the dashboard.
 - Multiple discounts can be combined; administration sets compatibility and the overall maximum.
 - How category membership is verified has not been defined.
+- **Coupons and referrals (H-D23):** percentage coupons with a usage limit, and a referral program. An affiliate program and geographic pricing are open.
 
 ### 10.3 Change permissions
 
@@ -392,7 +419,8 @@ Sensitive financial settings belong primarily to the owner. Marketing or other t
 - Completely hidden from non-purchasers, including preview-only viewers.
 - Text-only in the initial release; images and files are future additions.
 - Instructors can delete messages and mute or ban participants from the conversation for abuse.
-- Access details for single-lesson purchasers after refunds or partial entitlement revocation need clarification.
+- Chat access follows course ownership; how a course refund affects chat access needs clarification.
+- **Forum and comments (H-D22):** a discussion forum for each course, run by the instructor and assistant, with administration access, and public comments on lessons with offensive-language filtering. How the forum and public comments relate to the course chat, which is hidden from non-purchasers, needs clarification.
 - External contact details instructors place in the course are visible to everyone, including visitors.
 
 ### 12.2 Reviews
@@ -447,6 +475,7 @@ The instructor dashboard shows sales, views, student progress, and assessment re
 - Revenue from administration-produced rooms belongs to the platform.
 - Access policies and their relationship to course purchase depend on the room and its owner under the agreement; requiring both course purchase and subscription is not a universal rule.
 - A separate Machine instance per student was **only a proposal** and was not approved before discussion was deferred.
+- **Agreed (H-D16):** lab state is saved between sessions, and a full terminal (Linux shell) is provided. Isolation technology, resource limits, Docker-in-Docker, and preventing malicious activity are open.
 
 ### 14.2 Other services
 
@@ -457,14 +486,17 @@ The instructor dashboard shows sales, views, student progress, and assessment re
 | VS | Competitions in the plan without a defined mechanism; “Coming soon.” |
 | Streak | Applies to rooms first, then expands; no calculation rule is approved yet. |
 | Translation and dubbing | Deferred for discussion, not an instructor requirement. |
+
 ### 14.3 Gamification and Adaptive Learning
 
 | Feature | Decision |
 | --- | --- |
-| Points and Badges system | Adopted in first version to motivate students. |
-| Leaderboards | Adopted (weekly, monthly, all-time). |
-| Adaptive Learning | Adopted, adjusts content difficulty based on student performance. |
-| AI-personalized learning paths | Adopted, generated based on student goals and level. |
+| Points and Badges system | Adopted (H-D27). |
+| Leaderboards | Adopted (H-D27); periods are not defined. |
+| Adaptive Learning | Adopted (H-D27); how adaptation works is not defined. |
+| AI-personalized learning paths | Adopted (H-D27). |
+
+**Note:** adoption does not mean launching in the first release; the timing of Streaks and rooms is tied to O-01 and H-Q21. Calculation rules are not defined.
 
 ### 14.4 Collaborative Services
 
@@ -497,10 +529,10 @@ The instructor dashboard shows sales, views, student progress, and assessment re
 | Backend and API | ASP.NET Core on .NET 10. |
 | Database | PostgreSQL. |
 | Mobile app | Flutter, not Flutter Web for the website. |
-| Web frontend | A separate technology not yet selected; criteria include practicality, performance, maintainability, and user experience. |
-| Redis | Interpreted as what the owner meant by “rides”; its name and role need confirmation. |
-| File storage | MinIO or an alternative; the provider is undecided. |
-| Runtime deployment | Docker and Docker Compose are the agreed direction; production, scaling, and availability design is not yet detailed. |
+| Web frontend | **Next.js + TypeScript** (H-D44), chosen by the project owner on 29 October 2026 when building the code foundation on the develop branch. |
+| Redis | Agreed for caching (H-D45); no entitlement or durable money data is stored in it. |
+| File storage | S3-compatible (H-D45). Locally RustFS instead of MinIO, because official MinIO images are no longer published. The production provider is undecided. |
+| Runtime deployment | Docker and Docker Compose are agreed, and the code foundation and CI/CD exist on develop and staging. Multi-region deployment is adopted (H-D24); production design and RPO/RTO targets are not yet detailed. |
 | Instructor data isolation | Unresolved; choosing PostgreSQL does not determine shared databases, separate schemas, or separate databases. |
 | AI | Its grading use is agreed; provider, model, policies, and cost remain open. |
 | Video, search, and code execution | Functional requirements are agreed; architecture and provider choices remain open. |
@@ -515,10 +547,10 @@ This prioritization organizes discussion; it does not authorize decisions on the
 | --- | --- | --- |
 | O-01 | Launch scope | Rooms and Streak timing, activating packages without rooms, and the final decision on the general discussion area. |
 | O-02 | Operating figures | Concurrent video viewers, code runners, and chat users within the 1,000-user target. |
-| O-03 | Permanent access and paid updates | Preserving purchased content when replaced or updated; boundaries for missing or rights-infringing content. |
+| O-03 | Permanent access and updates | Mostly settled: updates are free (H-D06) and keep completion (H-D39), and each lesson belongs to one course (H-D40). Remaining: an archive of old versions, and missing or rights-infringing content. |
 | O-04 | Refund policy | The 10% threshold, lesson and discount formula, and fixing values at purchase after specialist review. |
-| O-05 | Requests within the window | Preventing funds from being released before resolving a refund requested within 7 days but not yet processed. |
-| O-06 | Guarantees and completion | Defining a completed course, scheduled lessons, publication commitments, and documented team approval. |
+| O-05 | Requests within the window | Settled (H-D04): funds stay held until a request made within the window is decided. Remaining: review time and execution (H-Q06). |
+| O-06 | Guarantees and completion | Mostly settled (H-D42, H-D43): declared syllabus, date, and one extension. Remaining: who approves completion, limits on changing the syllabus, and the maximum extension length. |
 | O-07 | Paths and mentoring | No refunds and immediate earnings for an ongoing service: how to handle mentoring not delivered or discontinued. |
 | O-08 | Path resources | Limiting instructors' paths to their own content versus allowing external resources: the precise scope of each type. |
 | O-09 | Mentoring responsibility | Provider identification before sale, collaboration arrangements, response deadlines despite 24/7 coverage, and renewal prices and periods. |
@@ -527,7 +559,7 @@ This prioritization organizes discussion; it does not authorize decisions on the
 | O-12 | Assessment rules | Passing grades, attempts, entry conditions, and settings instructors may change. |
 | O-13 | Reviews | Rejection criteria, text-edit review, and comments without stars if allowed. |
 | O-14 | Audit and privacy | Recorded events, retention, staff access, and lab and conversation logs. |
-| O-15 | Multiple-role accounts and teams | Student device policy for multiple-role accounts; previous instructor and team access after ownership transfer. Multiple assistant teams and one dashboard per instructor are settled. |
+| O-15 | Multiple-role accounts and teams | The previous instructor's and team's access after transfer is settled (H-D01). Remaining: the device policy for multiple-role accounts (H-Q17). |
 | O-16 | Funds and currencies | Payment gateways, currency differences, rounding and fees, withdrawal-threshold conversion, and failed transfers. |
 | O-17 | Package changes | Protecting purchasers' terms when changing switching, credit, and owner-controlled policies. |
 | O-18 | Apps | A separate student app or an initially combined app with roles; mobile administration and instructor functions. |
@@ -540,7 +572,7 @@ This prioritization organizes discussion; it does not authorize decisions on the
 
 ### 18.1 Buying a course and learning
 
-Browse → register → free preview → select content → verify phone or email → electronic payment or manual arrangement with support → payment confirmation → entitlement granted → synchronized viewing progress, practice, and assessments → certificate upon passing its assessment under conditions to be completed later.
+Browse → register → preview the first three videos → select the whole course → verify phone or email → electronic payment or manual arrangement with support → payment confirmation → entitlement granted → synchronized viewing progress, practice, and assessments → certificate upon passing its assessment under conditions to be completed later.
 
 ### 18.2 New instructor
 
@@ -548,7 +580,7 @@ Application or invitation → administrative acceptance → electronic contract 
 
 ### 18.3 A course sold before completion
 
-Commitments and schedule in the contract and sales page → purchase with content status disclosed → all course earnings held → scheduled publication → completion declared → team verification and approval → release of eligible earnings. Delay requires approval and notification and preserves the student's refund-or-compensation choice.
+Declared syllabus and expected completion date in the contract and sales page → purchase with content status disclosed → all course earnings held → publication following the syllabus → completion declared → team verification and approval → release of eligible earnings. If the date is missed: one justified extension and students notified; after that, the student may request a refund from the held amount and sales stop (H-D42, H-D43).
 
 ### 18.4 Buying a path with platform mentoring
 
@@ -567,10 +599,10 @@ These examples can later become test scenarios; they do not mean the functionali
 | AC-01 | Visitors browse but cannot preview; unverified accounts can preview, while purchase requires one contact method to be verified. |
 | AC-02 | No initial publication before signing and approval; publishing the third video alerts administration without automatically blocking the fourth. |
 | AC-03 | An instructor's employee cannot access financial matters, request withdrawals, raise their own permissions, or alter the responsible instructor. |
-| AC-04 | Student sign-in on a new device produces a warning and signs out the previous session under policy. |
+| AC-04 | An account cannot run on more than two concurrent devices (a phone and a computer); behavior for an additional device is tested once approved (H-D14). |
 | AC-05 | Students resume video from the saved position when moving from the website to the app after sign-in. |
 | AC-06 | Stopping new course sales does not revoke existing purchasers' access. |
-| AC-07 | Buying a lesson in an incomplete course does not make earnings withdrawable before completion and approval. |
+| AC-07 | Buying an incomplete course does not make its earnings withdrawable before completion and approval, even after 7 days (H-D03). |
 | AC-08 | Free preview viewing does not reduce refunds; the viewing threshold and formula will be tested after approval. |
 | AC-09 | Net path earnings are available immediately after payment, less platform mentoring fees where applicable. |
 | AC-10 | Mentoring expiry blocks new messages while retaining history and the path; renewal restores communication. |
@@ -585,7 +617,13 @@ These examples can later become test scenarios; they do not mean the functionali
 | AC-19 | A platform assistant is assigned only after the instructor requests help and approves the candidate; the instructor grants permissions without financial delegation. |
 | AC-20 | Assistant fees use only available funds; insufficiency starts a dashboard-configured grace period, whose unpaid expiry blocks access and preserves records. |
 | AC-21 | Payment after suspension does not restore permissions without administration confirmation; termination immediately revokes access while financial settlement remains separate. |
-| AC-22 | Course transfer preserves purchases and assigns teaching responsibility to the new instructor; earlier earnings remain with the previous instructor and later sales use the new agreement without erasing history. |
+| AC-22 | Course transfer preserves purchases and assigns teaching responsibility to the new instructor; earlier earnings remain with the previous instructor and later sales use the new agreement without erasing history. The previous instructor's and team's access to the course is removed immediately, and a pending refund stays linked to the selling instructor (H-D01, H-D05). |
+| AC-23 | Buying a course whose content resembles a course the student owns costs its full price, with no discount or special notice (H-D10, H-D11). |
+| AC-24 | Updating a lesson the student completed keeps it complete, shows an update notice, and asks for no payment (H-D06, H-D39). |
+| AC-25 | Copying a lesson to another course creates an independent lesson: completion does not carry over, and editing one copy does not change the other (H-D40). |
+| AC-26 | A student who does not own the course cannot buy its paid add-on (H-D41). |
+| AC-27 | Missing the completion date after the single extension stops course sales and lets the student request a refund from the held amount (H-D43). |
+| AC-28 | A refund request made within the window and still unprocessed on day eight is not rejected for the delay, and its funds are not released before it is decided (H-D04). |
 
 ## 20. Proposed documentation completion plan
 
@@ -636,16 +674,10 @@ Proposed functional areas for study: identity and permissions; catalog and publi
 
 ## 22. Version history
 
+**0.3 — 31 October 2026:** Merged decisions H-D01 to H-D45: whole-course purchase only with partial sales cancelled, one course per lesson with independent copies, free updates that keep completion, paid add-ons, a declared syllabus and single extension for incomplete courses, refund and hold rules during transfer, removal of the previous instructor's access after transfer, the two-device limit, the three-video preview, and recording Next.js, Redis, and RustFS. Moved the B2B section to 2.3, narrowed wording that went beyond the decisions, fixed missing blank lines before headings, and added AC-23 to AC-28.
+
 **0.2 — 30 September 2026:** Settled multiple assistant team memberships and one dashboard per instructor. Documented paid platform assistants from the first release, including fees, grace periods, suspension, and termination. Approved course transfer with new financial terms for later sales, preserved previous earnings, and transferred student responsibility. Previous instructor and team access after transfer remains open. Product implementation has not started.
 
 **0.1.1 — September 28, 2026:** Added the companion data-planning reference after the request to continue analysis. No business decisions changed; all new entities and relationships in the companion document are proposals under review.
 
 **0.1 — September 28, 2026:** First structured consolidation of discussion decisions through confirmation of the planning user count and the request to prepare this document. No product implementation, approved database schema, or approved API contracts are included in this release. Future updates will explicitly record decision changes rather than silently changing their meaning.
-
-### 23. B2B Institutional Training and Partnerships
-
-- **Institutional solutions:** The platform provides company dashboards for employee training with detailed progress and achievement reports.
-- **Employment access:** Allows employers to access top student records (with student consent) for employment purposes.
-- **University partnerships:** Agreements with Iraqi and Arab universities to grant joint accredited certificates.
-- **Student discounts:** Special discounts for university students upon verification of their university cards.
-- **Continuing education hours (CEUs/CPEs):** Provide accredited hours for professionals who need them to renew their professional certificates.

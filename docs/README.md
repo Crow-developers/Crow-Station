@@ -12,7 +12,7 @@ This directory is a reference for product analysis and planning, not a software 
 - **To begin reviewing:** Read vision and scope (2–3), the rules for your area of interest, then the open questions (17).
 - **For next steps:** See the documentation completion plan (20). System architecture, data model, and API details are not yet approved.
 
-Product version: **0.2**. Data planning version: **0.2**. Last content update: **30 September 2026**.
+Product version: **0.3**. Data planning version: **0.3**. Last content update: **31 October 2026**. Both include decisions H-D01 to H-D45.
 
 Multiple assistant teams, one dashboard per instructor, launch assistant services, and course transfer rules are settled. The next unanswered question: Is the previous instructor's and their team's course-management access revoked immediately after transfer while the previous instructor retains only historical financial records? Other open details are in D-02 and D-13. This batch does not start product implementation.
 

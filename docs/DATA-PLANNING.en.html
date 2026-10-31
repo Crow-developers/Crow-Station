@@ -24,7 +24,7 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 <a href="#section-2">2. The database is not a copy of the application screens</a>
 <a href="#section-3">3. Data domain map</a>
 <a href="#section-4">4. Identity and instructor dashboard boundaries</a>
-<a href="#section-5">5. Content, entitlements, and partial sales</a>
+<a href="#section-5">5. Content, entitlements, and sales</a>
 <a href="#section-6">6. Orders, payments, and refunds</a>
 <a href="#section-7">7. Earnings, holds, and withdrawals</a>
 <a href="#section-8">8. Packages and policies managed from the dashboard</a>
@@ -36,11 +36,11 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 <a href="#section-14">14. Version history</a></nav></aside>
 <main>
 <div class="tools"><span>Planning reference · 30 September 2026</span><button onclick="window.print()">Print document</button></div>
-<header class="hero"><div class="eyebrow">CROW STATION · Version 0.2</div><h1>Data planning<br>before table design</h1><p>From product requirements to entities, relationships, and lifecycles. A conceptual proposal showing what we know and what still needs a decision, without assuming the database design is complete.</p><div class="tags"><span>Proposed design for review</span><span>PostgreSQL · Isolation undecided</span><span>No tables or migrations yet</span></div></header>
-<div class="summary"><div><strong>18 domains</strong><span>Proposed entity map</span></div><div><strong>13 decisions</strong><span>Data discussion sequence</span></div><div><strong>Conceptual model</strong><span>Not a final schema</span></div></div>
+<header class="hero"><div class="eyebrow">CROW STATION · Version 0.3</div><h1>Data planning<br>before table design</h1><p>From product requirements to entities, relationships, and lifecycles. A conceptual proposal showing what we know and what still needs a decision, without assuming the database design is complete.</p><div class="tags"><span>Proposed design for review</span><span>PostgreSQL · Isolation undecided</span><span>No tables or migrations yet</span></div></header>
+<div class="summary"><div><strong>18 domains</strong><span>Proposed entity map</span></div><div><strong>17 decisions</strong><span>Data discussion sequence</span></div><div><strong>Conceptual model</strong><span>Not a final schema</span></div></div>
 <article>
 <blockquote>
-<p>Version 0.2 · 30 September 2026 · Proposed conceptual analysis · Not a final database schema</p>
+<p>Version 0.3 · 31 October 2026 · Proposed conceptual analysis · Not a final database schema</p>
 </blockquote>
 <h2 id="section-1">1. Is the product document enough to design the databases?</h2>
 <p><strong>It is enough to begin analysis and draw a conceptual model, but not to approve all final tables, relationships, and constraints.</strong> We have a broad picture of the product&#39;s behavior, but some rules that change the meaning of ownership, entitlements, balances, and permissions remain undecided.</p>
@@ -80,6 +80,7 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 </tr>
 </tbody></table></div>
 <p><strong>Status rule:</strong> All entity names, relationships, and storage approaches here are analytical proposals, not decisions approved by the project owner. Rules carried over from the product document are marked “Agreed.” Some topics are intentionally open; we will not ask for all answers at once.</p>
+<p><strong>Version 0.3:</strong> applies decisions H-D01 to H-D45 merged into product brief 0.3. Entity names are still proposals, and no tables or migrations for product features have been approved; the code foundation on the develop branch contains an empty <code>AppDbContext</code> ready for them.</p>
 <h2 id="section-2">2. The database is not a copy of the application screens</h2>
 <p>A student dashboard, instructor dashboard, and administration dashboard do not imply three databases. Multiple rooms or instructors do not require a database for each. PostgreSQL is the agreed engine; the number of databases and isolation boundaries remain undecided.</p>
 <p>We need to distinguish:</p>
@@ -107,12 +108,12 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 </tr>
 <tr>
 <td>Videos, attachments, and contract copies</td>
-<td>File storage such as MinIO or an alternative, with metadata in PostgreSQL</td>
-<td>Provider, file protection, copies, and versions.</td>
+<td>S3-compatible file storage (RustFS locally, H-D45), with metadata in PostgreSQL</td>
+<td>Production provider, file protection, copies, and versions.</td>
 </tr>
 <tr>
 <td>Temporary data such as caches and rate limits</td>
-<td>Redis if its selection and role are confirmed</td>
+<td>Redis for caching (H-D45)</td>
 <td>It must not be the sole store of permanent entitlements or money.</td>
 </tr>
 <tr>
@@ -163,20 +164,20 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 </tr>
 <tr>
 <td>Content</td>
-<td>Course, Section, Lesson, ContentRevision, MediaAsset</td>
-<td>Course structure, content revisions, and files</td>
+<td>Course, Section, Lesson (in one course, with an optional reference to the lesson it was copied from), ContentRevision, MediaAsset</td>
+<td>Course structure, content revisions, and files (H-D13, H-D40)</td>
 <td>6–7</td>
 </tr>
 <tr>
 <td>Publishing and delivery</td>
-<td>ReleaseRule, DeliveryCommitment, ScheduleChange, CompletionApproval</td>
-<td>Scheduling, incomplete-course commitments, and approval of completion</td>
+<td>ReleaseRule, DeclaredSyllabus, PlannedLesson, CompletionDeadline, DeadlineExtension, CompletionApproval</td>
+<td>Scheduling, declared syllabus, extension, and approval of completion (H-D42, H-D43)</td>
 <td>6</td>
 </tr>
 <tr>
 <td>Products and offers</td>
-<td>Offer, OfferScope, PriceVersion, CommercialAgreement</td>
-<td>Exactly what is sold, at what price, share, and terms</td>
+<td>Offer (for the whole course), AddOn, PriceVersion, CommercialAgreement</td>
+<td>What is sold, at what price, share, and terms (H-D10, H-D41)</td>
 <td>6, 9–11</td>
 </tr>
 <tr>
@@ -223,8 +224,8 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 </tr>
 <tr>
 <td>Student progress</td>
-<td>PlaybackProgress, WatchedCoverage, Playlist, PlaylistItem, PrivateNote</td>
-<td>Resume position, viewing, playlists, and private notes</td>
+<td>PlaybackProgress, WatchedCoverage, LessonCompletion, UpdateNotice, Playlist, PlaylistItem, PrivateNote</td>
+<td>Resume position, viewing, completion with the lesson version, update notices, playlists, and private notes (H-D39)</td>
 <td>7</td>
 </tr>
 <tr>
@@ -255,7 +256,7 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 <td>B2B Training</td>
 <td>B2BOrganization, B2BMembership, B2BReporting, B2BContract</td>
 <td>Company accounts, their employee memberships, their progress reports, and training agreements</td>
-<td>16</td>
+<td>2.3</td>
 </tr>
 <tr>
 <td>Achievements and Gamification</td>
@@ -288,7 +289,7 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 <p><strong>Agreed:</strong> An account can purchase content regardless of its role. An instructor appoints an instructor or employee within their dashboard, grants permissions, and revokes them. Financial authority cannot be delegated to the instructor&#39;s team. Several instructors may contribute to a course, but it has one financially responsible instructor.</p>
 <h3>4.2 Proposed relationships</h3>
 <ul>
-<li>One account has multiple contact methods and sessions over time; student policy permits one active session, under a definition that needs clarification for accounts with multiple roles.</li>
+<li>One account has multiple contact methods and sessions over time; at most two concurrent devices, a phone and a computer (H-D14). How device type is represented and what happens with an additional device need detail.</li>
 <li>An instructor profile is linked to the account, while a workspace represents the management scope for their content.</li>
 <li>A membership links a person&#39;s account to a workspace and carries permission grants and their activation and revocation dates.</li>
 <li>Participation in teaching a course is separate from staff membership and permission to view financial information.</li>
@@ -332,26 +333,37 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 <h3>4.5 Course ownership transfer — financial history and responsibility</h3>
 <p><strong>Agreed:</strong> Administration and both instructors approve, later sales use a new agreement, and earlier earnings remain with the previous instructor. The new instructor assumes all course and existing-student responsibilities while purchases and access are preserved. Resetting starts the course&#39;s accounting under the new instructor; it does not delete history or reset an entire instructor wallet.</p>
 <p><strong>Analytical proposal:</strong> A CourseOwnershipTransfer record contains both parties, approvals, effective time, and references to the previous and new agreements. Each sale&#39;s earnings remain linked to the beneficiary and agreement at sale, rather than inferred solely from the current owner. Service responsibility changes are separate from ownership of earlier earnings.</p>
-<p><strong>Open:</strong> Previous instructor and team access after transfer is the next unanswered question; concurrent transactions, refunds, and incomplete-course commitments also need detail.</p>
-<h2 id="section-5">5. Content, entitlements, and partial sales</h2>
-<p><strong>Agreed:</strong> Students do not pay twice for the same content and retain purchased content without expiration. Instructors control whether additions and updates are available to previous buyers.</p>
+<p><strong>Agreed — H-D01, H-D02, H-D05:</strong> the previous instructor&#39;s and team&#39;s access to the transferred course is removed immediately, while their account, records, and balance are kept. A refund follows the original purchase and its agreement, and a pending refund stays linked to the instructor the student bought from.</p>
+<p><strong>Analytical proposal:</strong> the transfer closes the previous instructor&#39;s team memberships on this course at the effective time without deleting them, and a hold tied to an earlier transaction stays with its original beneficiary.</p>
+<p><strong>Open:</strong> transactions concurrent with the transfer (H-Q08), and proving and settling a breach by the new instructor (H-Q07).</p>
+<h2 id="section-5">5. Content, entitlements, and sales</h2>
+<p><strong>Agreed:</strong> purchases are for the whole course only, and each course has its own price (H-D10). Students keep purchased content without expiry and get lesson updates at no charge (H-D06) while keeping their completion (H-D39). Each lesson belongs to one course, and copying creates an independent lesson (H-D40). A paid add-on is tied to a course and only its owners can buy it (H-D41). A moved lesson stays with those who owned it (H-D08).</p>
 <p>The proposed model separates three things:</p>
 <ol>
 <li><strong>Content:</strong> A course, then sections, lessons, revisions, and files.</li>
-<li><strong>Commercial offer:</strong> What is sold—a course, section, or lesson—with coverage, price, and terms.</li>
+<li><strong>Commercial offer:</strong> what is sold: the whole course, or a paid add-on tied to it, with price and terms.</li>
 <li><strong>Buyer entitlement:</strong> What this particular student actually received through a particular purchase.</li>
 </ol>
-<p>An order status of “paid” alone does not identify every lesson the student owns or whether a later paid update is included. A playlist organizes available content; it does not grant a new entitlement.</p>
-<h3>5.1 Questions that prevent early table approval</h3>
+<p>An order status of “paid” proves the course purchase; the entitlement covers lessons later added to it and their updates, while a paid add-on is a separate entitlement. A playlist organizes available content; it does not grant a new entitlement.</p>
+<h3>5.1 Content questions: settled and remaining</h3>
 <ul>
-<li>Can a lesson be moved between courses or reused? This changes how entitlements and progress are linked.</li>
-<li>How does a student retain an old version if the new version becomes paid content?</li>
-<li>When selling an incomplete course, which future commitments are included in the purchase, and how are they distinguished from new additions that are not included?</li>
-<li>Does buying a part unlock the entire course conversation and editor, and what happens if that part is refunded?</li>
-<li>Are all lessons videos, or can a text lesson or standalone test appear in the content sequence?</li>
+<li><strong>Moving and reusing lessons:</strong> settled; one course per lesson with independent copies (H-D40), and moving does not remove the right (H-D08).</li>
+<li><strong>An old version when the new one becomes paid:</strong> no longer applies; updates are free (H-D06). Keeping a visible archive of old versions was not approved.</li>
+<li><strong>Commitments of an incomplete course:</strong> settled; a declared syllabus with a lesson list and date (H-D42), and anything outside it is an optional paid add-on (H-D41).</li>
+<li><strong>Buying a part unlocks the chat and editor:</strong> no longer applies after partial sales were cancelled (H-D10).</li>
+<li><strong>Lesson types:</strong> settled; video, text, and standalone tests (H-D13).</li>
 </ul>
+<p><strong>Still open:</strong> representing lesson versions in progress, who owns copied lessons after an ownership transfer, and the definition of completion for each type (H-Q12).</p>
 <h3>5.2 Proposed publishing lifecycle</h3>
 <p>Content draft → ready for publication after checking instructor permissions → published. Availability for new purchases is separate from access for existing buyers, and course completion is separate from publication status. “Complete,” “published,” and “available for sale” are not combined into one status.</p>
+<h3>5.3 Proposed data impact</h3>
+<ul>
+<li><code>Lesson</code> belongs to one <code>Course</code>, with an optional field pointing to the lesson it was copied from.</li>
+<li><code>LessonCompletion</code> records the lesson version at completion; the &quot;updated since you completed it&quot; state is derived by comparing versions and does not cancel completion.</li>
+<li><code>AddOn</code> is tied to a course and has a price, and owning the course is a condition for buying it.</li>
+<li><code>DeclaredSyllabus</code>, <code>PlannedLesson</code>, the expected completion date, and <code>DeadlineExtension</code> (count and reason), plus a &quot;late&quot; course state that stops sales.</li>
+</ul>
+<p>These are analytical proposals, not approved tables.</p>
 <h2 id="section-6">6. Orders, payments, and refunds</h2>
 <h3>6.1 Proposed relationships</h3>
 <ul>
@@ -428,8 +440,8 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 </tbody></table></div>
 <p><strong>Data integrity proposal:</strong> Reserve a withdrawal request&#39;s amount within the available balance until the request is resolved, preventing two concurrent requests from spending the same balance. Do not treat it as paid before transfer confirmation. This does not change the agreed 24-hour deadline.</p>
 <h3>7.2 Hold reasons are not a single status</h3>
-<p><strong>Agreed:</strong> A recent purchase amount waits 7 days; all earnings from an incomplete course wait for completion, the instructor&#39;s declaration, and team approval. A path sale makes net earnings available immediately upon payment.</p>
-<p><strong>Proposal:</strong> Multiple hold reasons can apply to the same amount, which is released only when all applicable conditions are satisfied. An open refund request submitted before the seventh day ends is a reason requiring an explicit business decision; it has not been approved.</p>
+<p><strong>Agreed (H-D03):</strong> a recent purchase amount waits 7 days; all earnings from an incomplete course wait for completion, the instructor&#39;s declaration, and team approval, and the conditions stack. A path sale makes net earnings available immediately upon payment. A course still late after its single extension allows a refund from the held amount (H-D43).</p>
+<p><strong>Proposal:</strong> Multiple hold reasons can apply to the same amount, which is released only when all applicable conditions are satisfied. <strong>Agreed (H-D04):</strong> a refund request submitted within the window is a hold reason that lasts until the request is decided, and it is not rejected because of administrative delay. <strong>Agreed (H-D12):</strong> the platform does not fund refunds and record a debt on the instructor.</p>
 <h3>7.3 Currencies and settlements</h3>
 <p>The proposal is to record payment currency, settlement currency, amounts, and the exchange rate, source, and time when currencies differ. Dinar and dollar figures must not be added into a single numeric balance without documented conversion. Rounding, fees, and the equivalent of the 10-dollar minimum remain open; no default figures are invented.</p>
 <h2 id="section-8">8. Packages and policies managed from the dashboard</h2>
@@ -523,18 +535,18 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 </tr>
 <tr>
 <td>Course, sections, and lessons</td>
-<td>An initial hierarchy</td>
-<td>Moving and reusing lessons require a decision.</td>
+<td>One lesson in one course; a copy is an independent lesson</td>
+<td>Settled (H-D40).</td>
 </tr>
 <tr>
 <td>Offer and content coverage</td>
-<td>An offer covers a course or part of it</td>
-<td>Representation of coverage and versions needs detail.</td>
+<td>An offer for the whole course, and a paid add-on tied to a course</td>
+<td>Settled (H-D10, H-D41); version representation is proposed.</td>
 </tr>
 <tr>
 <td>Purchase and entitlements</td>
-<td>Confirmed items create access rights</td>
-<td>Partial coverage and updates remain open.</td>
+<td>A course purchase creates an entitlement that includes its updates; an add-on is a separate entitlement</td>
+<td>Settled (H-D06, H-D41).</td>
 </tr>
 <tr>
 <td>Settlement and holds</td>
@@ -579,19 +591,19 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 <td>D-02</td>
 <td>Instructor responsibility, workspace boundaries, and content ownership transfers</td>
 <td>Isolation and financial history</td>
-<td>One dashboard, transfer finances, and student responsibility settled; previous instructor and team access remains open; O-15 and O-20.</td>
+<td>One dashboard, transfer finances, student responsibility, and removal of the previous instructor&#39;s and team&#39;s access settled (H-D01, H-D02, H-D05); concurrent transactions and breaches remain open (H-Q07, H-Q08).</td>
 </tr>
 <tr>
 <td>D-03</td>
 <td>Entitlements when a lesson is updated or moved and paid content is added</td>
 <td>Content versions and purchase coverage</td>
-<td>Open; O-03.</td>
+<td>Mostly settled (H-D06, H-D08, H-D39, H-D40, H-D41). Remaining: version representation and ownership of copies after transfer.</td>
 </tr>
 <tr>
 <td>D-04</td>
 <td>Incomplete courses: what was promised, and how is delivery proven?</td>
 <td>Commitments, publishing schedule, and financial holds</td>
-<td>Open; O-06.</td>
+<td>Mostly settled (H-D42, H-D43). Remaining: who approves completion and limits on changing the syllabus.</td>
 </tr>
 <tr>
 <td>D-05</td>
@@ -603,7 +615,7 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 <td>D-06</td>
 <td>A refund request still under review when funds become due for release</td>
 <td>Holds, withdrawals, and concurrency</td>
-<td>Open; O-05.</td>
+<td>Settled: the hold lasts until the request is decided (H-D04). Remaining: review time and execution (H-Q06).</td>
 </tr>
 <tr>
 <td>D-07</td>
@@ -677,12 +689,15 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 <ul>
 <li>An instructor purchases a course without a second identity or exposure of the seller&#39;s data.</li>
 <li>A revoked employee delegation does not retain old permissions through a session or cached data.</li>
-<li>Someone buys a lesson and later the course; ownership and amounts due are identifiable without duplication.</li>
+<li>Someone who owns a course buys another course with similar content; they pay its full price, and each entitlement is recorded separately (H-D10).</li>
 <li>Content withdrawn from new sales remains available to previous buyers.</li>
 <li>A platform-share change does not erase the allocation of a settlement made before the change.</li>
 <li>Duplicate payment confirmation does not duplicate balance credits or entitlements.</li>
 <li>Two concurrent withdrawal requests cannot spend the same amount twice.</li>
-<li>An incomplete course cannot pay out earnings for an individual lesson.</li>
+<li>An incomplete course does not pay out earnings before completion and approval, even after 7 days (H-D03).</li>
+<li>Updating a lesson does not cancel the completion of students who completed it (H-D39).</li>
+<li>Copying a lesson does not carry completion over to the other course (H-D40).</li>
+<li>Transferring a course with a pending refund does not move the amount to the new owner (H-D05).</li>
 <li>Mentoring expiry does not delete the path or conversation history.</li>
 <li>A package change does not alter benefits for a subscriber&#39;s current period.</li>
 <li>Editing a review to below 3 changes its publication status and preserves what is needed for review.</li>
@@ -701,6 +716,7 @@ article{background:var(--paper);padding:10px clamp(20px,3vw,42px) 36px;border:1p
 <li><strong>Implementation and verification plan:</strong> Phases, dependencies, responsibilities, acceptance criteria, and time estimates.</li>
 </ol>
 <h2 id="section-14">14. Version history</h2>
+<p><strong>0.3 — 31 October 2026:</strong> Applied decisions H-D01 to H-D45: cancelled partial sales and rebuilt section 5 around whole-course purchase and paid add-ons, one course per lesson with independent copies, completion kept after updates, the declared syllabus and extension, holds until a refund request is decided, removal of the previous instructor&#39;s access after transfer, the two-device limit, and Redis and S3 storage. Updated D-02, D-03, D-04, D-06, and the scenarios. No tables have been approved yet.</p>
 <p><strong>0.2 — 30 September 2026:</strong> Settled D-01 and part of D-02; added proposed assistant-service and ownership-transfer analysis and D-13. Updated decision status without approving tables or isolation. Previous instructor and team access after transfer remains unanswered.</p>
 <p><strong>0.1 — 28 September 2026:</strong> Responds to the request to continue documentation toward data planning. Adds candidate entities and relationships, separates identity, permissions, ownership, and entitlements, and provides initial lifecycles and an ordered question register. No isolation approach, database count, or final logical/physical model has been approved. No tables, migration files, or product code were created.</p>
 </article>
