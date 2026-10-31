@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\CrowStation.Domain\CrowStation.Domain.csproj" />
+  </ItemGroup>
+</Project>

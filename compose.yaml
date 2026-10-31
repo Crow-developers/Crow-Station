@@ -1,0 +1,94 @@
+# Local development stack.
+#   make infra   -> postgres, redis, storage only (run the API and web from your IDE)
+#   make up      -> everything, built from the Dockerfiles
+# Values come from .env (copy .env.example). Never use these defaults outside local development.
+
+name: crow-station
+
+x-healthcheck-defaults: &healthcheck-defaults
+  interval: 5s
+  timeout: 3s
+  retries: 20
+  start_period: 5s
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-crow_station}
+      POSTGRES_USER: ${POSTGRES_USER:-crow}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-crow_dev_password}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      <<: *healthcheck-defaults
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+
+  redis:
+    image: redis:8-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      <<: *healthcheck-defaults
+      test: ["CMD", "redis-cli", "ping"]
+
+  # S3-compatible object storage. RustFS replaces MinIO, whose official images are no longer published.
+  storage:
+    image: rustfs/rustfs:1.0.4
+    environment:
+      RUSTFS_ACCESS_KEY: ${STORAGE_ACCESS_KEY:-crow}
+      RUSTFS_SECRET_KEY: ${STORAGE_SECRET_KEY:-crow_dev_password}
+      RUSTFS_CONSOLE_ENABLE: "true"
+    ports:
+      - "${STORAGE_PORT:-9000}:9000"
+      - "${STORAGE_CONSOLE_PORT:-9001}:9001"
+    volumes:
+      - storage-data:/data
+    healthcheck:
+      <<: *healthcheck-defaults
+      test: ["CMD", "curl", "-fs", "http://localhost:9000/health"]
+
+  api:
+    build:
+      context: ./backend
+    image: crow-station-api:local
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__Database: Host=postgres;Port=5432;Database=${POSTGRES_DB:-crow_station};Username=${POSTGRES_USER:-crow};Password=${POSTGRES_PASSWORD:-crow_dev_password}
+      ConnectionStrings__Redis: redis:6379
+      Storage__ServiceUrl: http://storage:9000
+      Storage__AccessKey: ${STORAGE_ACCESS_KEY:-crow}
+      Storage__SecretKey: ${STORAGE_SECRET_KEY:-crow_dev_password}
+      Storage__BucketName: ${STORAGE_BUCKET:-crow-station}
+      Storage__CreateBucketIfMissing: "true"
+      Cors__AllowedOrigins__0: http://localhost:${WEB_PORT:-3000}
+    ports:
+      - "${API_PORT:-8080}:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      storage:
+        condition: service_healthy
+
+  web:
+    build:
+      context: ./frontend/web
+    image: crow-station-web:local
+    environment:
+      API_BASE_URL: http://api:8080
+    ports:
+      - "${WEB_PORT:-3000}:3000"
+    depends_on:
+      - api
+
+volumes:
+  postgres-data:
+  redis-data:
+  storage-data:
