@@ -64,5 +64,7 @@ make web       # الويب على http://localhost:3000
 
 قبل فتح Pull Request: `make ci` يشغّل محلياً ما يشغّله CI.
 
+لتشغيل المشروع على سيرفر تطوير Debian وفحص الـ API بـ Scalar عبر Tailscale: [دليل سيرفر التطوير](docs/DEV-SERVER.md) (`make server-setup`).
+
 راجع [دليل المساهمة](CONTRIBUTING.md) لطريقة العمل والمراجعة، و[وثيقة البنية](docs/ARCHITECTURE.md) لقواعد الطبقات وقرارات القالب.
 

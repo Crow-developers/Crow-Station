@@ -56,6 +56,8 @@ jobs:
               - '**/Dockerfile'
               - '**/.dockerignore'
               - 'compose.yaml'
+              - 'compose.server.yaml'
+              - 'scripts/dev-server/**'
               - 'backend/**'
               - 'frontend/web/**'
               - '.github/workflows/ci.yml'
@@ -268,6 +270,12 @@ jobs:
           curl -fsS http://localhost:3000/api/health | grep -q Healthy
           curl -fsS http://localhost:3000/ | grep -q "Crow Station"
           curl -fsSI http://localhost:3000/ | grep -qi "x-frame-options: DENY"
+
+      - name: Dev server check script and server compose file
+        run: |
+          set -euo pipefail
+          ./scripts/dev-server/check.sh
+          docker compose -f compose.yaml -f compose.server.yaml config --quiet
 
       - name: Logs on failure
         if: failure()
