@@ -90,3 +90,20 @@ One card is added for each question that is settled. Old cards are never deleted
 | Acceptance example | When a student buys a 100,000 IQD course with 20 lessons, the gateway fee is 2,000, and the student uses 4 lessons and requests a refund within 7 days, the result is 80,000 − 2,000 = 78,000 IQD. For a late course with a 20-lesson syllabus, 8 published and all used: 60,000 IQD with no fee deducted. |
 | Review | Card prepared by Claude at the project owner's request. No reviewer assigned. Decision approved by the project owner. |
 | Places to update | Handoff 1, 4.4, 5, 7 and 12; product document 2.2, 9.3, O-04 and AC-08 (next version); data planning D-05; Arabic version. |
+
+## H-Q06 — Refund deadline and processing
+
+| Field | Value |
+| --- | --- |
+| Identifier | H-Q06 → decisions H-D51 to H-D54. Related: H-D03, H-D04, O-05, O-16, D-06. |
+| Question asked | (1) What is the maximum time to answer a refund request? Options: 3 working days; automatic acceptance by formula; 7 days. (2) When is the student's access removed? Options: on submission; on approval; when the money arrives. (3) Where does the amount go? Options: the same payment method; always the platform wallet; the student chooses. (4) When is the remainder released to the instructor? Options: on execution; after a dispute period; with the monthly payout. |
+| Project owner's answer | (1) "3 working days (recommended)". (2) "On submission (recommended)". (3) "The same payment method (recommended)". (4) "As soon as the refund is executed (recommended)". |
+| Answer and documentation dates | Answer: 31 October 2026. Documented: 31 October 2026. |
+| Status | Agreed. |
+| Operational wording | On submission, access stops and the usage calculation is fixed. The team answers within 3 working days. On acceptance, the amount goes to the same payment method, or to the wallet if the transfer fails, and the instructor's share of the remainder is released if the other conditions are met. On rejection, access returns immediately and the amount is released under the hold rules. |
+| Earlier decision affected | Completes H-D04 (hold until the request is decided). Defines "access is removed automatically or manually" in product document 9.3: it stops on submission. |
+| Exceptions and open points | Working days and holidays; who reviews the request; manual payments; the transfer retry period; the effect of the request on the chat, add-ons, and certificate. |
+| Data, permissions and money impact | Proposal: refund request states (submitted, accepted, rejected, executed, moved to wallet); suspending the entitlement without deleting it during the request; a response due date; linking the refund to the original payment method. |
+| Acceptance example | When a request is submitted on Sunday, access stops immediately; if it is not decided by the end of the third working day, the administration gets an alert; on acceptance with a failed transfer to Zain Cash, the amount appears in the student's wallet. |
+| Review | Card prepared by Claude at the project owner's request. No reviewer assigned. Decision approved by the project owner. |
+| Places to update | Handoff 1, 4.4, 7 and 12; product document 9.2, 9.3 and O-05 (next version); data planning D-06; Arabic version. |

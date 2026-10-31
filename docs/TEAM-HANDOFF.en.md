@@ -6,9 +6,9 @@
 
 **What the team is asked to do:** help the project owner complete the business rules and open questions, and turn the answers into clear, reviewable requirements before designing the database, the API, and the implementation plan. This handoff does not start programming, and it does not turn proposals into approved decisions.
 
-**Exact resume point — H-Q06:** What is the refund processing deadline and what are its stages, and when is access removed and the remainder released? H-Q01 to H-Q04 were settled on 29 October 2026, and H-Q05 on 31 October 2026; see sections 4.3 and 4.4 and the [decision cards](DECISION-CARDS.en.md).
+**Exact resume point — H-Q07:** How is a breach by the new instructor after a course transfer proven, and who carries out its settlement under the transfer contract? H-Q01 to H-Q04 were settled on 29 October 2026, and H-Q05 and H-Q06 on 31 October 2026; see sections 4.3 and 4.4 and the [decision cards](DECISION-CARDS.en.md).
 
-**Current reference:** the product and data planning documents are at version 0.3, dated 31 October 2026, and include decisions H-D01 to H-D45 and the section 5 changes. Decisions H-D46 to H-D50 (section 4.4) are newer than both documents and not yet merged into them. If a conflict appears, section 4 of this file takes precedence until the documents are updated.
+**Current reference:** the product and data planning documents are at version 0.3, dated 31 October 2026, and include decisions H-D01 to H-D45 and the section 5 changes. Decisions H-D46 to H-D54 (section 4.4) are newer than both documents and not yet merged into them. If a conflict appears, section 4 of this file takes precedence until the documents are updated.
 
 Read in this order:
 
@@ -126,9 +126,9 @@ The project owner answered H-Q01 to H-Q04 in a written session on 29 October 202
 | H-D44 | The web front end is Next.js with TypeScript, chosen by the project owner when building the code foundation on the develop branch. | The mobile app stays Flutter and is built later; English support in the web app is not designed yet. |
 | H-D45 | Local environment: PostgreSQL, Redis for caching, and S3-compatible file storage through RustFS instead of MinIO, because official MinIO images are no longer published. | The production storage and hosting provider and the isolation approach are open (H-Q23). |
 
-#### 4.4 Decisions from the 31 October 2026 session — refund calculation
+#### 4.4 Decisions from the 31 October 2026 session — refund calculation and processing
 
-The project owner answered H-Q05 in a written session on 31 October 2026. The full card is in the [decision cards](DECISION-CARDS.en.md). **These decisions take precedence over section 9.3 of product document 0.3 until it is updated.**
+The project owner answered H-Q05 and H-Q06 in a written session on 31 October 2026. The full cards are in the [decision cards](DECISION-CARDS.en.md). **These decisions take precedence over section 9.3 of product document 0.3 until it is updated.**
 
 | ID | Current decision | What remains open or what the decision does not mean |
 | --- | --- | --- |
@@ -137,6 +137,10 @@ The project owner answered H-Q05 in a written session on 31 October 2026. The fu
 | H-D48 | A refund within the 7-day window = course price × (lessons not used ÷ number of lessons in the course at purchase). Lessons added after purchase are not counted. Example: 100,000 IQD and 20 lessons, the student used 4, so 80,000 IQD is refunded before fees (H-D50). | Rounding, whether preview lessons count in the lesson total, and refund rules for paid add-ons (H-D41) are open. |
 | H-D49 | A refund for a course still late after its one extension (H-D43) uses the same formula as H-D48, but the total is the full **declared syllabus**, and unpublished lessons count as not used. Example: a 20-lesson syllabus, 8 published and all used by the student, so 60,000 of 100,000 IQD is refunded. The right to request stays valid after the 7-day window. | The deadline for requesting this refund, the maximum extension length, and resuming sales after completion are open. |
 | H-D50 | The payment gateway fee that is not returned is deducted from the student's refund, and this is stated clearly in the refund policy. **Exception:** for a late-course refund (H-D49), the instructor's share bears the fee and the student receives the full calculated amount. | Handling manual payments, showing the fee to the student before purchase, and specialist legal review (O-22) are open. |
+| H-D51 | The platform answers a refund request (accept or reject) within **3 working days** of submission. If the team is late, an internal alert goes to the administration, and the request is not rejected because of the delay (H-D04). | Working days and public holidays, who reviews the request, and delegating to a specialist department are open. |
+| H-D52 | The student's access to the course stops **as soon as the refund request is submitted**, and the amount is calculated from what was used at that moment. If the request is rejected, access returns immediately. | The effect on the chat, paid add-ons, and the certificate is open. |
+| H-D53 | The amount is refunded to the **same payment method** used for the purchase. If the transfer fails, the amount goes to the student's platform wallet and can be withdrawn. | Manual payments and the retry period before moving to the wallet are open. |
+| H-D54 | After a partial refund, the instructor's share of the remainder is released **as soon as the refund is executed**, if the other hold conditions are met (for example course completion, H-D03). | Does not change the hold on an incomplete course. |
 
 ## 5. Reconciling older documents before building any design on them
 
@@ -199,7 +203,7 @@ The order and priority are **proposals to organize the team's work**. H-Q is the
 | H-Q03 | ~~How is an independent add-on sold while selling single lessons and sections is not allowed?~~ **Settled: H-D41.** | Defining the limits of the paid product without assuming partial resale. | O-03, D-03 |
 | H-Q04 | ~~How does the instructor define the promised content before selling an incomplete course, and what proves it was delivered?~~ **Settled: H-D42, H-D43.** | Distinguishing delivering the promise from a new add-on, and approving the release of funds. | O-06, D-04 |
 | H-Q05 | ~~How do we calculate refunds for a course with video, text, and tests, and what lesson values are approved?~~ **Settled: H-D46 to H-D50.** | The threshold, formula, and deductions; rounding and specialist review are still open. | O-04, D-05 |
-| H-Q06 | What is the refund processing deadline, what are its stages, and when is access removed and the remainder released? | Settling operations after the decision to continue the hold, including failed transfers. | O-05, O-16, D-06 |
+| H-Q06 | ~~What is the refund processing deadline, what are its stages, and when is access removed and the remainder released?~~ **Settled: H-D51 to H-D54.** | Settling operations after the decision to continue the hold, including failed transfers. | O-05, O-16, D-06 |
 | H-Q07 | How is a breach by the new instructor proven, and who carries out its settlement under the transfer contract? | Not confusing the owner of old sales with the party responsible for a later breach. | D-02, O-22 |
 | H-Q08 | When is a transfer executed, and how do we handle a purchase, payment, or refund that happens at the same time? | Linking each transaction to the correct owner and agreement. | D-02, D-07 |
 | H-Q09 | What is the cycle for collecting assistant fees, settling the payment grace period, and paying the assistant? | Avoiding assumptions about who collects, funding, or deductions that were not agreed. | D-13, O-05 |
@@ -289,13 +293,13 @@ At each internal handover: state the last question and its answer, the next ques
 | Item | Status when this file was prepared |
 | --- | --- |
 | Planning baseline read | Product and data documents at version 0.3. |
-| Latest decisions | H-D01 to H-D45 merged into version 0.3 of both documents; H-D46 to H-D50 in section 4.4, not yet merged. |
+| Latest decisions | H-D01 to H-D45 merged into version 0.3 of both documents; H-D46 to H-D54 in section 4.4, not yet merged. |
 | Conflicts with the old version | Resolved in version 0.3; section 5 is now a historical record. |
-| Resume question | H-Q06: refund processing deadline and execution. H-Q01 to H-Q05 are settled. |
+| Resume question | H-Q07: proving and settling a breach by the new instructor after a transfer. H-Q01 to H-Q06 are settled. |
 | Model and API approval | Not complete; product implementation does not start with this handoff. |
 | This file | English translation of the Arabic handoff `TEAM-HANDOFF.ar.md` at plan commit 69dd9da, with an HTML reading version. |
 
-**Team's next step:** the coordinator reads sections 4 and 5, then asks the project owner H-Q06, and records the answer using the section 9 card. After a suitable group of answers, the team reviews the changes and updates the core documents in both languages.
+**Team's next step:** the coordinator reads sections 4 and 5, then asks the project owner H-Q07, and records the answer using the section 9 card. After a suitable group of answers, the team reviews the changes and updates the core documents in both languages.
 
 **Version log — 0.1, 8 October 2026:** first handoff file for completing the questions, including the latest discussion decisions, superseded decisions, a document repair map, a proposed question log, and collaboration roles with approval and handover templates. The work order and roles are proposals; only the project owner's answers are recorded as approved decisions.
 
@@ -304,4 +308,4 @@ At each internal handover: state the last question and its answer, the next ques
 
 **Version log — 0.3, 31 October 2026:** added H-D44 (Next.js) and H-D45 (local environment), corrected the sessions row to follow H-D14, and recorded that section 5 was applied in version 0.3 of the product and data documents.
 
-**Version log — 0.4, 31 October 2026:** settled H-Q05 with decisions H-D46 to H-D50: what "used" means for each lesson type, the course price as one total value, the refund formula by share of lessons, the late-course refund, and the payment fee. Moved the resume point to H-Q06.
+**Version log — 0.4, 31 October 2026:** settled H-Q05 with decisions H-D46 to H-D50: what "used" means for each lesson type, the course price as one total value, the refund formula by share of lessons, the late-course refund, and the payment fee. Settled H-Q06 with decisions H-D51 to H-D54: a 3-working-day response deadline, access stopped on request, refunds to the same payment method, and release of the remainder on execution. Moved the resume point to H-Q07.
