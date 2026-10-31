@@ -1,0 +1,15 @@
+# Dev server additions, layered on compose.yaml.
+# Enabled by scripts/dev-server/setup.sh through COMPOSE_FILE=compose.yaml:compose.server.yaml in .env.
+# Keeps the stack running after a reboot. Ports and secrets still come from compose.yaml and .env.
+
+services:
+  postgres:
+    restart: unless-stopped
+  redis:
+    restart: unless-stopped
+  storage:
+    restart: unless-stopped
+  api:
+    restart: unless-stopped
+  web:
+    restart: unless-stopped

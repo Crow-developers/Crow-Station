@@ -2,6 +2,8 @@
 #   make infra   -> postgres, redis, storage only (run the API and web from your IDE)
 #   make up      -> everything, built from the Dockerfiles
 # Values come from .env (copy .env.example). Never use these defaults outside local development.
+# Ports bind to 127.0.0.1 by default so the stack is not reachable from the network.
+# A dev server can expose only the API and web with PUBLIC_BIND_ADDRESS (see docs/DEV-SERVER.md).
 
 name: crow-station
 
@@ -19,7 +21,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-crow}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-crow_dev_password}
     ports:
-      - "${POSTGRES_PORT:-5432}:5432"
+      - "${BIND_ADDRESS:-127.0.0.1}:${POSTGRES_PORT:-5432}:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
     healthcheck:
@@ -30,7 +32,7 @@ services:
     image: redis:8-alpine
     command: ["redis-server", "--appendonly", "yes"]
     ports:
-      - "${REDIS_PORT:-6379}:6379"
+      - "${BIND_ADDRESS:-127.0.0.1}:${REDIS_PORT:-6379}:6379"
     volumes:
       - redis-data:/data
     healthcheck:
@@ -45,8 +47,8 @@ services:
       RUSTFS_SECRET_KEY: ${STORAGE_SECRET_KEY:-crow_dev_password}
       RUSTFS_CONSOLE_ENABLE: "true"
     ports:
-      - "${STORAGE_PORT:-9000}:9000"
-      - "${STORAGE_CONSOLE_PORT:-9001}:9001"
+      - "${BIND_ADDRESS:-127.0.0.1}:${STORAGE_PORT:-9000}:9000"
+      - "${BIND_ADDRESS:-127.0.0.1}:${STORAGE_CONSOLE_PORT:-9001}:9001"
     volumes:
       - storage-data:/data
     healthcheck:
@@ -66,9 +68,9 @@ services:
       Storage__SecretKey: ${STORAGE_SECRET_KEY:-crow_dev_password}
       Storage__BucketName: ${STORAGE_BUCKET:-crow-station}
       Storage__CreateBucketIfMissing: "true"
-      Cors__AllowedOrigins__0: http://localhost:${WEB_PORT:-3000}
+      Cors__AllowedOrigins__0: ${WEB_ORIGIN:-http://localhost:3000}
     ports:
-      - "${API_PORT:-8080}:8080"
+      - "${PUBLIC_BIND_ADDRESS:-127.0.0.1}:${API_PORT:-8080}:8080"
     depends_on:
       postgres:
         condition: service_healthy
@@ -84,7 +86,7 @@ services:
     environment:
       API_BASE_URL: http://api:8080
     ports:
-      - "${WEB_PORT:-3000}:3000"
+      - "${PUBLIC_BIND_ADDRESS:-127.0.0.1}:${WEB_PORT:-3000}:3000"
     depends_on:
       - api
 

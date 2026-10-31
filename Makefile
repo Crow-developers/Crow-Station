@@ -60,6 +60,16 @@ logs: ## Follow logs of every service
 ps: ## Show service status
 	$(COMPOSE) ps
 
+.PHONY: check
+check: ## Check the running stack (health, OpenAPI, Scalar, web) and print the URLs
+	./scripts/dev-server/check.sh
+
+##@ Dev server (Debian 13)
+
+.PHONY: server-setup
+server-setup: ## Install Docker, generate a private .env and start the stack (see docs/DEV-SERVER.md)
+	sudo ./scripts/dev-server/setup.sh
+
 ##@ Backend (.NET)
 
 .PHONY: api
